@@ -1,0 +1,2092 @@
+[
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "remote business analyst information technology services",
+  "title": "(Remote) Business Analyst - Information Technology Services"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "ai platform engineer",
+  "title": "AI Platform Engineer"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "ai solutions qa analyst",
+  "title": "AI Solutions QA Analyst"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "analyst ii it leak detection",
+  "title": "Analyst II, IT - Leak Detection"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "app support engineer",
+  "title": "App Support Eng"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "application developer analyst",
+  "title": "Application Developer Analyst"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "application support engineer",
+  "title": "Application Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "applied data analyst",
+  "title": "Applied Data Analyst"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "automation platform engineer",
+  "title": "Automation Platform Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "azure devops engineer",
+  "title": "Azure Dev Ops Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "azure devops engineer lead",
+  "title": "Azure Dev Ops Engineer Lead"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "bi data analyst",
+  "title": "BI Data Analyst"
+ },
+ {
+  "lookup": {
+   "family": "data_engineering",
+   "range": "$100,000-$140,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "bms data analysis engineer",
+  "title": "BMS Data Analysis Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "backend platform engineer labrynth",
+  "title": "Backend Platform Engineer - Labrynth"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "business analyst",
+  "title": "Business Analyst"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "business analyst dcoe",
+  "title": "Business Analyst DCOE"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "business analyst it",
+  "title": "Business Analyst IT"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "business analyst us all genders100 remoteus east coast timezone preferred",
+  "title": "Business Analyst US All Genders100 REMOTEUS East Coast Timezone Preferred"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "business systems analyst",
+  "title": "Business Systems Analyst"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "business systems analyst bsa",
+  "title": "Business Systems Analyst (BSA)"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cascade technical support analyst",
+  "title": "Cascade Technical Support Analyst"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$90,000-$120,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "client support analyst iii",
+  "title": "Client Support Analyst III"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "clinical operations analyst",
+  "title": "Clinical Operations Analyst"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud azure server engineer houston tx",
+  "title": "Cloud Azure Server Engineer Houston TX"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud cyber sme",
+  "title": "Cloud Cyber SME"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud devops engineer",
+  "title": "Cloud Dev Ops Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud devsecops engineer",
+  "title": "Cloud DevSecOps Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud engineer",
+  "title": "Cloud Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud engineer",
+  "title": "Cloud Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud engineer product metrics",
+  "title": "Cloud Engineer Product Metrics"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud infrastructure engineer",
+  "title": "Cloud Infra Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud infrastructure engineer",
+  "title": "Cloud Infrastructure Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud operations analyst",
+  "title": "Cloud Operations Analyst"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud operations engineer",
+  "title": "Cloud Ops Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud security engineer",
+  "title": "Cloud Security Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud security engineer aws",
+  "title": "Cloud Security Eng AWS"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud security engineer",
+  "title": "Cloud Security Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud solutions architect",
+  "title": "Cloud Solutions Architect"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud support engineer",
+  "title": "Cloud Support Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "cloud and network engineer",
+  "title": "Cloud and Network Engineer"
+ },
+ {
+  "lookup": {
+   "family": "",
+   "range": "",
+   "senior": false,
+   "updated": ""
+  },
+  "norm": "cluster capacity engineer",
+  "title": "Cluster Capacity Eng"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "customer support engineer",
+  "title": "Customer Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "data analyst",
+  "title": "Data Analyst"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "data analyst",
+  "title": "Data Analyst "
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "data analyst data engineer",
+  "title": "Data Analyst Data Engineer"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "data analyst ii",
+  "title": "Data Analyst II"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$110,000-$150,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "data analyst lead",
+  "title": "Data Analyst Lead"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "data analytics and cloud engineer",
+  "title": "Data Analytics And Cloud Engineer"
+ },
+ {
+  "lookup": {
+   "family": "data_engineering",
+   "range": "$100,000-$140,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "data engineer",
+  "title": "Data Engineer II"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "data quality engineer",
+  "title": "Data Quality Engineer"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "desktop support engineer l2 us",
+  "title": "Desktop Support Engineer L2 US"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "devops engineer",
+  "title": "Dev Ops Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "devops engineer",
+  "title": "Dev Ops Engineer II"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "devops engineer remote",
+  "title": "Dev Ops Engineer Remote"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "devops platform engineer aws terraform python hpc",
+  "title": "Dev Ops Platform Engineer AWS Terraform Python HPC"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "devops site reliability engineer",
+  "title": "Dev Ops Site Reliability Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "devsecops engineer",
+  "title": "Dev Sec Ops Engineer"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "dev support engineer",
+  "title": "Dev Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "devops it support engineer",
+  "title": "DevOps & IT Support engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "devops engineer",
+  "title": "DevOps Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "devops engineer applications",
+  "title": "DevOps Engineer II - Applications"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "development support engineer",
+  "title": "Development Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "distributed systems engineer",
+  "title": "Distributed Systems Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "engineer platform",
+  "title": "Engineer II Platform"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "enterprise data analyst ii",
+  "title": "Enterprise Data Analyst II"
+ },
+ {
+  "lookup": {
+   "family": "",
+   "range": "",
+   "senior": false,
+   "updated": ""
+  },
+  "norm": "forward deployed engineer",
+  "title": "Forward Deployed Eng"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "human data quality engineer founding team",
+  "title": "Human Data Quality Engineer Founding Team"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "it analyst",
+  "title": "IT Analyst"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "it app support analyst",
+  "title": "IT App Support Analyst"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "it business support analyst",
+  "title": "IT Business Support Analyst"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "it devops lead",
+  "title": "IT Dev Ops Lead"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "it support analyst",
+  "title": "IT Support Analyst"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "infrastructure cloud engineer",
+  "title": "Infra Cloud Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "infrastructure devops engineer",
+  "title": "Infra Dev Ops Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "infrastructure engineer cloud",
+  "title": "Infra Eng Cloud"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "infrastructure engineer",
+  "title": "Infrastructure Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "infrastructure support engineer",
+  "title": "Infrastructure Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "intermediate or senior software developer ai platform applications",
+  "title": "Intermediate or Sr Software Developer (AI Platform & Applications)"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "lead azure devops",
+  "title": "Lead Azure Dev Ops"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "lead cloud architect nosql databases",
+  "title": "Lead Cloud Architect - NoSQL Databases"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "lead devops engineer",
+  "title": "Lead Dev Ops Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "lead site reliability engineer",
+  "title": "Lead Site Reliability Engineer"
+ },
+ {
+  "lookup": {
+   "family": "",
+   "range": "",
+   "senior": true,
+   "updated": ""
+  },
+  "norm": "lead specialist",
+  "title": "Lead Specialist"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$90,000-$120,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "lead support engineer",
+  "title": "Lead Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "managed service delivery analyst",
+  "title": "Managed Service Delivery Analyst"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "mission operations support engineer",
+  "title": "Mission Operations Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "nasa computer systems engineer",
+  "title": "NASA Computer Systems Engineer"
+ },
+ {
+  "lookup": {
+   "family": "performance_engineer",
+   "range": "$105,000-$150,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "performance engineer",
+  "title": "Performance Engineer II"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "platform consultant",
+  "title": "Platform Consultant"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "platform engineer",
+  "title": "Platform Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "platform engineer",
+  "title": "Platform Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "platform engineer",
+  "title": "Platform Engineer III"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "platform solution engineer mantl",
+  "title": "Platform Solution Engineer MANTL"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "principal cloud engineer",
+  "title": "Principal Cloud Eng"
+ },
+ {
+  "lookup": {
+   "family": "",
+   "range": "",
+   "senior": false,
+   "updated": ""
+  },
+  "norm": "principal open shift engineer",
+  "title": "Principal Open Shift Eng"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "product support engineer",
+  "title": "Product Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "production engineer",
+  "title": "Production Engineering"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "production support analyst",
+  "title": "Production Support Analyst"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "production support engineer",
+  "title": "Production Support Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "sapns2 senior devops engineer",
+  "title": "SAPNS2 Sr Dev Ops Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "site reliability engineer",
+  "title": "SRE"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "site reliability engineer devops engineer",
+  "title": "SRE Dev Ops Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "sre3",
+  "title": "SRE3"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "sreai agents",
+  "title": "SREAI Agents"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "site reliability engineer ai enablement",
+  "title": "SRE_AI Enablement"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "sales and operations execution analyst",
+  "title": "Sales And Operations Execution Analyst"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "security architect for network and cloud",
+  "title": "Security Architect for Network and Cloud"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "security engineer cloud",
+  "title": "Security Engineer Cloud"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior ai infrastructure platform operations engineer remote in the us",
+  "title": "Senior AI Infrastructure Platform Operations Engineer Remote In The US"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior ai platform engineer",
+  "title": "Senior AI Platform Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior atlassian platform and requirements traceability engine",
+  "title": "Senior Atlassian Platform And Requirements Traceability Engine"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior azure cloud engineer",
+  "title": "Senior Azure Cloud Engineer"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$110,000-$150,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior business analyst",
+  "title": "Senior Business Analyst"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$110,000-$150,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior business analyst data quality assurance engineer federal healthcare",
+  "title": "Senior Business Analyst Data Quality Assurance Engineer Federal Healthcare"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior cloud engineer",
+  "title": "Senior Cloud Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior cloud engineer devops gcp marketing",
+  "title": "Senior Cloud Engineer Dev Ops GCP Marketing"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior cloud infrastructure engineer",
+  "title": "Senior Cloud Infrastructure Engineer"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$90,000-$120,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior customer support engineer",
+  "title": "Senior Customer Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$110,000-$150,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior data analyst",
+  "title": "Senior Data Analyst"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$110,000-$150,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior data analyst",
+  "title": "Senior Data Analyst "
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$110,000-$150,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior data analyst marketing team",
+  "title": "Senior Data Analyst (Marketing team)"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$110,000-$150,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior data analyst data monitoring",
+  "title": "Senior Data Analyst Data Monitoring"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior devops engineer",
+  "title": "Senior Dev Ops Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior devops engineer azure cloud networking platform",
+  "title": "Senior Dev Ops Engineer Azure Cloud Networking Platform"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior devops engineer",
+  "title": "Senior DevOps Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior devops engineer terraform",
+  "title": "Senior DevOps Engineer (Terraform) "
+ },
+ {
+  "lookup": {
+   "family": "",
+   "range": "",
+   "senior": true,
+   "updated": ""
+  },
+  "norm": "senior integration engineer",
+  "title": "Senior Integration Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior lead devops engineer",
+  "title": "Senior Lead Dev Ops Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior product engineer emr platform",
+  "title": "Senior Product Engineer - EMR Platform "
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior product manager cloud video",
+  "title": "Senior Product Manager, Cloud Video"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior site reliability engineer",
+  "title": "Senior Site Reliability Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior site reliability engineer remote",
+  "title": "Senior Site Reliability Engineer REMOTE"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior site reliability engineer remote",
+  "title": "Senior Site Reliability Engineer Remote"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior site reliability operations engineer finance",
+  "title": "Senior Site Reliability Operations Engineer - Finance"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior software engineer cloud architect",
+  "title": "Senior Software Engineer Cloud Architect"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior software engineer crm platform",
+  "title": "Senior Software Engineer- CRM+ Platform"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$90,000-$120,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior support engineer remote us",
+  "title": "Senior Support Engineer Remote US"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$90,000-$120,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior technical support engineer",
+  "title": "Senior Technical Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "siebel support engineer",
+  "title": "Siebel Support Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "site reliability engineer",
+  "title": "Site Reliability Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "site reliability engineer",
+  "title": "Site Reliability Engineer II"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "site reliability engineer us central eastern timezone",
+  "title": "Site Reliability Engineer US Central Eastern Timezone"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "site reliability engineer l3 support",
+  "title": "Site Reliability Engineer/L3 Support"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "software engineer platform operations",
+  "title": "Software Eng Platform Ops"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "software engineer libraries platform",
+  "title": "Software Engineer (Libraries Platform) "
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "software engineer power platform",
+  "title": "Software Engineer III Power Platform"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "solution architect devops pipeline",
+  "title": "Solution Architect \u2013 DevOps Pipeline"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior aws devops engineer",
+  "title": "Sr AWS Dev Ops Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior azure cloud engineer",
+  "title": "Sr Azure Cloud Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior azure platform engineer",
+  "title": "Sr Azure Platform Eng"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$110,000-$150,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior business analyst",
+  "title": "Sr Business Analyst"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$110,000-$150,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior business analyst hr",
+  "title": "Sr Business Analyst HR"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior cloud devops",
+  "title": "Sr Cloud Dev Ops"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior cloud devops gcp",
+  "title": "Sr Cloud Dev Ops GCP"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior cloud engineer",
+  "title": "Sr Cloud Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior cloud security engineer",
+  "title": "Sr Cloud Security Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior cloud services engineer",
+  "title": "Sr Cloud Services Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior cluster site reliability engineer",
+  "title": "Sr Cluster SRE"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$110,000-$150,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior data analyst",
+  "title": "Sr Data Analyst"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior data platform engineer",
+  "title": "Sr Data Platform Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior devops engineer",
+  "title": "Sr Dev Ops Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior devops engineer",
+  "title": "Sr Dev Ops Engineer"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$90,000-$120,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior endpoint support engineer",
+  "title": "Sr Endpoint Support Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior engineer site reliability",
+  "title": "Sr Engineer Site Reliability"
+ },
+ {
+  "lookup": {
+   "family": "",
+   "range": "",
+   "senior": true,
+   "updated": ""
+  },
+  "norm": "senior it engineer",
+  "title": "Sr IT Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior infrastructure engineer",
+  "title": "Sr Infra Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior infrastructure systems engineer",
+  "title": "Sr Infra Systems Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior infrastructure engineer",
+  "title": "Sr Infrastructure Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior lead cloud engineer",
+  "title": "Sr Lead Cloud Engineer"
+ },
+ {
+  "lookup": {
+   "family": "",
+   "range": "",
+   "senior": true,
+   "updated": ""
+  },
+  "norm": "senior modernization engineer",
+  "title": "Sr Modernization Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior platform backend",
+  "title": "Sr Platform Backend"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior platform engineer",
+  "title": "Sr Platform Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior platform engineer",
+  "title": "Sr Platform Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior platform operations",
+  "title": "Sr Platform Ops"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$90,000-$120,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior pre sale support engineer",
+  "title": "Sr Pre Sale Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior production engineer",
+  "title": "Sr Production Engineer"
+ },
+ {
+  "lookup": {
+   "family": "",
+   "range": "",
+   "senior": true,
+   "updated": ""
+  },
+  "norm": "senior prof services engineer",
+  "title": "Sr Prof Services Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior site reliability engineer",
+  "title": "Sr SRE"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior site reliability engineer cloud",
+  "title": "Sr SRE Cloud"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior site reliability engineer release",
+  "title": "Sr SRE Release"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$127,000-$190,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior site reliability engineer",
+  "title": "Sr Site Reliability Engineer"
+ },
+ {
+  "lookup": {
+   "family": "",
+   "range": "",
+   "senior": true,
+   "updated": ""
+  },
+  "norm": "senior software engineer",
+  "title": "Sr Software Engineer"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$90,000-$120,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior support engineer",
+  "title": "Sr Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$90,000-$120,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior tse",
+  "title": "Sr TSE"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$90,000-$120,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior tech support engineer",
+  "title": "Sr Tech Support Eng"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$110,000-$150,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior healthcare data analyst medicaid",
+  "title": "Sr. Healthcare Data Analyst (Medicaid)"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$110,000-$150,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "senior it analyst",
+  "title": "Sr. IT Analyst"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "staff infrastructure software engineer",
+  "title": "Staff Infra Software Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "staff product engineer api platform",
+  "title": "Staff Product Engineer -API Platform"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "staff site reliability engineer",
+  "title": "Staff SRE"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "strategy and operations analyst provider operations",
+  "title": "Strategy And Operations Analyst Provider Operations"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "support engineer",
+  "title": "Support Eng"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "support engineer",
+  "title": "Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "support engineer remote",
+  "title": "Support Engineer Remote"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "support operations engineer",
+  "title": "Support Operations Engineer"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "support systems engineer",
+  "title": "Support Sys Eng"
+ },
+ {
+  "lookup": {
+   "family": "sre_cloud_devops",
+   "range": "$110,000-$145,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "system engineer",
+  "title": "System Engineer"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "tech support engineer",
+  "title": "Tech Support Eng"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "tech support engineer",
+  "title": "Tech Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "data_business_analyst",
+   "range": "$85,000-$120,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "technical business analyst",
+  "title": "Technical Business Analyst"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "technical business analyst usapac support",
+  "title": "Technical Business Analyst USAPAC Support"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "technical support engineer",
+  "title": "Technical Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "technical support engineer amer",
+  "title": "Technical Support Engineer AMER"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "technical support engineer enterprise solutions remote",
+  "title": "Technical Support Engineer Enterprise Solutions REMOTE"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$90,000-$120,000 (est.)",
+   "senior": true,
+   "updated": "2026-07"
+  },
+  "norm": "technical support engineer iv",
+  "title": "Technical Support Engineer IV"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "technical support engineer remote saas client facing",
+  "title": "Technical Support Engineer | Remote | SaaS | Client-Facing"
+ },
+ {
+  "lookup": {
+   "family": "qa_test",
+   "range": "$75,000-$110,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "test engineer",
+  "title": "Test Engineer"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "tier2 support engineer",
+  "title": "Tier2 Support Engineer"
+ },
+ {
+  "lookup": {
+   "family": "tech_support",
+   "range": "$70,000-$100,000 (est.)",
+   "senior": false,
+   "updated": "2026-07"
+  },
+  "norm": "tier3 support engineer",
+  "title": "Tier3 Support Engineer"
+ }
+]

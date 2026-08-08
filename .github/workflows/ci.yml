@@ -1,0 +1,64 @@
+# CI for the private dev repo.
+#
+# What this does NOT do: publish. Releasing to TopRat stays a command you
+# run by hand (`python src/ops/release.py --out ../TopRat --push`), so
+# nothing reaches the ship repo because a workflow fired.
+#
+# Cost note — this repo is PRIVATE, so minutes are billed against the account
+# allowance and the multipliers are Linux 1x, Windows 2x, macOS 10x. That is why
+# every push runs Linux only, and Windows runs only on a tag. Adding a macOS leg
+# to the push trigger would spend ten minutes of allowance per wall-clock minute.
+name: CI
+
+on:
+  push:
+    branches: ['**']
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: tests (linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # The app itself is stdlib-only; these are the optional feature packages.
+      # pytest is the only thing CI strictly needs.
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest python-docx jsonschema
+
+      # CI has no personal data root, so the tests that read the user's bullet
+      # bank and geocode cache are deselected rather than allowed to fail. See
+      # tests/README.md for which ones and why.
+      - name: Run tests
+        run: pytest -q -m "not needs_userdata"
+
+      # The important one. Builds a real export and re-derives the verdict from
+      # the files on disk: no personal data, no secrets, no resumes.
+      - name: Verify the export is shippable
+        run: python src/ops/release.py --check
+
+  test-windows:
+    name: tests (windows)
+    # Tags only: Windows minutes count double, and the code paths that differ by
+    # OS (schtasks, the .bat launcher, pythonw) are not what the suite covers.
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest python-docx jsonschema
+      - name: Run tests
+        run: pytest -q -m "not needs_userdata"

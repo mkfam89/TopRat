@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Rat — Configure phone alerts with ntfy</title>
+<link rel="stylesheet" href="/ui.css">
+<style>
+  /* The colors come from the shared design system (ui.css). The names below are aliases.
+     They keep the existing rules of this page unchanged. */
+  :root { --card:var(--surface,#fbfcfd); --fg:var(--ink,#2b3440); --mut:var(--muted,#5f6b7a);
+          --acc:var(--accent,#3d6fd4); --acc-soft:var(--accent-soft,#eef3fc);
+          --ok:var(--green-ink,#1d7a53); --ok-soft:var(--green-soft,#eaf7f1);
+          --warn:var(--amber-ink,#96620f); --warn-soft:var(--amber-soft,#fdf5e7); }
+  body { font-size:15px; line-height:1.6; }
+  .wrap { max-width:820px; margin:0 auto; padding:26px 20px 80px; }
+  h1 { font-size:24px; margin:0 0 4px; font-weight:700; }
+  .sub { color:var(--mut); margin:0 0 22px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px;
+          padding:18px 22px; margin:0 0 16px; box-shadow:0 1px 2px rgba(16,24,40,.04); }
+  .card h2 { font-size:12px; text-transform:uppercase; letter-spacing:.05em;
+             color:var(--mut); margin:0 0 12px; font-weight:600; }
+  ol.steps { margin:0; padding:0; list-style:none; counter-reset:step; }
+  ol.steps > li { position:relative; padding:0 0 18px 44px; counter-increment:step; }
+  ol.steps > li:last-child { padding-bottom:0; }
+  ol.steps > li::before { content:counter(step); position:absolute; left:0; top:1px;
+    width:26px; height:26px; border-radius:50%; background:var(--acc); color:#fff;
+    font-weight:600; display:flex; align-items:center; justify-content:center; font-size:13px; }
+  ol.steps > li b { color:var(--ink); }
+  a { color:var(--acc); }
+  code { background:#f3f4f6; border:1px solid var(--line); padding:1px 6px;
+         border-radius:4px; font-size:13px; color:#374151; }
+  pre { background:#f9fafb; border:1px solid var(--line); border-radius:8px; padding:12px 14px;
+        overflow:auto; font-size:13px; margin:10px 0 0; color:#374151; }
+  .note { font-size:13px; color:var(--mut); }
+  .pill { display:inline-block; background:#f3f4f6; border:1px solid var(--line); border-radius:999px;
+          padding:3px 11px; font-size:12px; color:var(--mut); margin:2px 6px 2px 0; }
+  .cta { display:inline-block; background:var(--acc); color:#fff; text-decoration:none;
+         border-radius:8px; padding:10px 18px; font-weight:600; margin:4px 8px 0 0; }
+  .cta.alt { background:var(--card); color:var(--acc); border:1px solid var(--acc); }
+  .back { display:inline-block; color:var(--mut); text-decoration:none; margin-bottom:14px; font-size:14px; }
+  .back:hover { color:var(--fg); }
+  .ok-badge { color:var(--ok); font-weight:600; }
+  .callout { border-left:3px solid var(--acc); background:var(--acc-soft);
+             border-radius:0 8px 8px 0; padding:12px 16px; margin:0 0 16px; font-size:14px; color:#1e3a8a; }
+  .callout.warn { border-left-color:#f59e0b; background:var(--warn-soft); color:#78350f; }
+  .gen { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+  .gen input { flex:1; min-width:240px; padding:8px 11px; border:1px solid #d1d5db;
+               border-radius:6px; font:inherit; background:#fff; color:var(--fg); }
+  .gen button { font:inherit; cursor:pointer; border-radius:6px; border:1px solid var(--acc);
+                background:var(--acc); color:#fff; padding:8px 14px; font-weight:500; }
+  .gen button.ghost { background:#fff; color:var(--acc); }
+  .kv { display:flex; gap:12px; padding:7px 0; border-bottom:1px solid var(--line); font-size:14px; }
+  .kv:last-child { border-bottom:none; }
+  .kv b { min-width:150px; color:var(--mut); font-weight:500; }
+
+  /* Phone layout. These help pages had no breakpoints. The 44px indent of the step
+     list and the wide code blocks moved content off the screen. */
+  @media (max-width:760px){
+    .wrap { padding:18px 14px 72px; }
+    h1 { font-size:21px; }
+    .card { padding:15px 15px; }
+    ol.steps > li { padding-left:36px; }
+    ol.steps > li::before { width:23px; height:23px; font-size:12px; }
+    pre { font-size:12px; }
+    .cta { display:block; text-align:center; margin:8px 0 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/setup">&larr; Back to Settings</a>
+  <h1>Get job alerts on your phone with ntfy</h1>
+  <p class="sub">Optional and free. You do not need an account, an app store login, or an API key.
+  You pick a secret topic name. You subscribe your phone to that topic. This app then sends new job
+  matches to it.</p>
+
+  <div class="card">
+    <h2>What ntfy is</h2>
+    <p style="margin:0 0 10px"><b>ntfy</b> (say "notify") is a free, open-source service that sends
+    alerts to your devices. It does not use accounts or logins. It uses <b>topics</b> instead. A topic
+    is any text string that you choose. Each message that goes to <code>ntfy.sh/your-topic</code>
+    appears immediately on every device that subscribes to that topic.</p>
+    <p style="margin:0"><b>Why this app uses ntfy:</b> the hourly job radar runs as a plain script
+    (<code>notify.py</code>). It does not need Claude, and it does not need an open browser. The radar
+    finds new postings above your match threshold. It then sends them to you through ntfy. One HTTP POST
+    from the standard library does all the work. It costs
+    <span class="ok-badge">zero tokens and zero money</span>. It also works while the dashboard is closed.</p>
+  </div>
+
+  <div class="card">
+    <h2>What you receive</h2>
+    <p style="margin:0 0 8px">The radar sends one message for each run. It does not send one message
+    for each job:</p>
+    <pre>New job match (3)
+Senior SRE - Acme - Houston, TX - 88%
+Platform Engineer - Globex - Remote - 81%
+DevOps Engineer - Initech - Houston, TX - 74%</pre>
+    <p class="note" style="margin:10px 0 0">A tap on the message opens the dashboard. The app records
+    each job that it sent to you in <code>notified.json</code>. As a result, you never receive a second
+    message for the same posting. Each message holds a maximum of 25 jobs.</p>
+  </div>
+
+  <div class="callout warn">
+    <b>CAUTION: Pick a topic name that nobody can guess.</b> All topics are public. A person who knows
+    the exact name can read every message sent to it. Do not use <code>jobs</code> or your own name.
+    Use a long random string, for example <code>jobradar-7f3b91c4d2e8</code>. The secret name is the
+    only thing that keeps your alerts private.
+  </div>
+
+  <div class="card">
+    <h2>Setup steps</h2>
+    <ol class="steps">
+      <li><b>Pick a secret topic name.</b><br>
+        Generate a name here. Then copy it. You paste the same string in two places: your phone,
+        and Settings.
+        <div class="gen">
+          <input id="topic" type="text" readonly>
+          <button type="button" onclick="gen()">↻ Generate another</button>
+          <button class="ghost" type="button" onclick="copyTopic()">Copy</button>
+          <span class="note" id="copied"></span>
+        </div>
+      </li>
+      <li><b>Install the ntfy app on your phone.</b><br>
+        <a href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" rel="noopener">Android (Play Store)</a>
+        &nbsp;·&nbsp;
+        <a href="https://apps.apple.com/us/app/ntfy/id1625396347" target="_blank" rel="noopener">iOS (App Store)</a>
+        &nbsp;·&nbsp; or keep <a href="https://ntfy.sh/app" target="_blank" rel="noopener">ntfy.sh/app</a>
+        open in a browser tab. <span class="note">The app has no sign-up screen. It opens to an empty
+        subscription list.</span></li>
+      <li><b>Subscribe to your topic.</b><br>
+        In the app, tap <b>+</b> (Subscribe to topic). Paste the topic string from step 1. Keep the
+        default server <code>ntfy.sh</code>. Then tap <b>Subscribe</b>.
+        <span class="note">Android and iOS both ask for permission to send notifications. You must
+        accept. On iOS, keep the app installed. iOS uses APNs, so the app does not need to stay
+        open.</span></li>
+      <li><b>Paste the topic into Settings.</b><br>
+        Open <a href="/setup"><b>Settings &rarr; step 4 (Integrations)</b></a>. Paste the same string
+        into <b>ntfy topic</b>. Select <b>Enable phone alerts</b>. Then click
+        <b>✓ Save &amp; generate</b>.
+        <span class="note">The app stores the topic in your data folder, in
+        <code>config/notify.json</code>. Git ignores this file, so your topic never goes into a
+        commit.</span></li>
+      <li><b>Send a test alert to yourself.</b><br>
+        In Settings, click <b>Send test alert</b> under the ntfy field. Your phone receives the alert
+        in one or two seconds. <span class="ok-badge">Nothing needs a restart.</span>
+        <span class="note">The command <code>python notify.py --test</code> does the same
+        thing.</span></li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Reference</h2>
+    <div class="kv"><b>Cost</b><span>Free. The public ntfy.sh server permits personal use. This app
+      sends a maximum of a few messages each day.</span></div>
+    <div class="kv"><b>What sends them</b><span>The hourly radar sends the alerts. The daily and weekly
+      runs also send them. All three are scripts. They need no Claude and no browser.</span></div>
+    <div class="kv"><b>Stop the alerts</b><span>Clear <b>Enable phone alerts</b> in Settings. As an
+      alternative, unsubscribe in the app. All other functions continue to work.</span></div>
+    <div class="kv"><b>Mute a staging copy</b><span>Set <code>"disable_notifications": true</code> in
+      <code>config/instance.json</code>. This stops the alerts from one installation. It does not
+      change your profile.</span></div>
+    <div class="kv"><b>Your own server</b><span>ntfy is open source. You can run it on your own server.
+      This app sends to <code>ntfy.sh</code>. To use a different server, edit
+      <code>notify.py</code>.</span></div>
+    <div class="kv"><b>No alert arrives</b><span>Make sure that the topic name matches exactly. The
+      name is case-sensitive. Make sure that the alerts are enabled and saved. Make sure that the phone
+      permits notifications.</span></div>
+  </div>
+
+  <a class="cta" href="/setup">Open Settings &rarr;</a>
+  <a class="cta alt" href="https://ntfy.sh/" target="_blank" rel="noopener">About ntfy</a>
+
+<script>
+function gen(){
+  const hex='0123456789abcdef'; let s='jobradar-';
+  const a=new Uint8Array(6); (crypto&&crypto.getRandomValues)?crypto.getRandomValues(a):a.forEach((_,i)=>a[i]=Math.random()*256);
+  for(const b of a){ s+=hex[(b>>4)&15]+hex[b&15]; }
+  document.getElementById('topic').value=s;
+  document.getElementById('copied').textContent='';
+}
+function copyTopic(){
+  const el=document.getElementById('topic'); el.select();
+  navigator.clipboard.writeText(el.value).then(
+    ()=>document.getElementById('copied').textContent='Copied ✓',
+    ()=>document.getElementById('copied').textContent='Press Ctrl+C to copy.');
+}
+gen();
+</script>
+</div>
+</body>
+</html>

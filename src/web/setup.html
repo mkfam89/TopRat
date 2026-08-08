@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Rat — Settings</title>
+<link rel="stylesheet" href="/ui.css">
+<style>
+  /* Colors come from the shared design system (ui.css). The names below are this page's own
+     variable names, aliased onto the shared tokens so none of the rules or the JS change. */
+  :root { --card:var(--surface,#fbfcfd); --fg:var(--ink,#2b3440); --mut:var(--muted,#5f6b7a);
+          --acc:var(--accent,#3d6fd4); --acc-soft:var(--accent-soft,#eef3fc);
+          --ok:var(--green-ink,#1d7a53); --ok-soft:var(--green-soft,#eaf7f1);
+          --err:var(--red-ink,#a8352d); --err-soft:var(--red-soft,#fdefee);
+          --warn:var(--amber-ink,#96620f); --warn-soft:var(--amber-soft,#fdf5e7);
+          --field:var(--line-strong,#c9d1db); }
+  body { font-size:15px; }
+  .wrap { max-width:820px; margin:0 auto; padding:26px 20px 96px; }
+  h1 { font-size:24px; margin:0 0 4px; font-weight:700; }
+  .sub { color:var(--mut); margin:0 0 18px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px;
+          padding:18px 20px; margin:0 0 16px; box-shadow:0 1px 2px rgba(16,24,40,.04); }
+  .card h2 { font-size:12px; text-transform:uppercase; letter-spacing:.05em;
+             color:var(--mut); margin:0 0 12px; font-weight:600; }
+  .card h2 .hint { color:var(--mut); font-weight:400; }
+  label { display:block; font-size:13px; color:var(--mut); margin:12px 0 4px; }
+  input[type=text], input[type=number], input[type=email], input[type=password], textarea, select {
+    width:100%; background:#fff; border:1px solid var(--field); color:var(--fg);
+    border-radius:6px; padding:8px 11px; font:inherit; }
+  input:focus, textarea:focus, select:focus { outline:none; border-color:var(--acc);
+    box-shadow:0 0 0 3px rgba(37,99,235,.12); }
+  textarea { min-height:52px; resize:vertical; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; }
+  .row > div { flex:1; min-width:140px; }
+  .chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:4px; }
+  .chip { border:1px solid var(--field); background:#fff; border-radius:999px; padding:5px 13px;
+          cursor:pointer; user-select:none; color:var(--mut); font-size:13px; }
+  .chip:hover { border-color:var(--acc); color:var(--acc); }
+  .chip.on { background:var(--acc); border-color:var(--acc); color:#fff; }
+  .tog { display:inline-flex; align-items:center; gap:8px; margin:10px 16px 0 0; cursor:pointer; font-size:14px; }
+  .hint { font-size:12px; color:var(--mut); margin-top:4px; }
+  /* A source that only the Claude agent can read. Locked (not hidden) while Claude is not
+     set up: hiding it would make the feature undiscoverable, and leaving it tickable would
+     let the user save a source that silently returns nothing. */
+  .tog.locked { opacity:.45; cursor:not-allowed; }
+  /* pointer-events:none, not just a cursor: a disabled input swallows mouse events outright in
+     Chrome, so hovering the box itself would never reach the row's bubble handler. */
+  .tog.locked input { pointer-events:none; }
+  .gatewrap { position:relative; display:inline-block; outline:none; }
+  .bubble { position:absolute; left:0; top:calc(100% + 9px); z-index:40; width:min(340px,84vw);
+            background:var(--ink,#2b3440); color:#f9fafb; font-size:12.5px; line-height:1.5;
+            border-radius:8px; padding:10px 12px; box-shadow:0 8px 22px rgba(0,0,0,.22);
+            display:none; cursor:default; font-weight:400; text-transform:none; letter-spacing:0; }
+  .bubble.show { display:block; }
+  .bubble b { color:#fff; }
+  .bubble .gatelink { color:#93c5fd; }
+  .bubble::before { content:''; position:absolute; top:-5px; left:20px; width:10px; height:10px;
+                    background:var(--ink,#2b3440); transform:rotate(45deg); }
+  .tag { font-size:10.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase;
+         background:var(--acc-soft); color:var(--acc); border:1px solid var(--acc);
+         border-radius:4px; padding:1px 5px; margin-left:2px; }
+  .tog.locked .tag { background:#f3f4f6; color:var(--mut); border-color:var(--line); }
+  .gatelink { color:var(--acc); font-weight:600; cursor:pointer; text-decoration:underline; }
+  .geo { display:flex; gap:8px; align-items:center; }
+  .geo input { flex:1; }
+  button { font:inherit; cursor:pointer; border-radius:6px; border:1px solid var(--acc);
+           background:var(--acc); color:#fff; padding:8px 15px; font-weight:500; }
+  button:hover { filter:brightness(1.06); }
+  button.ghost { background:#fff; color:var(--acc); }
+  button.ghost:hover { background:var(--acc-soft); }
+  button.plain { background:#fff; border-color:var(--field); color:var(--mut); }
+  button.plain:hover { background:#f9fafb; color:var(--fg); }
+  button.skip { background:#fff; border:1px solid var(--field); color:var(--ink); font-weight:600; }
+  button.skip:hover { background:#f3f4f6; border-color:var(--acc); }
+  /* Per-step Save. Typing a value changes nothing on disk until this is pressed, so the
+     button has to advertise that state: grey and quiet while the step matches what is
+     saved, accent + a dot the moment any field on the step changes. */
+  button.stepsave { background:#fff; border-color:var(--field); color:var(--mut); }
+  button.stepsave:hover { background:#f9fafb; color:var(--fg); }
+  button.stepsave.dirty { background:var(--acc); border-color:var(--acc); color:#fff; font-weight:600; }
+  button.stepsave.dirty:hover { filter:brightness(1.06); }
+  #unsaved_note { color:#b45309; font-size:12.5px; display:none; }
+  #unsaved_note.show { display:inline; }
+  .bar { position:fixed; left:0; right:0; bottom:0; background:#ffffffee; border-top:1px solid var(--line);
+         padding:11px 20px; display:flex; gap:10px; align-items:center; justify-content:flex-end;
+         backdrop-filter:blur(6px); box-shadow:0 -1px 3px rgba(16,24,40,.06); }
+  #status { margin-right:auto; color:var(--mut); font-size:13px; }
+  #status.ok { color:var(--ok); } #status.err { color:var(--err); }
+  code { background:#f3f4f6; border:1px solid var(--line); padding:1px 5px; border-radius:4px;
+         font-size:13px; color:#374151; }
+  a { color:var(--acc); }
+  /* ---- wizard chrome ---- */
+  .steps { display:flex; gap:6px; margin:0 0 20px; flex-wrap:wrap; }
+  .step-tab { flex:1; min-width:104px; text-align:center; padding:8px 6px; border-radius:8px; cursor:pointer;
+    border:1px solid var(--line); background:#fff; color:var(--mut); font-size:13px; user-select:none; }
+  .step-tab:hover { border-color:var(--acc); color:var(--acc); }
+  .step-tab .n { display:inline-flex; width:20px; height:20px; border-radius:50%; border:1px solid var(--field);
+    align-items:center; justify-content:center; font-size:11px; margin-right:6px; }
+  .step-tab.cur { border-color:var(--acc); color:#fff; background:var(--acc); font-weight:600; }
+  .step-tab.cur .n { background:#fff; border-color:#fff; color:var(--acc); }
+  .step-tab.done { color:var(--ok); border-color:#a7f3d0; }
+  .step-tab.done .n { border-color:var(--ok); color:var(--ok); }
+  /* A step with edits that were never saved. Shown on the tab so leaving a step does not
+     hide the fact that the values on it are still only in the browser. */
+  .step-tab.unsaved::after { content:'•'; color:#b45309; font-weight:700; margin-left:5px; }
+  .step-tab.cur.unsaved::after { color:#fff; }
+  .pane { display:none; }
+  .pane.cur { display:block; animation:fade .18s ease; }
+  @keyframes fade { from { opacity:0; transform:translateY(4px);} to { opacity:1; transform:none;} }
+  .welcome { border:1px solid var(--acc); background:var(--acc-soft); border-radius:10px;
+             padding:16px 20px; margin:0 0 16px; display:none; color:#1e3a8a; }
+  .welcome.show { display:block; }
+  .rv { display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:14px; }
+  .rv:last-child { border-bottom:none; }
+  .rv b { min-width:170px; color:var(--mut); font-weight:500; }
+  .rv .miss { color:var(--err); }
+  .rv .opt { color:var(--mut); }   /* an unset OPTIONAL value is not an error — never red */
+  .rv .okv { color:var(--ok); }
+  /* ---- collapsible section (native <details>, so keyboard + screen readers work free) ----
+     Every optional add-on is one of these. Closed, a row states what it gives you and what
+     it costs in time; that is the whole point — the user reads the menu before spending
+     anything. Nothing here opens on its own except the first UNCONFIGURED one (see JS). */
+  .sec { border:1px solid var(--line); border-radius:10px; background:var(--card); margin:0 0 10px;
+         box-shadow:0 1px 2px rgba(16,24,40,.04); overflow:hidden; }
+  .sec > summary { list-style:none; cursor:pointer; padding:13px 16px; display:flex; gap:10px;
+         align-items:center; flex-wrap:wrap; }
+  .sec > summary::-webkit-details-marker { display:none; }
+  .sec > summary::before { content:'\25B8'; color:var(--mut); font-size:12px; line-height:1;
+         transition:transform .15s ease; }
+  .sec[open] > summary::before { transform:rotate(90deg); }
+  .sec > summary:hover { background:#f8fafc; }
+  .sec > summary:focus-visible { outline:2px solid var(--acc); outline-offset:-2px; }
+  .sec .st { font-weight:600; font-size:14.5px; color:var(--ink); }
+  .sec .sv { flex:1; min-width:170px; font-size:12.5px; color:var(--mut); }
+  .sec .pill { font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+         border-radius:999px; padding:2px 8px; white-space:nowrap; background:#f3f4f6; color:var(--mut); }
+  .sec .pill.on { background:var(--ok-soft); color:#065f46; }
+  .sec .pill.warn { background:var(--warn-soft); color:#92400e; }
+  .sec .body { padding:14px 16px 16px; border-top:1px solid var(--line); }
+  .sec .body > *:first-child { margin-top:0; }
+  .sec .body label:first-of-type { margin-top:0; }
+  .grouphead { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--mut);
+         font-weight:600; margin:24px 0 4px; }
+  .grouphead .n { text-transform:none; letter-spacing:0; font-weight:400; }
+  .lead { font-size:13.5px; color:var(--mut); margin:0 0 14px; }
+  .lead b { color:var(--ink); }
+  /* ---- explainers + prominent help links ---- */
+  /* Divider inside an open add-on row, for a second thing the row now owns (the auto-tailor
+     caps under AI resume tailoring). Reads as a heading without becoming another section. */
+  .subhead { margin:16px 0 8px; padding-top:12px; border-top:1px solid var(--line,#e5e7eb);
+             font-size:13px; font-weight:600; color:var(--ink); }
+  .why { font-size:13.5px; color:#374151; margin:0 0 10px; }
+  .why b { color:var(--ink); }
+  .callout { border-left:3px solid var(--acc); background:var(--acc-soft); border-radius:0 8px 8px 0;
+             padding:11px 14px; margin:10px 0; font-size:13px; color:#1e3a8a; }
+  .callout.warn { border-left-color:#f59e0b; background:var(--warn-soft); color:#78350f; }
+  .helpbar { display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+             background:#f9fafb; border:1px solid var(--line); border-radius:8px;
+             padding:10px 14px; margin:0 0 14px; }
+  .helpbar .txt { flex:1; min-width:180px; font-size:13px; color:var(--mut); }
+  .howto { display:inline-flex; align-items:center; gap:7px; background:var(--acc); color:#fff;
+           text-decoration:none; border-radius:6px; padding:8px 14px; font-weight:600; font-size:13.5px;
+           white-space:nowrap; border:1px solid var(--acc); }
+  .howto:hover { filter:brightness(1.08); }
+  .howto.alt { background:#fff; color:var(--acc); }
+  .howto.alt:hover { background:var(--acc-soft); }
+  .kv { display:flex; gap:10px; padding:6px 0; font-size:13.5px; }
+  .kv b { min-width:132px; color:var(--mut); font-weight:500; }
+  .path { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:12.5px;
+          word-break:break-all; color:var(--ink); }
+  .tagline { display:inline-block; border-radius:999px; padding:2px 9px; font-size:11px; font-weight:600; }
+  .tagline.on { background:var(--ok-soft); color:#065f46; }
+  .tagline.off { background:#f3f4f6; color:var(--mut); }
+  .tagline.pend { background:var(--warn-soft); color:#92400e; }
+  /* ---- "you're set up" completion dialog ---- */
+  .modal { position:fixed; inset:0; z-index:100000; display:none;
+           align-items:center; justify-content:center; padding:20px;
+           background:rgba(17,24,39,.55); backdrop-filter:blur(3px); }
+  .modal.show { display:flex; animation:fade .18s ease; }
+  .modal-box { background:#fff; border-radius:14px; max-width:520px; width:100%;
+               padding:26px 28px 22px; box-shadow:0 20px 45px rgba(16,24,40,.28);
+               animation:pop .2s cubic-bezier(.2,.9,.3,1.2); }
+  @keyframes pop { from { opacity:0; transform:translateY(10px) scale(.97);} to { opacity:1; transform:none;} }
+  .modal-box .tick { width:52px; height:52px; border-radius:50%; background:var(--ok-soft);
+        color:var(--ok); display:flex; align-items:center; justify-content:center;
+        font-size:27px; font-weight:700; margin:0 0 14px; }
+  .modal-box h3 { margin:0 0 6px; font-size:20px; font-weight:650; color:var(--ink); }
+  .modal-box p { margin:0 0 12px; color:var(--mut); font-size:14px; }
+  .genlist { background:#f9fafb; border:1px solid var(--line); border-radius:8px;
+             padding:10px 12px; margin:0 0 18px; font-size:12.5px; color:var(--mut); }
+  .genlist b { color:var(--ink); font-weight:600; }
+  .genlist .files { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:11.5px;
+                    color:#4b5563; word-break:break-word; }
+  .choice { display:flex; gap:10px; flex-direction:column; }
+  .choice a { display:flex; gap:12px; align-items:flex-start; text-decoration:none;
+              border:1px solid var(--line); border-radius:10px; padding:13px 15px; color:var(--fg); }
+  .choice a:hover { border-color:var(--acc); background:#f8fafc; }
+  .choice a.primary { border-color:var(--acc); background:var(--acc-soft); }
+  .choice a.primary:hover { background:#c7dbfd; }
+  .choice .ico { font-size:20px; line-height:1.2; }
+  .choice .t { font-weight:600; color:var(--ink); font-size:14.5px; }
+  .choice .d { font-size:12.5px; color:var(--mut); margin-top:2px; }
+  .choice .rec { font-size:10.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+                 background:var(--acc); color:#fff; border-radius:999px; padding:2px 8px; margin-left:6px; }
+  .modal-foot { margin-top:14px; text-align:center; }
+  .modal-foot button { background:none; border:none; color:var(--mut); font-size:13px;
+                       text-decoration:underline; padding:4px; }
+  .modal-foot button:hover { color:var(--acc); }
+  .savedbar { display:none; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 16px;
+              border:1px solid #a7f3d0; background:var(--ok-soft); color:#065f46;
+              border-radius:10px; padding:12px 16px; font-size:14px; }
+  .savedbar.show { display:flex; }
+  .savedbar b { font-weight:650; }
+  /* Plain links in the bar inherit the bar's green. The two .howto buttons must NOT: this
+     rule is more specific than .howto, so it was repainting the blue "Schedule automatic
+     searches" button's label dark green on blue — unreadable. Exclude them. */
+  .savedbar a:not(.howto) { color:#065f46; font-weight:600; }
+
+  /* Phone layout. This wizard had no breakpoints. The 5 step tabs, the two-up field
+     rows, and the fixed bottom action bar all went off the edge of a narrow screen. */
+  @media (max-width:760px){
+    .wrap { padding:18px 14px 110px; }   /* more bottom room for the taller action bar */
+    h1 { font-size:21px; }
+    .card { padding:15px 15px; }
+    /* Step tabs. 5 across is unreadable on a phone. Use a 2-up grid instead. */
+    .steps { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+    .step-tab { min-width:0; font-size:12.5px; padding:9px 5px; }
+    /* One column on a phone. Two columns squeeze the inputs to ~40px. */
+    .row > div { flex:1 1 100%; min-width:0; }
+    input[type=text], input[type=number], input[type=email], input[type=password],
+    textarea, select { font-size:16px; }   /* 16px stops the iOS zoom on focus */
+    .geo { flex-wrap:wrap; }
+    .geo button { width:100%; }
+    .rv { flex-direction:column; gap:2px; }
+    .rv b { min-width:0; }
+    .kv { flex-direction:column; gap:1px; }
+    .kv b { min-width:0; }
+    .bar { flex-wrap:wrap; padding:10px 14px; gap:8px; }
+    #status { flex:1 1 100%; margin-right:0; order:-1; }
+    .bar button { flex:1 1 auto; min-height:42px; }
+    .helpbar { padding:11px 12px; }
+    .howto { width:100%; justify-content:center; }
+    .modal-box { padding:20px 18px 18px; }
+    /* A section header is 4 items wide. On a phone, let the one-line value wrap under
+       the title instead of squeezing the time badge and the status pill off the row. */
+    .sec > summary { padding:12px 13px; gap:8px; }
+    .sec .sv { flex:1 1 100%; min-width:0; }
+    .sec .body { padding:13px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Settings</h1>
+  <p class="sub">Four things are required: your <b>name</b>, <b>target roles</b>, <b>location</b>, and <b>skills</b>.
+    Everything else is optional and can wait. Every value can be changed later.<br>
+    <b>Nothing is written until you press Save.</b> Each step has its own <b>✓ Save this step</b> button; a step
+    with edits you have not saved shows a <b style="color:#b45309">•</b> on its tab. A save writes
+    <code>config/profile.json</code> and regenerates your search URLs, skills list, and alerts.</p>
+
+  <div class="welcome" id="welcome_box">
+    <b>👋 Welcome!</b> Your profile does not exist yet. It takes about 2 minutes to make. The profile
+    drives job discovery, scoring, and resume tailoring. You can skip it now. The dashboard then
+    reminds you once a day.
+    <div style="margin-top:12px;"><button class="skip" type="button" onclick="skipSetup()">Skip for now →</button></div>
+  </div>
+
+  <!-- Permanent "profile exists" banner. It stays after the completion dialog closes.
+       As a result, the state of the profile is always clear. -->
+  <div class="savedbar" id="saved_bar">
+    <span>✅ <b>Profile saved &amp; generated.</b> <span id="saved_when"></span></span>
+    <span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="howto" href="/schedule">📅 Schedule automatic searches</a>
+      <a class="howto alt" href="/">🗂 Go to dashboard</a>
+    </span>
+  </div>
+
+  <div class="steps" id="steps"></div>
+
+  <!-- ================= Step 1: Your resume files ================= -->
+  <div class="pane" data-step="0">
+  <div class="card">
+    <h2>Your resume files</h2>
+    <div class="row">
+      <div><label>Full name</label><input id="full_name" type="text" placeholder="Jane Doe"></div>
+    </div>
+    <div class="row">
+      <div><label>Tailored-resume filename prefix</label><input id="resume_prefix" type="text" placeholder="Jane_Doe_Resume_">
+        <div class="hint">The app names each tailored file <i>prefix</i> + Company_Role.docx.
+          Leave it empty and the greyed-out suggestion from your name is used.</div></div>
+    </div>
+    <div class="row">
+      <div><label>Resume folder</label>
+        <!-- A browser file input cannot report a real path, so the Browse button asks the
+             SERVER (same machine) to open the OS folder dialog: /api/pick-folder.
+             Placeholder-only suggestion, same rule as the prefix above: the box stays
+             genuinely empty, and an empty box means "use the default", which pipelib
+             resolves to <data root>/resume_template — exactly the greyed-out path. -->
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input id="template_dir" type="text" placeholder="resume_template" style="flex:1;min-width:0;">
+          <button class="ghost" type="button" id="browse_template_dir"
+                  onclick="browseInto('template_dir','Choose the folder with your base resumes')">📂 Browse…</button>
+        </div>
+        <div class="hint">Your base resumes (and the STAR stories file, if you have one) live here.
+          It is the only content source the app tailors from — nothing is invented, and nothing
+          outside this folder is read. Leave it empty to use the greyed-out folder, which the app
+          creates for you. Browse elsewhere if your resumes already live somewhere you keep backed
+          up — Documents, Dropbox, OneDrive.</div>
+        <div class="callout warn" id="tpl_outside" style="display:none;margin-top:8px;">
+          That folder is <b>outside the app folder</b>. Two consequences: the daily Git checkpoint
+          and <code>Backups\snapshots\</code> will not cover your base resumes, and if the folder is
+          ever missing or offline (a sync folder that has not downloaded yet) the app quietly falls
+          back to its own <code>resume_template</code> instead of stopping — so a run could tailor
+          from the wrong base. Fine if you want it; just know it is not covered by the app's backup.
+        </div>
+        <div class="hint">Takes effect after you save this step and restart the dashboard.</div></div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <button class="ghost" type="button" id="import_btn">📂 Load an existing profile.json…</button>
+      <input type="file" id="import_file" accept=".json,application/json" style="display:none">
+      <span class="hint">The app backs up your current profile automatically. It keeps the last 2 copies.</span>
+    </div>
+  </div>
+  </div>
+
+  <!-- ================= Step 2: The jobs you want =================
+       Only the two fields that actually drive discovery stay on the surface: what you
+       want to be called, and where. Radius, salary, years, and the three chip rows are
+       filters — useful, but a wall of empty boxes on a first visit. They fold away. -->
+  <div class="pane" data-step="1">
+  <div class="card">
+    <h2>What you are looking for</h2>
+    <label>Target role keywords <span class="hint">(comma-separated · the app quotes multi-word terms)</span></label>
+    <textarea id="titles" placeholder="site reliability engineer, devops engineer"></textarea>
+
+    <label>Location <span class="hint">(where you are — the app measures every job's distance from here)</span></label>
+    <div class="geo">
+      <input id="loc_query" type="text" placeholder="Austin, TX">
+      <!-- "Look up" alone reads like a search. It geocodes: city text → coordinates, which is
+           what the radius filter and the nearby-first ranking need. Say that on the button. -->
+      <button class="ghost" type="button" onclick="lookup()"
+              title="Turns the city you typed into map coordinates (latitude/longitude) so jobs can be ranked by distance.">📍 Get coordinates</button>
+    </div>
+    <div class="hint" id="loc_resolved"></div>
+
+    <label style="margin-top:16px;">Where to search</label>
+    <div>
+      <label class="tog"><input type="checkbox" id="use_hiringcafe"> hiringcafe.com</label>
+      <label class="tog"><input type="checkbox" id="use_linkedin"> LinkedIn</label>
+      <!-- Not a script source. No LinkedIn API exposes this feed, so nothing in scrape.py can
+           fetch it — only the Claude agent, reading the page from a browser already signed in
+           to LinkedIn Premium. Hence the CLAUDE tag and the lock. -->
+      <!-- A disabled control that will not say WHY is the worst kind. The row carries its own
+           bubble naming the piece that is actually missing — hover, click, or keyboard-focus. -->
+      <span class="gatewrap" id="topapp_wrap" tabindex="0"
+            onmouseenter="topappBubble(true)" onmouseleave="topappBubble(false)"
+            onfocus="topappBubble(true)" onblur="topappBubble(false)"
+            onclick="topappBubble('toggle')">
+        <label class="tog" id="tog_topapp"><input type="checkbox" id="linkedin_top_applicant"> LinkedIn Top-Applicant feed <span class="tag">Claude</span></label>
+        <span class="bubble" id="topapp_bubble" role="status"></span>
+      </span>
+      <div class="hint" id="topapp_note"></div>
+    </div>
+  </div>
+
+  <details class="sec" id="sec_filters">
+    <summary>
+      <span class="st">Narrow it down</span>
+      <span class="sv">Salary floor, radius, years of experience, remote/hybrid, seniority. Skip it and you see everything.</span>
+      <span class="pill">optional</span>
+    </summary>
+    <div class="body">
+      <label>Exclude title words</label>
+      <textarea id="exclude_terms" placeholder="intern, staff, principal"></textarea>
+
+      <div class="row">
+        <div><label>Radius (miles)</label><input id="radius_miles" type="number" min="0"></div>
+        <div><label>Min salary ($/yr)</label><input id="salary_min" type="number" min="0" step="1000"></div>
+        <div><label>Max salary ($/yr)</label><input id="salary_max" type="number" min="0" step="1000"></div>
+      </div>
+      <div class="row">
+        <div><label>Min years experience</label><input id="yoe_min" type="number" min="0"></div>
+        <div><label>Max years experience</label><input id="yoe_max" type="number" min="0"></div>
+      </div>
+
+      <label>Workplace types</label><div class="chips" id="workplace_types"></div>
+      <label>Seniority levels</label><div class="chips" id="seniority"></div>
+      <label>Employment types</label><div class="chips" id="employment_types"></div>
+
+      <div style="margin-top:6px;">
+        <label class="tog"><input type="checkbox" id="include_remote_anywhere_in_country"> Also include country-wide remote roles</label>
+      </div>
+    </div>
+  </details>
+  </div>
+
+  <!-- ================= Step 3: Your Skills ================= -->
+  <div class="pane" data-step="2">
+  <div class="card">
+    <h2>Your real skills <span class="hint" style="text-transform:none;letter-spacing:0">— never-invent list</span></h2>
+    <div class="hint" style="margin-bottom:8px;">The app tailors resumes only from the skills in this list. It never invents a skill that is not here.</div>
+    <label>Skills you can claim <span class="hint">(comma-separated)</span></label>
+    <textarea id="skills_have" style="min-height:110px" placeholder="Linux, Python, SQL, Grafana, ..."></textarea>
+  </div>
+  </div>
+
+  <!-- ============ Step 4: Add-ons — every one optional ============
+       ORDER IS DELIBERATE: cheapest-first by minutes spent, and within that, by what the
+       minute buys. A checkbox that costs 10 seconds sits above a signup that costs five
+       minutes, and the two that most people never need (Git, data folder) sit under an
+       "Advanced" heading at the bottom. Everything is closed on arrival so the step reads
+       as a menu, not a form. The JS opens exactly one — the first thing not yet set up. -->
+  <div class="pane" data-step="3">
+
+  <p class="lead"><b>All of this is optional.</b> The pipeline searches, scores, tracks, and writes
+    template resumes without a single one of them. Open a row to see what it adds. You can finish
+    setup having opened none.</p>
+
+  <!-- 1 · one checkbox, and it is the difference between the app working and not working.
+       Sits above phone alerts because everything else on this page assumes the app is running:
+       the schedule lives inside the dashboard process, so a closed dashboard means no searches,
+       no resumes, and no alerts to push. -->
+  <details class="sec" id="sec_uptime">
+    <summary>
+      <span class="st">Keep it running</span>
+      <span class="sv">Let Windows start the dashboard again if it stops — so the searches keep happening.</span>
+      <span class="pill">optional</span>
+    </summary>
+    <div class="body">
+      <p class="why">The searches run inside this dashboard, so they only happen while it is open. Turn
+        this on and Windows checks every few minutes whether it is running, and starts it again —
+        <b>minimized</b>, so it never takes over your screen.</p>
+      <label class="tog"><input type="checkbox" id="uptime_watchdog"> Restart the dashboard by itself if it stops</label>
+      <div class="row" style="margin-top:10px;">
+        <div><label>Check every</label>
+          <select id="uptime_every">
+            <option value="1">1 minute</option>
+            <option value="5">5 minutes</option>
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+          </select></div>
+      </div>
+      <!-- Unlike every other field on this page, this one acts on the machine the moment it is
+           clicked (it registers a Windows scheduled task), so it must say so — otherwise the
+           user leaves without pressing Save and assumes nothing happened. -->
+      <div class="hint" id="uptime_status">This one applies straight away — you do not need to save it.</div>
+    </div>
+  </details>
+
+  <!-- 2 · biggest payoff per minute: you stop having to check the dashboard -->
+  <details class="sec" id="sec_ntfy">
+    <summary>
+      <span class="st">Phone alerts</span>
+      <span class="sv">Get a push when a new match appears — including while the dashboard is closed.</span>
+      <span class="pill">optional</span>
+    </summary>
+    <div class="body">
+      <p class="why">The hourly radar runs as a plain script and pushes one grouped alert per batch of
+        new matches. Free, no account: you invent a secret <b>topic</b> name and subscribe your phone to
+        it. Blank topic = nothing is sent.</p>
+      <div class="helpbar">
+        <span class="txt">The guide generates a secure topic and walks through the phone app.</span>
+        <a class="howto" href="/help/ntfy" target="_blank">📱 How to configure ntfy →</a>
+      </div>
+      <label>ntfy topic <span class="hint">(long random string — treat it like a password)</span></label>
+      <input id="notify_topic" type="text" placeholder="jobradar-7f3b91c4d2e8">
+      <div class="hint">Anyone who guesses the topic can read your alerts. Do not use "jobs".</div>
+      <label class="tog"><input type="checkbox" id="notify_enabled"> Enable phone alerts</label>
+      <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button class="ghost" type="button" onclick="testNotify()">🔔 Send test alert</button>
+        <span id="notify_status" class="hint"></span>
+      </div>
+      <div class="hint">Press ✓ Save this step first — the test reads the saved topic, not the box above.</div>
+    </div>
+  </details>
+
+  <!-- 2 · high payoff, but costs an install.
+       This row used to be two: "Tailoring notes" (a saved on/off preference) and this one.
+       They were one thing described twice — the notes are read by the same Claude Code pass
+       this row installs, so the preference could only ever disagree with reality. The
+       preference is gone: install Claude Code and the notes field is simply there. -->
+  <details class="sec" id="sec_claudecli">
+    <summary>
+      <span class="st">AI resume tailoring</span>
+      <span class="sv">Rewrites each resume for the posting — hands-off in the queue, or with your own notes.</span>
+      <span class="pill">optional</span>
+    </summary>
+    <div class="body">
+      <p class="why">Runs <b>Claude Code</b> on this machine, on the Claude plan you already pay for —
+        <b>no API key, nothing metered</b>. Without it the queue still runs and produces a template-copy
+        resume; it just isn't rewritten for the posting.</p>
+      <p class="why">Once it is installed you also get a <b>notes box</b> on the job board's
+        <b>Tailor resume</b> button — "lead with the on-call work", "they want Terraform, not Azure" —
+        and the tailoring pass reads it. There is nothing to switch on: the box appears because the
+        thing that reads it exists.</p>
+      <div class="helpbar">
+        <span class="txt">Install Claude Code, run <code>claude login</code>, sign in with your plan.</span>
+        <a class="howto" href="/help/claude-code" target="_blank">⚡ How to set this up →</a>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button type="button" onclick="testClaudeCli()">Check now</button>
+        <span id="claudecli_status" class="hint"></span>
+      </div>
+
+      <!-- Two settings, one idea: WHEN to spend AI on a resume, and HOW MANY per run. They
+           moved here from two different places (the customize trigger had no editor at all
+           after the old job_tracker.html was replaced; the caps sat on the Schedule page,
+           beside run times they have nothing to do with). -->
+      <div class="subhead">When to use AI instead of a template</div>
+      <p class="why">When your skills already cover a posting, the run copies the matching
+        template — free, instant, no tokens. AI tailoring is for the postings your skills
+        <b>don't</b> already cover. This is where that line sits.</p>
+      <label>Use a template when the skill match is at least</label>
+      <select id="cust_level" onchange="syncCustHint()"></select>
+      <div class="hint" id="cust_hint"></div>
+
+      <div class="subhead">How many AI resumes per scheduled run</div>
+      <p class="why">Each scheduled run sorts by <b>local jobs first, then best skill match</b> and
+        AI-tailors the top N. <b>Only AI resumes count against the cap</b> — a template copy is free
+        and instant, so those are never capped, and neither is a job you queue yourself with the
+        <b>Tailor</b> button.</p>
+      <div class="row">
+        <div><label>Daily run — AI-tailor up to</label><input id="prio_daily" type="number" min="0" value="20"></div>
+        <div><label>Hourly run — AI-tailor up to</label><input id="prio_queue" type="number" min="0" value="10"></div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button type="button" onclick="savePrio(false)">Save tailoring settings</button>
+        <span id="prio_status" class="hint"></span>
+      </div>
+    </div>
+  </details>
+
+  <!-- 3 · free but a real signup, and only sharpens a number you already get -->
+  <details class="sec" id="sec_adzuna">
+    <summary>
+      <span class="st">Sharper salary estimates</span>
+      <span class="sv">Fills in market pay for postings that don't list any. Free Adzuna signup.</span>
+      <span class="pill">optional</span>
+    </summary>
+    <div class="body">
+      <p class="why">Without it, estimates come from the posting text plus a wide band table — still
+        shown, just rougher.</p>
+      <div class="helpbar">
+        <span class="txt">Free signup. The guide shows exactly which two values to copy.</span>
+        <a class="howto" href="/help/adzuna" target="_blank">🔑 How to get these keys →</a>
+      </div>
+      <div class="row">
+        <div><label>Application ID <span class="hint">(app_id)</span></label><input id="adzuna_app_id" type="text" placeholder="your Application ID" autocomplete="off"></div>
+        <div><label>Application Key <span class="hint">(app_key — kept private)</span></label><input id="adzuna_app_key" type="password" placeholder="paste your key" autocomplete="off"></div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button type="button" onclick="saveAdzuna()">Save Adzuna keys</button>
+        <button class="ghost" type="button" onclick="clearAdzuna()">Remove</button>
+        <span id="adzuna_status" class="hint"></span>
+      </div>
+    </div>
+  </details>
+
+  <!-- ---- Advanced: low payoff for a new user, and the data folder needs a restart ---- -->
+  <div class="grouphead">Advanced &amp; housekeeping <span class="n">— most people never open these</span></div>
+
+  <details class="sec" id="sec_git">
+    <summary>
+      <span class="st">Off-machine backup</span>
+      <span class="sv">Copies your job history to a private repo, so a dead laptop doesn't take it.</span>
+      <span class="pill">optional</span>
+    </summary>
+    <div class="body">
+      <p class="why">Every daily run already commits a local checkpoint — an undo for a corrupted tracker
+        or a bad resume — and that happens whether or not these fields are filled in. A <b>remote URL</b>
+        only adds the second copy that lives somewhere else. Name and email are just the commit author;
+        Git refuses to commit without them and they log you in to nothing.</p>
+      <div class="callout warn">
+        <b>Use a private repository.</b> These commits contain your job search: employers, notes,
+        salary figures, and your resume content.
+      </div>
+      <div class="row">
+        <div><label>Git commit name</label><input id="git_name" type="text" placeholder="Jane Doe"></div>
+        <div><label>Git commit email</label><input id="git_email" type="email" placeholder="jane@example.com"></div>
+      </div>
+      <label>Git remote URL <span class="hint">(blank = checkpoints stay on this computer)</span></label>
+      <input id="git_remote" type="text" placeholder="https://github.com/yourname/job-agent-data.git">
+      <div class="hint">HTTPS or SSH, any host. Stored in <code>config/git.json</code>, which Git ignores —
+        your identity and URL never enter the repository.</div>
+    </div>
+  </details>
+
+  <details class="sec" id="sec_dataroot">
+    <summary>
+      <span class="st">Data folder location</span>
+      <span class="sv">Move your profile, tracker, and resumes somewhere backed up. Needs a restart.</span>
+      <span class="pill">optional</span>
+    </summary>
+    <div class="body">
+      <p class="why">Holds all personal data — <code>config/</code>, the tracker and CSVs, the tailored
+        resumes, and your <code>resume_template/</code> base resumes. By default it is a
+        <code>user_data_&lt;your initials&gt;</code> folder <b>inside the app folder</b>, so the whole
+        install is one self-contained thing to copy, back up, or hand to another machine. Move it out
+        if you would rather keep your data somewhere separately backed up; the app's code stays where
+        it is either way.</p>
+      <div id="dr_current" style="margin:2px 0 12px;"></div>
+      <label>Data folder</label>
+      <!-- data-selfsave: has its own button, needs a confirm + a restart, so it must not
+           ride along with "Save this step". -->
+      <input id="data_root" type="text" data-selfsave placeholder="user_data_ME">
+      <div class="hint">Full path. The app creates the folder but <b>moves no files</b> — copy your
+        existing data there before you restart.</div>
+      <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button class="ghost" type="button" id="browse_data_root"
+                onclick="browseInto('data_root','Choose the data folder')">📂 Browse…</button>
+        <button class="ghost" type="button" onclick="checkDataRoot()">Test folder</button>
+        <button type="button" onclick="saveDataRoot()">Use this folder</button>
+        <button class="plain" type="button" onclick="clearDataRoot()">Reset to default</button>
+      </div>
+      <div id="dr_status" class="hint"></div>
+    </div>
+  </details>
+
+  <!-- Moved off the Review step: this is ongoing maintenance, not first-run setup, and it
+       was sitting between the review table and the Save button. -->
+  <details class="sec" id="sec_blocklist">
+    <summary>
+      <span class="st">Blocked employers</span>
+      <span class="sv">Employers whose postings are always skipped. Fill this in over time, not now.</span>
+      <span class="pill" id="blocklist_pill">none</span>
+    </summary>
+    <div class="body">
+      <p class="why">Banned employers are <b>skipped every time</b> — never tailored for, now or later.
+        Separate from the 👻 ghost-risk score, which is only a guess. Ban the name as the listing shows
+        it: "Felix Pago", not "Felix". The job board also has a per-row 🚫 Ban button.</p>
+      <div id="blocklist_rows" style="margin-bottom:10px;"></div>
+      <div class="row" style="align-items:end;">
+        <div><label>Employer name</label><input id="ban_name" type="text" data-selfsave placeholder="Acme Corp"></div>
+        <div><label>Tactic</label>
+          <select id="ban_tactic" data-selfsave>
+            <option value="bait-switch">bait-switch (remote→hybrid)</option>
+            <option value="ghost">ghost (never fills, reposts)</option>
+            <option value="salary">salary (unrealistic or bait)</option>
+            <option value="other">other</option>
+          </select>
+        </div>
+        <div><label>Reason <span class="hint">(optional)</span></label><input id="ban_reason" type="text" data-selfsave placeholder="reason"></div>
+        <div><button type="button" onclick="addBan()">🚫 Ban</button></div>
+      </div>
+    </div>
+  </details>
+  </div>
+
+  <!-- ================= Step 5: Review & finish ================= -->
+  <div class="pane" data-step="4">
+  <div class="card">
+    <h2>Review</h2>
+    <div id="review_rows"></div>
+    <div class="hint" style="margin-top:10px;">A save writes <code>config/profile.json</code>. It then generates the LinkedIn and hiringcafe.com search URLs, the skills list, and the alerts. The app applies each filter only to the boards that support it.</div>
+  </div>
+  </div>
+</div>
+
+<!-- ============ Completion dialog: what happened + where to go next ============ -->
+<div class="modal" id="done_modal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="done_title">
+    <div class="tick">✓</div>
+    <h3 id="done_title">Your profile is ready</h3>
+    <p id="done_sub">The app saved your profile. It generated your search configuration.</p>
+    <div class="genlist">
+      <b>Generated:</b> <span class="files" id="done_files">—</span>
+    </div>
+    <p style="color:var(--ink);font-weight:600;font-size:14px;margin-bottom:10px;">Next steps</p>
+    <div class="choice">
+      <a class="primary" href="/schedule">
+        <span class="ico">📅</span>
+        <span><span class="t">Schedule automatic job searches<span class="rec">recommended</span></span>
+          <span class="d">Pick when the pipeline runs without you: daily discovery, the hourly radar,
+            and the weekly sweep. Without a schedule, nothing runs until you start it manually.</span></span>
+      </a>
+      <a href="/">
+        <span class="ico">🗂</span>
+        <span><span class="t">Go to the dashboard</span>
+          <span class="d">See the job board now. You can add a schedule later from the Scheduled tasks tab.</span></span>
+      </a>
+    </div>
+    <div class="modal-foot"><button type="button" onclick="closeDone()">Stay here and continue to edit</button></div>
+  </div>
+</div>
+
+<div class="bar">
+  <span id="status"></span>
+  <span id="unsaved_note">● unsaved changes</span>
+  <button class="skip" type="button" id="skip_bar" style="display:none" onclick="skipSetup()">Skip for now</button>
+  <button class="ghost" type="button" onclick="reloadDiscard()">Reload</button>
+  <button class="ghost" type="button" id="back_btn" onclick="go(-1)">← Back</button>
+  <button class="stepsave" type="button" id="save_step_btn" onclick="saveStep()">✓ Save this step</button>
+  <button type="button" id="next_btn" onclick="go(1)">Next →</button>
+  <button type="button" id="save_btn" style="display:none" onclick="save()">✓ Save &amp; generate</button>
+</div>
+
+<script>
+const STEPS = ['Your resume files','The jobs you want','Your Skills','Add-ons','Review'];
+const WELCOME = new URLSearchParams(location.search).get('welcome') === '1';
+let cur = 0;
+let PROFILE_NAME = '';   // the named-profile file that this session edits (empty = new profile)
+const CHIPS = {
+  workplace_types: ['Remote','Hybrid','Onsite','Field'],
+  seniority: ['Internship','Entry Level','Mid Level','Senior Level','Director','Executive'],
+  employment_types: ['Full Time','Part Time','Contract','Temporary','Internship'],
+};
+let LOC = {};
+let DROOT = {};          // /api/data-root snapshot (where settings + data live)
+function buildChips(){
+  for(const [id,opts] of Object.entries(CHIPS)){
+    const box=document.getElementById(id); box.innerHTML='';
+    opts.forEach(o=>{ const c=document.createElement('span'); c.className='chip'; c.textContent=o;
+      c.dataset.val=o; c.onclick=()=>{ c.classList.toggle('on'); markDirty(c); }; box.appendChild(c); });
+  }
+}
+function setChips(id,vals){ const set=new Set(vals||[]);
+  document.querySelectorAll('#'+id+' .chip').forEach(c=>c.classList.toggle('on',set.has(c.dataset.val))); }
+function getChips(id){ return [...document.querySelectorAll('#'+id+' .chip.on')].map(c=>c.dataset.val); }
+const V=id=>document.getElementById(id).value;
+const setV=(id,v)=>document.getElementById(id).value=(v==null?'':v);
+const C=id=>document.getElementById(id).checked;
+const setC=(id,v)=>document.getElementById(id).checked=!!v;
+const csv=s=>(s||'').split(',').map(x=>x.trim()).filter(Boolean);
+function status(msg,cls){ const s=document.getElementById('status'); s.textContent=msg; s.className=cls||''; }
+
+// ---------------- resume prefix suggestion ----------------
+// The prefix is derivable from the name, so typing it again is busywork. The suggestion is
+// shown as the field's PLACEHOLDER (grey), never as typed text: the box stays genuinely
+// empty, so a user who wants their own prefix types over nothing, and one who edits their
+// name later is not stuck with a stale prefix silently baked in from the old spelling.
+// prefixValue() is what actually gets saved — the typed value if there is one, else the
+// suggestion the user was looking at.
+const derivePrefix = name => { const n=(name||'').trim().replace(/[^\w\s'-]/g,'').replace(/\s+/g,'_');
+  return n ? n+'_Resume_' : ''; };
+function syncPrefixHint(){
+  const el=document.getElementById('resume_prefix');
+  el.placeholder = derivePrefix(V('full_name')) || 'Jane_Doe_Resume_';
+}
+function prefixValue(){ return V('resume_prefix').trim() || derivePrefix(V('full_name')); }
+
+// ---------------- folder suggestions (data root + resume folder) ----------------
+// Same placeholder-only rule as the prefix: the boxes stay empty, so an empty box means
+// "use the default" — and the default the SERVER resolves is byte-for-byte the path shown
+// in grey (pipelib: data root -> <app>/user_data_<INITIALS>, resume folder -> <data
+// root>/resume_template). Nothing is baked in from a name the user later corrects.
+// The path is assembled in the browser so it updates on every keystroke; the server hands
+// over the two machine-specific pieces it cannot guess here — appDir and the separator.
+// deriveInitials() must match profile_lib.initials() exactly — first + last token only (so a
+// middle name does not turn the folder into user_data_KABP), and accents FOLDED rather than
+// stripped, so 'José Álvarez' gives JA and not JL. tests/test_initials_parity.py runs both
+// implementations over the same name list and fails if they ever disagree.
+const deriveInitials = name => {
+  const toks=(name||'').normalize('NFKD').split(/\s+/)
+                       .map(t=>t.replace(/[^A-Za-z0-9]/g,'')).filter(Boolean);
+  if(!toks.length) return '';
+  const pick = toks.length===1 ? toks : [toks[0], toks[toks.length-1]];
+  return pick.map(t=>t[0].toUpperCase()).join('');
+};
+function suggestedDataRoot(){
+  const app=(DROOT.appDir||''), sep=(DROOT.sep||'\\');
+  const dir=(DROOT.userDataPrefix||'user_data_')+(deriveInitials(V('full_name'))||'ME');
+  return app ? (app+sep+dir) : dir;
+}
+function syncFolderHints(){
+  const sep=(DROOT.sep||'\\');
+  const dr=document.getElementById('data_root'); if(dr) dr.placeholder=suggestedDataRoot();
+  const td=document.getElementById('template_dir');
+  // The resume folder's default lives inside whatever data root is ACTIVE right now, not
+  // inside the suggested one — otherwise a user who already moved their data would be shown
+  // a path the app is not going to read.
+  if(td) td.placeholder=((DROOT.path||suggestedDataRoot())+sep+'resume_template');
+  checkTemplateOutside();
+}
+// Warn only when the user typed an ABSOLUTE path that leaves the app folder. A relative
+// value ("resume_template") always resolves inside the data root, so it is never outside.
+function checkTemplateOutside(){
+  const box=document.getElementById('tpl_outside'); if(!box) return;
+  const v=V('template_dir').trim(), app=(DROOT.appDir||'');
+  const abs=/^([A-Za-z]:[\\/]|[\\/]|~)/.test(v);
+  const inside = app && v.toLowerCase().replace(/\//g,'\\')
+                        .startsWith(app.toLowerCase().replace(/\//g,'\\'));
+  box.style.display = (v && abs && !inside) ? '' : 'none';
+}
+
+// ---------------- unsaved-changes tracking ----------------
+// Every step now commits on its own button instead of on whatever the last screen was, so
+// the page has to know which steps hold edits that are not on disk. A step index goes into
+// DIRTY on any input/change inside its pane; Save this step (or Save & generate) clears it.
+// Inputs marked data-selfsave are excluded: they own a dedicated button with its own
+// confirm or restart semantics (data folder, the Ban row) and must not ride along.
+const DIRTY = new Set();
+function markDirty(el){
+  const pane = el && el.closest ? el.closest('.pane') : null;
+  DIRTY.add(pane ? +pane.dataset.step : cur);
+  paintDirty();
+}
+function clearDirty(step){
+  if(step==null) DIRTY.clear(); else DIRTY.delete(step);
+  paintDirty();
+}
+function paintDirty(){
+  document.querySelectorAll('.step-tab').forEach((t,i)=>t.classList.toggle('unsaved',DIRTY.has(i)));
+  const b=document.getElementById('save_step_btn');
+  if(b){ const d=DIRTY.has(cur);
+         b.classList.toggle('dirty',d);
+         b.textContent = d ? '● Save this step' : '✓ Save this step'; }
+  const n=document.getElementById('unsaved_note');
+  if(n){ const other=[...DIRTY].filter(i=>i!==cur);
+         n.textContent = other.length ? ('● unsaved changes on step '+other.map(i=>i+1).join(', '))
+                                      : '';
+         n.classList.toggle('show', other.length>0); }
+}
+document.addEventListener('input', e => {
+  if(e.target.id==='full_name'){ syncPrefixHint(); syncFolderHints(); }
+  if(e.target.id==='template_dir') checkTemplateOutside();
+  if(e.target.closest && e.target.closest('.pane') && !e.target.hasAttribute('data-selfsave')) markDirty(e.target); });
+document.addEventListener('change', e => {
+  if(e.target.closest && e.target.closest('.pane') && !e.target.hasAttribute('data-selfsave')) markDirty(e.target); });
+// A bubble opened by click (touch, keyboard) has no mouseleave to close it.
+document.addEventListener('keydown', e => { if(e.key==='Escape') topappBubble(false); });
+// Closing the tab with edits still in the browser silently discards them. Warn instead.
+window.addEventListener('beforeunload', e => { if(DIRTY.size){ e.preventDefault(); e.returnValue=''; } });
+
+// ---------------- add-on status pills + auto-expand ----------------
+// Every add-on section reports its own state through secPill(), from whatever probe already
+// existed for it (loadAdzuna, loadClaudeCli, …). Two reasons: the CLOSED row has to tell the
+// truth without being opened, and once every probe has answered we open exactly ONE section
+// — the first that is not set up yet — so the step suggests a next action instead of
+// showing six identical closed bars. A probe that never answers must not block that, hence
+// the timeout backstop below.
+// 'uptime' leads: it is one checkbox, and nothing else on this page does anything if the app
+// is not running. Advanced sections never auto-open.
+const AUTO_KEYS = ['uptime','ntfy','claudecli','adzuna'];
+const SEC_STATE = {};
+let AUTO_DONE = false;
+function secPill(key, text, on){
+  const el = document.querySelector('#sec_'+key+' .pill');
+  if(el){ el.textContent = text; el.className = 'pill' + (on ? ' on' : ''); }
+  SEC_STATE[key] = !!on;
+  maybeAutoExpand();
+}
+function maybeAutoExpand(){
+  if(AUTO_DONE) return;
+  if(AUTO_KEYS.some(k => !(k in SEC_STATE))) return;      // wait for every probe to answer
+  AUTO_DONE = true;
+  // Scoped to the add-ons pane on purpose: the "Narrow it down" section on step 2 is also
+  // a .sec, and opening a search filter must not cancel the add-on hint.
+  if(document.querySelector('.pane[data-step="3"] .sec[open]')) return;
+  const first = AUTO_KEYS.find(k => !SEC_STATE[k]);
+  if(first){ const d = document.getElementById('sec_'+first); if(d) d.open = true; }
+}
+setTimeout(() => { AUTO_KEYS.forEach(k => { if(!(k in SEC_STATE)) SEC_STATE[k] = false; });
+                   maybeAutoExpand(); }, 3000);
+
+// ---------------- wizard navigation ----------------
+function buildSteps(){
+  const box=document.getElementById('steps'); box.innerHTML='';
+  STEPS.forEach((name,i)=>{ const t=document.createElement('div');
+    t.className='step-tab'; t.innerHTML='<span class="n">'+(i+1)+'</span>'+name;
+    t.onclick=()=>show(i); box.appendChild(t); });
+}
+function show(i){
+  cur=Math.max(0,Math.min(STEPS.length-1,i));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('cur',+p.dataset.step===cur));
+  document.querySelectorAll('.step-tab').forEach((t,j)=>{
+    t.classList.toggle('cur',j===cur); t.classList.toggle('done',j<cur); });
+  document.getElementById('back_btn').style.visibility = cur===0?'hidden':'visible';
+  document.getElementById('next_btn').style.display = cur===STEPS.length-1?'none':'';
+  document.getElementById('save_btn').style.display = cur===STEPS.length-1?'':'none';
+  // The Review step's own "Save & generate" IS the save, so the per-step button steps aside
+  // there rather than showing two save buttons that do the same thing.
+  document.getElementById('save_step_btn').style.display = cur===STEPS.length-1?'none':'';
+  paintDirty();
+  if(cur===STEPS.length-1) renderReview();
+  window.scrollTo({top:0});
+}
+function go(d){ show(cur+d); }
+// Moving between steps never loses anything — the values stay in the form — so this does
+// not nag. It only points out that the step just left still needs a save.
+function reloadDiscard(){
+  if(DIRTY.size && !confirm('Reload from the saved profile?\n\nUnsaved changes on '+
+     DIRTY.size+' step'+(DIRTY.size===1?'':'s')+' are discarded.')) return;
+  load();
+}
+function skipSetup(){
+  try{ localStorage.setItem('setupSkippedAt', String(Date.now())); }catch(e){}
+  location.href='/';
+}
+
+// ---------------- review summary ----------------
+const escH = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+// Only four values are actually required. An unset OPTIONAL value used to render in the
+// same red "— not set" as a missing name, so a perfectly valid profile read as five errors
+// on the last screen. Optional gaps are grey and say so.
+function rvRow(label, val, missing, optional){
+  const cls = missing ? (optional ? 'opt' : 'miss') : '';
+  const txt = missing ? (optional ? '— not set (optional)' : '— needed') : escH(val);
+  return '<div class="rv"><b>'+label+'</b><span class="'+cls+'">'+txt+'</span></div>';
+}
+function renderReview(){
+  const box=document.getElementById('review_rows');
+  const titles=csv(V('titles')), skills=csv(V('skills_have'));
+  const sMin=+V('salary_min')||0, sMax=+V('salary_max')||0;
+  const need = [!V('full_name').trim(), !titles.length, !V('loc_query').trim(), !skills.length]
+                 .filter(Boolean).length;
+  box.innerHTML =
+    '<div class="'+(need?'callout warn':'callout')+'" style="margin:0 0 10px;">' +
+      (need ? '<b>'+need+' required '+(need===1?'value is':'values are')+' still empty.</b> They are marked below.'
+            : '<b>Everything required is filled in.</b> Optional gaps below are fine to leave.') +
+    '</div>' +
+    rvRow('Name', V('full_name'), !V('full_name').trim()) +
+    rvRow('Resume filename prefix', prefixValue(), !prefixValue(), true) +
+    rvRow('Target roles', titles.join(', '), !titles.length) +
+    rvRow('Location', (LOC.formatted_address||V('loc_query')) + (LOC.lat?' ✓ geocoded':''), !V('loc_query').trim()) +
+    rvRow('Salary range', sMin||sMax ? ('$'+sMin.toLocaleString()+' – $'+sMax.toLocaleString()) : '', !(sMin||sMax), true) +
+    rvRow('Workplace', getChips('workplace_types').join(', '), !getChips('workplace_types').length, true) +
+    rvRow('Skills (never-invent)', skills.length+' listed', !skills.length) +
+    '<div class="rv"><b>Boards</b><span>'+[C('use_linkedin')?'LinkedIn':'',C('use_hiringcafe')?'hiringcafe.com':''].filter(Boolean).join(' + ')+'</span></div>' +
+    '<div class="rv"><b>Phone alerts (ntfy)</b><span class="'+(C('notify_enabled')&&V('notify_topic')?'okv':'')+'">'+(C('notify_enabled')&&V('notify_topic')?'✓ phone alerts on':'off')+'</span></div>' +
+    '<div class="rv"><b>Git backup</b><span>'+(V('git_remote')?'✓ checkpoints go off-machine':'local checkpoints only')+'</span></div>' +
+    '<div class="rv"><b>Data folder</b><span class="path">'+escH(DROOT.path||'—')+(DROOT.pending?' → '+escH(DROOT.pending)+' (after restart)':'')+'</span></div>';
+}
+
+// ---------------- profile load/save (unchanged backend) ----------------
+async function load(){
+  status('loading…');
+  try{ const st=await (await fetch('/api/profile-status')).json(); PROFILE_NAME=st.activeProfile||'';
+       // The profile already exists when the page opens. Say so immediately. If not, the
+       // wizard looks like nothing was ever saved.
+       if(st.configured) showSavedBar('previously'); }catch(e){}
+  const p=await (await fetch('/api/profile')).json();
+  const id=p.identity||{}, r=p.resume||{}, s=p.search||{}, sk=p.skills||{}, n=p.notify||{}, g=p.git||{};
+  setV('full_name',id.full_name); setV('resume_prefix',id.resume_prefix); syncPrefixHint();
+  setV('template_dir',r.template_dir);
+  syncFolderHints();   // load() may land before or after loadDataRoot(); both call this
+  setV('titles',(s.titles||[]).join(', ')); setV('exclude_terms',(s.exclude_terms||[]).join(', '));
+  LOC=s.location||{}; setV('loc_query',LOC.query||LOC.formatted_address||''); showLoc();
+  setV('radius_miles',s.radius_miles); setV('salary_min',s.salary_min); setV('salary_max',s.salary_max);
+  const y=s.years_experience||[0,15]; setV('yoe_min',y[0]); setV('yoe_max',y[1]);
+  setChips('workplace_types',s.workplace_types); setChips('seniority',s.seniority); setChips('employment_types',s.employment_types);
+  setC('include_remote_anywhere_in_country',s.include_remote_anywhere_in_country);
+  setC('use_linkedin',s.use_linkedin!==false); setC('linkedin_top_applicant',s.linkedin_top_applicant);
+  applyTopApplicantGate();   // load() may re-tick the box; the lock has the last word
+  setC('use_hiringcafe',s.use_hiringcafe!==false);
+  setV('skills_have',(sk.have||[]).join(', '));
+  setV('notify_topic',n.topic); setC('notify_enabled',n.enabled!==false);
+  setV('git_name',g.name); setV('git_email',g.email); setV('git_remote',g.remote);
+  // These two have no probe endpoint — their state lives in the profile we just loaded.
+  const ntfyOn = !!(n.topic && n.enabled!==false);
+  secPill('ntfy', ntfyOn ? 'on' : 'not set', ntfyOn);
+  secPill('git', g.remote ? 'off-machine' : (g.name ? 'local only' : 'not set'), !!g.remote);
+  // The form now matches disk. setV/setC fire no events, but a reload after edits must
+  // still drop the dots.
+  clearDirty();
+  status('loaded','ok');
+  if(cur===STEPS.length-1) renderReview();
+}
+function showLoc(){ document.getElementById('loc_resolved').textContent =
+  LOC.lat ? `→ ${LOC.formatted_address||''}  (${(+LOC.lat).toFixed(4)}, ${(+LOC.lon).toFixed(4)})`
+          : 'No coordinates yet. Press Get coordinates — without them the radius filter has no center point.'; }
+async function lookup(){
+  const q=V('loc_query'); if(!q){status('Enter a city first.','err');return;}
+  status('geocoding…');
+  const r=await fetch('/api/geocode?q='+encodeURIComponent(q));
+  if(!r.ok){ status('Geocoding failed. You can still save. The server tries again.','err'); return; }
+  LOC=await r.json(); showLoc(); markDirty(document.getElementById('loc_query'));
+  status('Location resolved. Press ✓ Save this step to keep it.','ok');
+}
+function collect(){
+  return { identity:{full_name:V('full_name'),resume_prefix:prefixValue()},
+    resume:{template_dir:V('template_dir')},
+    search:{ titles:csv(V('titles')), exclude_terms:csv(V('exclude_terms')),
+      location:Object.assign({}, LOC, {query:V('loc_query')}),
+      radius_miles:+V('radius_miles')||0, salary_min:+V('salary_min')||0, salary_max:+V('salary_max')||0,
+      years_experience:[+V('yoe_min')||0,+V('yoe_max')||0],
+      workplace_types:getChips('workplace_types'), seniority:getChips('seniority'), employment_types:getChips('employment_types'),
+      include_remote_anywhere_in_country:C('include_remote_anywhere_in_country'),
+      use_linkedin:C('use_linkedin'), linkedin_top_applicant:C('linkedin_top_applicant'), use_hiringcafe:C('use_hiringcafe'),
+      security_clearances:['None'], air_travel_ok:['Minimal','None'], land_travel_ok:['Minimal','None'],
+      date_presets:{fresh:1,weekly:7} },
+    skills:{have:csv(V('skills_have'))},
+    notify:{service:'ntfy',topic:V('notify_topic'),enabled:C('notify_enabled')},
+    git:{name:V('git_name'),email:V('git_email'),remote:V('git_remote')} };
+}
+// opts.quiet — a per-step save. Same write, but no "your profile is ready" modal: that
+// dialog is the end-of-wizard moment and firing it on step 2 would be nonsense.
+async function save(extra, opts){
+  opts = opts || {};
+  status('saving…');
+  const profile=collect();
+  const regeocode = !LOC.lat || LOC.query!==V('loc_query');
+  const payload = Object.assign({profile, regeocode}, extra||{});
+  if(PROFILE_NAME && !(extra&&extra.chosenName)) payload.profileName = PROFILE_NAME;
+  const r=await fetch('/api/profile',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)});
+  const j=await r.json();
+  if(!j.ok){ status('Error: '+(j.error||'unknown'),'err'); return j; }
+  if(j.location){LOC=j.location; showLoc();}
+  try{ localStorage.removeItem('setupSkippedAt'); localStorage.removeItem('setupRemindAt'); }catch(e){}
+  // The active profile is saved. A name collision means the named copy still needs a filename.
+  if(j.needName){
+    const nm=prompt('A profile named "'+j.base+'" already exists.\n'+
+      'Enter a name for this profile (leave blank to use "'+j.suggestion+'"):', '');
+    return save({chosenName:(nm&&nm.trim())?nm.trim():j.suggestion}, opts);
+  }
+  if(j.profileName) PROFILE_NAME=j.profileName;
+  // One POST writes the whole profile, so every step's pending edits land together. Clear
+  // the dot on all of them, not only the visible step, or the tabs would lie.
+  clearDirty();
+  showSavedBar();
+  if(opts.quiet){ status('Saved '+STEPS[cur]+'. Written: '+(j.written||['profile.json']).join(', '),'ok'); return j; }
+  status('Saved as '+(j.profileName||'profile')+'. Generated: '+(j.written||[]).join(', '),'ok');
+  showDone(j);
+  return j;
+}
+
+// ---------------- per-step save ----------------
+// Step 4 is the only step whose fields are not all in profile.json, so its save also flushes
+// the two settings that live elsewhere: the tailoring-notes toggle (gui_settings.json) and
+// the Adzuna keys (config/adzuna.json), but only when they actually changed. The data folder
+// and the Ban row keep their own buttons — a restart and a list write are not step edits.
+async function saveStep(){
+  if(cur===STEPS.length-1) return save();
+  // Claude Code itself has nothing to save: it is detected, not configured. Its auto-tailor
+  // caps and the Adzuna keys are the values this step holds.
+  if(cur===3){
+    if(adzunaDirty()) await saveAdzuna(true);
+    if(prioDirty()) await savePrio(true);
+  }
+  await save(null,{quiet:true});
+}
+
+// ---------------- "profile is ready" confirmation ----------------
+// A save is otherwise invisible. It shows one line of grey text in the footer. Make it
+// clear, and offer the next step: a run schedule. Nothing runs automatically until the
+// user creates one. That is why the schedule is the recommended path.
+function showSavedBar(when){
+  const bar=document.getElementById('saved_bar'); if(!bar) return;
+  document.getElementById('saved_when').textContent =
+    when ? ('Last saved '+when+'.') : ('Saved '+new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})+'.');
+  bar.classList.add('show');
+}
+function showDone(j){
+  const files=(j&&j.written||[]);
+  document.getElementById('done_files').textContent = files.length ? files.join('  ·  ') : 'profile.json';
+  document.getElementById('done_sub').textContent =
+    'Saved as ' + ((j&&j.profileName) || 'profile') +
+    '. The app regenerated your search URLs, skills list, and alert settings from it.';
+  document.getElementById('done_modal').classList.add('show');
+}
+function closeDone(){ document.getElementById('done_modal').classList.remove('show'); }
+document.getElementById('done_modal').addEventListener('click', e => {
+  if(e.target.id==='done_modal') closeDone(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeDone(); });
+async function importProfile(file){
+  status('reading '+file.name+'…');
+  let prof;
+  try{ prof = JSON.parse(await file.text()); }
+  catch(e){ status('Not valid JSON: '+e.message,'err'); return; }
+  if(typeof prof!=='object' || prof===null || (!prof.identity && !prof.search)){
+    status('That file is not a profile. It has no identity or search section.','err'); return; }
+  status('importing…');
+  try{
+    const r=await fetch('/api/profile',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({profile:prof, regeocode:false})});
+    const j=await r.json();
+    if(j.ok){ await load();
+      try{ localStorage.removeItem('setupSkippedAt'); localStorage.removeItem('setupRemindAt'); }catch(e){}
+      status('Loaded '+file.name+'. The app backed up the previous profile as .bak1 and .bak2. Generated: '+(j.written||[]).join(', '),'ok'); }
+    else status('Import failed: '+(j.error||'unknown'),'err');
+  }catch(e){ status('Import failed: '+e.message,'err'); }
+}
+document.getElementById('import_btn').addEventListener('click',()=>document.getElementById('import_file').click());
+document.getElementById('import_file').addEventListener('change',e=>{ if(e.target.files[0]) importProfile(e.target.files[0]); e.target.value=''; });
+
+// --- Blocked employers ---
+async function loadBlocklist(){
+  const box=document.getElementById('blocklist_rows');
+  try{
+    const d=await (await fetch('/api/blocklist')).json();
+    const emp=d.employers||[];
+    const pill=document.getElementById('blocklist_pill');
+    if(pill){ pill.textContent = emp.length ? (emp.length+' blocked') : 'none';
+              pill.className = 'pill' + (emp.length ? ' on' : ''); }
+    if(!emp.length){ box.innerHTML='<div class="hint">No employers blocked yet.</div>'; return; }
+    box.innerHTML=emp.map(e=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line);">
+      <b>${escH(e.display)}</b>
+      <span class="chip on" style="cursor:default;">${escH(e.tactic||'other')}</span>
+      <span class="hint" style="flex:1;">${escH(e.reason||'')}${e.added?' · '+escH(e.added):''}</span>
+      <button class="ghost" type="button" onclick="unban('${escH(e.display).replace(/'/g,"\\'")}')">Unban</button>
+    </div>`).join('');
+  }catch(e){ box.innerHTML='<div class="hint">Blocklist unavailable ('+escH(e.message)+').</div>'; }
+}
+async function addBan(){
+  const name=V('ban_name').trim();
+  if(!name){ status('Enter an employer name to ban.','err'); return; }
+  status('banning…');
+  try{
+    const r=await fetch('/api/block-employer',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({company:name,tactic:V('ban_tactic'),reason:V('ban_reason')})});
+    const j=await r.json();
+    if(j.ok){ setV('ban_name',''); setV('ban_reason',''); status('Blocked '+name,'ok'); loadBlocklist(); }
+    else status('Ban failed: '+(j.error||'unknown'),'err');
+  }catch(e){ status('Ban failed: '+e.message,'err'); }
+}
+async function unban(name){
+  status('removing…');
+  try{
+    const r=await fetch('/api/unblock-employer',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name})});
+    const j=await r.json();
+    status(j.removed?('Unblocked '+name):(name+' was not on the list'), j.removed?'ok':'');
+    loadBlocklist();
+  }catch(e){ status('Unblock failed: '+e.message,'err'); }
+}
+
+// --- ntfy test alert. It calls notify.py --test. It reads the SAVED topic. ---
+async function testNotify(){
+  const s=document.getElementById('notify_status');
+  s.textContent='sending…'; s.style.color='';
+  try{
+    const j=await (await fetch('/api/notify-test',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({})})).json();
+    s.textContent = j.ok ? '✓ Sent. Look at your phone.' + (j.output?(' ('+j.output+')'):'')
+                         : ('failed: '+(j.output||'unknown'));
+    s.style.color = j.ok ? '#059669' : '#dc2626';
+  }catch(e){ s.textContent='failed: '+e.message; s.style.color='#dc2626'; }
+}
+
+// --- Adzuna salary API keys ---
+let ADZUNA_SAVED_ID = '';   // what is on disk; the key never comes back, so a typed key is dirty
+function adzunaDirty(){
+  return V('adzuna_app_id').trim() !== ADZUNA_SAVED_ID || !!V('adzuna_app_key').trim();
+}
+async function loadAdzuna(){
+  const s=document.getElementById('adzuna_status'); if(!s) return;
+  try{
+    const d=await (await fetch('/api/adzuna')).json();
+    ADZUNA_SAVED_ID = d.app_id||'';
+    setV('adzuna_app_id', d.app_id||'');
+    const key=document.getElementById('adzuna_app_key');
+    key.value='';
+    key.placeholder = d.keySet ? ('•••••• saved'+(d.keyHint?' ('+d.keyHint+')':'')+' — leave blank to keep') : 'paste your key';
+    s.textContent = d.configured ? '✓ Configured. The estimates use Adzuna.'
+                  : (d.app_id ? 'App ID set. Key missing.' : 'Not configured. The estimates use bands.');
+    s.style.color = d.configured ? '#059669' : '#6b7280';
+    secPill('adzuna', d.configured ? 'on' : 'not set', d.configured);
+  }catch(e){ secPill('adzuna','unavailable',false); }
+}
+// quiet — flushed by Save this step, which prints the step summary afterwards.
+async function saveAdzuna(quiet){
+  const app_id=V('adzuna_app_id').trim(), app_key=V('adzuna_app_key').trim();
+  if(!app_id){ if(!quiet) status('Enter your Adzuna Application ID.','err'); return; }
+  status('saving Adzuna keys…');
+  try{
+    const r=await fetch('/api/adzuna',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({app_id, app_key})});
+    const j=await r.json();
+    if(j.ok){ if(!quiet) status(j.configured?'Adzuna keys saved. On the next run, jobs without pay go to Adzuna again.'
+                                 :'Saved. The App ID is stored. The key is still blank.', j.configured?'ok':'');
+      loadAdzuna(); }
+    else status('Adzuna save failed: '+(j.error||'unknown'),'err');
+  }catch(e){ status('Adzuna save failed: '+e.message,'err'); }
+}
+async function clearAdzuna(){
+  status('removing Adzuna keys…');
+  try{
+    const r=await fetch('/api/adzuna',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({clear:true})});
+    await r.json(); setV('adzuna_app_id',''); setV('adzuna_app_key','');
+    status('Adzuna keys removed. The estimates use bands again.','ok'); loadAdzuna();
+  }catch(e){ status('Remove failed: '+e.message,'err'); }
+}
+
+// ---- Claude-only search source gate (LinkedIn Top-Applicant) ----
+// ONE condition: Claude Code is installed and logged in on this machine. There used to be a
+// second — a saved "Claude assistant" preference — but a preference that says yes while the
+// CLI is missing (or no while it is there) is just a way to be wrong, so it is gone. What
+// runs the feed is what decides whether the row unlocks.
+let CLAUDECLI_OK = false;
+function claudeReady(){ return CLAUDECLI_OK; }
+function topappReason(){
+  return '<b>Claude Code is not detected on this machine.</b> This feed is read by Claude Code '+
+         'running locally — install it and run <code>claude login</code>. Open '+
+         '<span class="gatelink" onclick="gotoClaudeSetup()">setup</span> → AI resume tailoring.';
+}
+function topappBubble(mode){
+  const b=document.getElementById('topapp_bubble');
+  if(!b) return;
+  if(claudeReady()){ b.classList.remove('show'); return; }   // nothing to explain once unlocked
+  b.classList.toggle('show', mode==='toggle' ? !b.classList.contains('show') : !!mode);
+}
+function applyTopApplicantGate(){
+  const box=document.getElementById('linkedin_top_applicant');
+  const lab=document.getElementById('tog_topapp'), note=document.getElementById('topapp_note');
+  const bub=document.getElementById('topapp_bubble');
+  if(!box||!lab||!note) return;
+  const ok=claudeReady();
+  if(bub){ bub.innerHTML = ok ? '' : topappReason(); if(ok) bub.classList.remove('show'); }
+  lab.classList.toggle('locked', !ok);
+  box.disabled = !ok;
+  // Unchecked while locked on purpose: collect() reads the live control, so a locked-but-
+  // ticked box would keep emitting the URL into search_urls.json for a source that cannot run.
+  if(!ok) box.checked = false;
+  // The hint describes the source and nothing else. Why the row is LOCKED belongs to the
+  // bubble, which only appears on hover/focus/click — printing the gate reason here too made
+  // it read as an error the moment the page loaded, with nothing touched.
+  note.innerHTML = 'Read by the Claude agent from your signed-in browser. Needs an active '+
+    'LinkedIn Premium session — LinkedIn exposes no API for this feed, so the app cannot '+
+    'authenticate to it.';
+}
+// Send the user to the add-ons step and open the one Claude row.
+function gotoClaudeSetup(){
+  show(3);
+  const t=document.getElementById('sec_claudecli');
+  if(t){ t.open=true; setTimeout(()=>t.scrollIntoView({behavior:'smooth',block:'center'}),0); }
+}
+// --- auto-tailor caps (gui_settings.json dailyAutoTailorCap / hourlyAutoTailorCap) ---
+// Same two fields the Schedule page used to carry; they moved here because they bound AI
+// resumes only. Read through /api/settings, written through /api/threshold — the same
+// gui_settings writer the job board's threshold panel uses. No new file, no new endpoint.
+// AI-vs-template line. Written as gui_settings.resumeCustomizeThreshold, which scoring.py
+// folds over strategy.resume_customize_threshold, which jobpipe reads as cust_thr:
+//   customize (spend tokens) when skillMatch < threshold, else copy the template.
+// Discrete levels, not a free number: the meaningful choice is "how well matched is well
+// matched enough", and a 0-100 box invites tuning a number nobody can feel the effect of.
+// 1.01 is deliberately > 1 — no score can reach it, so nothing ever takes the template path.
+const CUST_LEVELS = [
+  {thr:1.01, label:'Never — always use AI',                   hint:'Every queued job gets an AI-tailored resume. Most tokens.'},
+  {thr:0.80, label:'80% — a high match uses the template',    hint:'Default. AI only when your skills leave a real gap.'},
+  {thr:0.60, label:'60% — a good match uses the template',    hint:'Fewer tokens; more postings get a straight template copy.'},
+  {thr:0.40, label:'40% — a fair match uses the template',    hint:'Templates for most jobs. AI is reserved for weak matches.'},
+  {thr:0.20, label:'20% — almost everything uses the template', hint:'Near-zero tokens. Resumes are barely adapted to the posting.'},
+];
+function custIndex(thr){ let b=0,bd=9;
+  CUST_LEVELS.forEach((l,i)=>{ const d=Math.abs(l.thr-(thr??0.8)); if(d<bd){bd=d;b=i;} }); return b; }
+function syncCustHint(){
+  const sel=document.getElementById('cust_level'), h=document.getElementById('cust_hint');
+  if(sel&&h) h.textContent = (CUST_LEVELS[+sel.value]||CUST_LEVELS[1]).hint;
+}
+let PRIO_SAVED = {d:null,h:null,c:null};   // what is on disk, so Save this step can skip a no-op write
+async function loadPrio(){
+  const sel=document.getElementById('cust_level');
+  if(!document.getElementById('prio_daily')||!sel) return;
+  if(!sel.options.length)
+    sel.innerHTML = CUST_LEVELS.map((l,i)=>`<option value="${i}">${l.label}</option>`).join('');
+  try{ const s=await (await fetch('/api/settings')).json();
+    PRIO_SAVED = {d: s.dailyAutoTailorCap ?? 20, h: s.hourlyAutoTailorCap ?? 10,
+                  c: custIndex(s.resumeCustomizeThreshold)};
+    setV('prio_daily', PRIO_SAVED.d); setV('prio_queue', PRIO_SAVED.h);
+    sel.value = String(PRIO_SAVED.c);
+  }catch(e){ sel.value='1'; }
+  syncCustHint();
+}
+function prioDirty(){
+  if(PRIO_SAVED.d===null) return false;
+  const sel=document.getElementById('cust_level');
+  return (parseInt(V('prio_daily'))||0)!==PRIO_SAVED.d
+      || (parseInt(V('prio_queue'))||0)!==PRIO_SAVED.h
+      || (sel && +sel.value!==PRIO_SAVED.c);
+}
+// quiet — called as part of Save this step, which prints its own summary line afterwards.
+async function savePrio(quiet){
+  const s=document.getElementById('prio_status');
+  const ci=+(document.getElementById('cust_level')||{value:1}).value;
+  const body={ dailyAutoTailorCap: parseInt(V('prio_daily'))||0,
+               hourlyAutoTailorCap: parseInt(V('prio_queue'))||0,
+               resumeCustomizeThreshold: (CUST_LEVELS[ci]||CUST_LEVELS[1]).thr };
+  try{
+    const d=await (await fetch('/api/threshold',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(body)})).json();
+    if(d.ok) PRIO_SAVED={d:body.dailyAutoTailorCap, h:body.hourlyAutoTailorCap, c:ci};
+    if(s){ s.textContent = d.ok ? '✓ Saved.' : 'Not saved.'; s.style.color = d.ok ? '#059669' : '#b91c1c'; }
+    if(!quiet) status(d.ok?'Tailoring settings saved.':'The app did not save the settings.', d.ok?'ok':'err');
+  }catch(e){ status('Save failed: '+e.message,'err'); }
+}
+
+// --- AI resume tailoring through Claude Code (no key, no metered billing) ---
+// There is nothing to save here — this is the whole Claude section now. The old "Tailoring
+// notes" checkbox was merged away: the notes box on the board appears whenever this CLI is
+// present, because this CLI is what reads the notes. The app authenticates through the
+// user's own `claude login`, so this card only reports what it found. The cheap load-time
+// call just locates the binary; "Check now" runs the real round trip, which can take many seconds.
+// ---------------- keep it running (Windows watchdog) ----------------
+// Same /api/watchdog the Schedule page drives — this is only a second door onto the one switch,
+// so a first-run user meets it during setup instead of having to find /schedule. It acts at
+// once (it registers a scheduled task), so it is deliberately NOT part of the Save button and
+// never marks the step dirty.
+async function loadUptime(){
+  const t=document.getElementById('uptime_watchdog'); if(!t) return;
+  try{
+    renderUptime(await (await fetch('/api/watchdog')).json());
+  }catch(e){ secPill('uptime','unavailable',false); noAutoOpen('uptime'); }
+}
+// A section the user CANNOT act on must not claim the one auto-open slot, and must not read as
+// an unfinished gap. secPill's "on" flag drives both the green pill and the auto-open choice,
+// so the two are separated here: pill stays neutral, auto-open passes over it.
+function noAutoOpen(key){ SEC_STATE[key] = true; maybeAutoExpand(); }
+function renderUptime(s){
+  s = s || {};
+  const t=document.getElementById('uptime_watchdog'), ev=document.getElementById('uptime_every'),
+        msg=document.getElementById('uptime_status');
+  const on = !!s.desired && !!s.enabled;
+  t.checked = !!s.desired; t.disabled = !s.supported;
+  if(s.everyMin) ev.value=String(s.everyMin);
+  ev.disabled = !s.supported || !s.desired;
+  if(!s.supported){
+    msg.textContent='This needs the Windows Task Scheduler, so it is not available on this computer. '
+      + 'The searches will run only while the dashboard is open.';
+    msg.style.color='#6b7280';
+    // "not set" would read as a gap the user should close. It is not one; nothing can close it here.
+    secPill('uptime','not available',false);
+    return noAutoOpen('uptime');
+  }
+  if(on){
+    msg.textContent='✓ On. Windows checks every '+(s.everyMin||5)+(s.everyMin===1?' minute':' minutes')
+      + ' and starts the dashboard again, minimized, if it is not running.'
+      + (s.pauseMin ? ' Paused for '+s.pauseMin+' more minutes.' : '');
+    msg.style.color='#059669';
+  } else if(s.desired && !s.enabled){
+    msg.textContent='✗ Windows would not accept the scheduled task'+(s.error?': '+s.error:'')
+      + '. Nothing restarts the dashboard, so the searches run only while it is open.';
+    msg.style.color='#b91c1c';
+  } else {
+    msg.textContent='This one applies straight away — you do not need to save it.';
+    msg.style.color='#6b7280';
+  }
+  secPill('uptime', on ? (s.pauseMin ? 'paused' : 'on') : 'off', on);
+}
+async function saveUptime(){
+  const t=document.getElementById('uptime_watchdog'), ev=document.getElementById('uptime_every'),
+        msg=document.getElementById('uptime_status');
+  t.disabled = true;
+  msg.textContent='working…'; msg.style.color='#6b7280';
+  try{
+    const r=await fetch('/api/watchdog',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({enable:t.checked, everyMin:parseInt(ev.value,10)||5})});
+    const d=await r.json(); renderUptime(d.state);
+    status(d.ok ? (t.checked ? 'The dashboard will now restart by itself.'
+                             : 'Windows will no longer restart the dashboard.')
+                : ('That did not work: '+(d.message||'unknown cause')), d.ok?'ok':'err');
+  }catch(e){ t.disabled=false; status('That did not work: '+e.message,'err'); }
+}
+
+async function loadClaudeCli(){
+  const s=document.getElementById('claudecli_status'); if(!s) return;
+  try{
+    const d=await (await fetch('/api/claude-cli')).json();
+    if(d.available){
+      s.textContent='✓ Claude Code found at '+d.binary+'. Press Check now to confirm the login.'
+        + (d.apiKeyInEnv ? ' (ANTHROPIC_API_KEY is set in your environment; the app removes it so this stays on your plan.)' : '');
+      s.style.color='#059669';
+    }else{
+      s.textContent='Claude Code was not found. The queue writes template-copy resumes instead.';
+      s.style.color='#6b7280';
+    }
+    CLAUDECLI_OK = !!d.available;
+    secPill('claudecli', d.available ? 'installed' : 'not set', d.available);
+  }catch(e){ CLAUDECLI_OK=false; secPill('claudecli','unavailable',false); }
+  applyTopApplicantGate();
+}
+async function testClaudeCli(){
+  const s=document.getElementById('claudecli_status');
+  if(s){ s.textContent='checking… this asks Claude one short question and can take a moment.'; s.style.color='#6b7280'; }
+  try{
+    const j=await (await fetch('/api/claude-cli-test',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})).json();
+    if(s){ s.textContent=(j.ok?'✓ ':'✗ ')+(j.message||''); s.style.color=j.ok?'#059669':'#b91c1c'; }
+    CLAUDECLI_OK = !!j.ok;
+    secPill('claudecli', j.ok ? 'ready' : 'not set', j.ok);
+    applyTopApplicantGate();
+    status(j.ok?'Tailoring is ready.':'Tailoring is not available yet.', j.ok?'ok':'err');
+  }catch(e){ status('The check failed: '+e.message,'err'); }
+}
+
+// --- Browse… (native folder dialog, via the local server) ---
+// A web page cannot read a real folder path — <input type=file webkitdirectory> returns
+// names, not paths — so the button asks the SERVER to open the OS dialog and types the
+// answer into the field for the user. It only fills the box: the step's Save button (or
+// "Use this folder" for the data root) still decides what is stored, so a cancelled or
+// failed dialog changes nothing. The dialog belongs to the server process, so it can open
+// behind the browser window — the note below says so rather than looking hung.
+async function browseInto(inputId, title){
+  const btn = document.getElementById('browse_'+inputId);
+  const dr  = inputId === 'data_root';
+  const say = (m,ok) => dr ? drStatus(m, ok===false?'#dc2626':(ok?'#059669':''))
+                           : status(m, ok===false?'err':(ok?'ok':''));
+  if(btn){ btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = 'Choose a folder…'; }
+  say('A folder window opened. It may be behind this browser window.');
+  try{
+    const r = await fetch('/api/pick-folder', {method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({title: title||'Choose a folder', initial: V(inputId)})});
+    const j = await r.json();
+    if(!j.ok){ say('✗ '+(j.error||'The folder window did not open.'), false); return; }
+    if(j.canceled){ say(''); return; }
+    setV(inputId, j.path);
+    // Fire the same event a keystroke would, so the step is marked unsaved and the user
+    // still has to press Save — the picker never saves on its own.
+    document.getElementById(inputId).dispatchEvent(new Event('input',{bubbles:true}));
+    say('✓ '+j.path+(dr ? ' — press "Use this folder" to apply it.'
+                        : ' — press "Save this step" to apply it.'), true);
+  }catch(e){ say('The folder window failed: '+e.message, false); }
+  finally{ if(btn){ btn.disabled = false; btn.textContent = btn.dataset.label || '📂 Browse…'; } }
+}
+
+// --- Data location (config/instance.json "data_root") ---
+function drStatus(msg,color){ const s=document.getElementById('dr_status');
+  s.textContent=msg||''; s.style.color=color||''; }
+function renderDataRoot(){
+  const box=document.getElementById('dr_current'); if(!box) return;
+  const d=DROOT;
+  if(d.error){ box.innerHTML='<div class="hint">Data location unavailable ('+escH(d.error)+').</div>'; return; }
+  const tag = d.pending ? '<span class="tagline pend">restart pending</span>'
+            : (d.split ? '<span class="tagline on">separate folder</span>'
+                       : '<span class="tagline off">inside the app folder</span>');
+  let html = '<div class="kv"><b>In use now</b><span class="path">'+escH(d.path||'')+'</span></div>'
+           + '<div class="kv"><b>Chosen by</b><span>'+escH(d.sourceLabel||'')+' &nbsp;'+tag+'</span></div>';
+  if(d.pending)
+    html += '<div class="callout warn" style="margin:8px 0 0"><b>Restart the dashboard to apply the change.</b> '
+          + 'Saved: <span class="path">'+escH(d.pending)+'</span>. Until the restart, the app reads from the old folder.</div>';
+  if(d.source==='env')
+    html += '<div class="callout warn" style="margin:8px 0 0">The environment variable '
+          + '<code>TOP_RAT_DATA</code> is set. It overrides the value chosen here. Clear the variable to use this setting.</div>';
+  box.innerHTML = html;
+}
+async function loadDataRoot(){
+  try{
+    DROOT = await (await fetch('/api/data-root')).json();
+    setV('data_root', DROOT.override || DROOT.path || '');
+    renderDataRoot();
+    syncFolderHints();   // appDir/sep only exist now, so the grey suggestions fill in here
+    // The default location is a perfectly good answer, so this section is never "unset".
+    const p=document.querySelector('#sec_dataroot .pill');
+    if(p){ p.textContent = DROOT.pending ? 'restart pending' : (DROOT.split ? 'custom' : 'default');
+           p.className = 'pill' + (DROOT.pending ? ' warn' : ' on'); }
+  }catch(e){ /* file mode / offline — leave the card inert */ }
+}
+async function drPost(payload){
+  const r=await fetch('/api/data-root',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)});
+  return r.json();
+}
+// Empty box = "use the suggestion you are showing me in grey". Without this, pressing
+// Test/Use on an untouched field just answers "Enter a folder path." while a perfectly
+// good path sits right there as the placeholder.
+function dataRootValue(){ return V('data_root').trim() || suggestedDataRoot(); }
+async function checkDataRoot(){
+  drStatus('testing…');
+  try{
+    const j=await drPost({path:dataRootValue(), check:true});
+    if(!j.ok){ drStatus('✗ '+j.error,'#dc2626'); return; }
+    drStatus('✓ Usable: '+j.path+(j.warning?('. '+j.warning):''), j.warning?'#b45309':'#059669');
+  }catch(e){ drStatus('Test failed: '+e.message,'#dc2626'); }
+}
+async function saveDataRoot(){
+  if(!confirm('Point the app at this folder?\n\n'+dataRootValue()+
+              '\n\nThe app copies nothing for you. If you have existing data, copy it there first.\n'+
+              'The change takes effect when the dashboard restarts.')) return;
+  drStatus('saving…');
+  try{
+    const j=await drPost({path:dataRootValue()});
+    if(!j.ok){ drStatus('✗ '+j.error,'#dc2626'); return; }
+    DROOT=j.info||DROOT; renderDataRoot();
+    drStatus('✓ Saved. Restart the dashboard to use it.'+(j.warning?(' · '+j.warning):''),
+             j.warning?'#b45309':'#059669');
+  }catch(e){ drStatus('Save failed: '+e.message,'#dc2626'); }
+}
+async function clearDataRoot(){
+  if(!confirm('Reset to the automatic default location?\n\nThe change takes effect on restart.')) return;
+  drStatus('resetting…');
+  try{
+    const j=await drPost({clear:true});
+    if(!j.ok){ drStatus('✗ '+(j.error||'unknown'),'#dc2626'); return; }
+    DROOT=j.info||DROOT; setV('data_root', DROOT.override || DROOT.path || ''); renderDataRoot();
+    drStatus('✓ Reset to the default. Restart the dashboard to use it.','#059669');
+  }catch(e){ drStatus('Reset failed: '+e.message,'#dc2626'); }
+}
+
+if(WELCOME){ document.getElementById('welcome_box').classList.add('show');
+  document.getElementById('skip_bar').style.display=''; }
+document.getElementById('uptime_watchdog').addEventListener('change', saveUptime);
+document.getElementById('uptime_every').addEventListener('change', saveUptime);
+
+buildChips(); buildSteps(); show(0); load(); loadBlocklist(); loadAdzuna(); loadClaudeCli(); loadPrio(); loadDataRoot(); loadUptime();
+</script>
+</body>
+</html>

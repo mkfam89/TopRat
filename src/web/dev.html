@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Rat — Dev tools</title>
+<link rel="stylesheet" href="/ui.css">
+<!--
+  dev.html — HIDDEN developer page, served at /dev. Deliberately not in the nav bar.
+
+  It answers two questions that used to need a terminal:
+    1. "I edited a .py file — pick it up."   -> Restart. HTML/CSS need no restart (see below).
+    2. "Which port / data root / schedule am I actually looking at, and what just ran?"
+
+  Everything except Restart is READ-ONLY. This page never writes to the tracker or to any
+  field the user owns (notes, answers, applied, bookmarked) — see CLAUDE.md.
+-->
+<style>
+  :root { --card:var(--surface,#fbfcfd); --fg:var(--ink,#2b3440); --mut:var(--muted,#5f6b7a);
+          --acc:var(--accent,#3d6fd4); --acc-soft:var(--accent-soft,#eef3fc);
+          --ok:var(--green-ink,#1d7a53); --ok-soft:var(--green-soft,#eaf7f1);
+          --warn:var(--amber-ink,#96620f); --warn-soft:var(--amber-soft,#fdf5e7); }
+  body { font-size:15px; line-height:1.6; }
+  .wrap { max-width:880px; margin:0 auto; padding:26px 20px 80px; }
+  h1 { font-size:24px; margin:0 0 4px; font-weight:700; }
+  .sub { color:var(--mut); margin:0 0 22px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px;
+          padding:18px 22px; margin:0 0 16px; box-shadow:0 1px 2px rgba(16,24,40,.04); }
+  .card h2 { font-size:12px; text-transform:uppercase; letter-spacing:.05em;
+             color:var(--mut); margin:0 0 12px; font-weight:600; }
+  a { color:var(--acc); }
+  code { background:#f3f4f6; border:1px solid var(--line); padding:1px 6px;
+         border-radius:4px; font-size:13px; color:#374151; }
+  .note { font-size:13px; color:var(--mut); }
+  .back { display:inline-block; color:var(--mut); text-decoration:none; margin-bottom:14px; font-size:14px; }
+  .back:hover { color:var(--fg); }
+  .callout { border-left:3px solid var(--acc); background:var(--acc-soft);
+             border-radius:0 8px 8px 0; padding:12px 16px; margin:0 0 16px; font-size:14px; color:#1e3a8a; }
+  .callout.warn { border-left-color:#f59e0b; background:var(--warn-soft); color:#78350f; }
+  button { font:inherit; cursor:pointer; border-radius:8px; border:1px solid var(--acc);
+           background:var(--acc); color:#fff; padding:9px 16px; font-weight:600; }
+  button.ghost { background:#fff; color:var(--acc); }
+  button[disabled] { opacity:.55; cursor:default; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .kv { display:flex; gap:12px; padding:6px 0; border-bottom:1px solid var(--line); font-size:14px;
+        align-items:baseline; }
+  .kv:last-child { border-bottom:none; }
+  .kv b { min-width:190px; flex:0 0 190px; color:var(--mut); font-weight:500; }
+  .kv span { word-break:break-all; }
+  .mono { font-family:ui-monospace,Consolas,"Courier New",monospace; font-size:13px; }
+  pre.log { background:#111827; color:#e5e7eb; border-radius:8px; padding:12px 14px; overflow:auto;
+            font-size:12.5px; line-height:1.5; margin:0; max-height:340px; }
+  pre.log .err { color:#fca5a5; }
+  .stat { font-size:13.5px; color:var(--mut); min-height:20px; }
+  .stat.good { color:var(--ok); font-weight:600; }
+  .stat.bad { color:#b42318; font-weight:600; }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--ok);
+         margin-right:6px; vertical-align:middle; }
+  .dot.off { background:#9ca3af; }
+  @media (max-width:760px){
+    .wrap { padding:18px 14px 72px; }
+    h1 { font-size:21px; }
+    .card { padding:15px 15px; }
+    .kv { flex-direction:column; gap:2px; }
+    .kv b { flex:none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">&larr; Back to the board</a>
+  <h1>Dev tools</h1>
+  <p class="sub">A hidden page for testing. It is not in the menu and nothing links to it &mdash;
+  type <code>/dev</code> to get here. Read-only, apart from the restart button.</p>
+
+  <div class="card">
+    <h2>Restart the server</h2>
+    <p style="margin:0 0 12px">Use this after you edit a <b>.py</b> file. That code is already
+    loaded into the running process, so an edit does nothing until the process is replaced.</p>
+    <div class="row">
+      <button id="btnRestart" onclick="restart()">&#8635; Restart server</button>
+      <button class="ghost" onclick="load()">&#8635; Refresh this page</button>
+      <span class="stat" id="restartStat"></span>
+    </div>
+    <div class="callout" style="margin:14px 0 0">
+      <b>You do not need this for .html or .css edits.</b> The server re-reads the page files from
+      disk on every request and sends everything <code>no-store</code>, so a plain browser refresh
+      already shows your change to <code>cards.html</code>, <code>setup.html</code>,
+      <code>ui.css</code> and the rest.
+    </div>
+    <p class="note" style="margin:12px 0 0">What happens: the page tells the server to go, the
+    server answers, frees its port, launches a replacement on the same port and exits. This page
+    then waits for a <i>different</i> process to answer and reloads itself. The restarted server
+    runs hidden in the background, the same way the watchdog starts it &mdash; so if you launched
+    it from a terminal, that terminal is no longer attached afterwards.</p>
+  </div>
+
+  <div class="card">
+    <h2>This instance</h2>
+    <div id="info"><p class="note">Loading&hellip;</p></div>
+  </div>
+
+  <div class="card">
+    <h2>Last 20 log lines <span class="note" id="logPath"></span></h2>
+    <pre class="log" id="log">Loading…</pre>
+    <p class="note" style="margin:10px 0 0">From <code>logs/execution.log</code>
+    (<code>src/lib/runlog.py</code>). Read this before re-running anything &mdash; a failed run
+    already said what went wrong here.</p>
+  </div>
+
+  <div class="card">
+    <h2>Quick links</h2>
+    <div class="row">
+      <a class="ghost" href="/" style="text-decoration:none"><button class="ghost" type="button">Board</button></a>
+      <a href="/queue" style="text-decoration:none"><button class="ghost" type="button">Tailoring queue</button></a>
+      <a href="/setup" style="text-decoration:none"><button class="ghost" type="button">Settings</button></a>
+      <a href="/schedule" style="text-decoration:none"><button class="ghost" type="button">Scheduled tasks</button></a>
+      <a href="/api/dev/info" target="_blank" rel="noopener" style="text-decoration:none"><button class="ghost" type="button">/api/dev/info (raw)</button></a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- read-only diagnostics -------------------------------------------------
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+let BOOT = null, PID = null;          // identity of the process we are looking at right now
+
+function kv(label, value, extra) {
+  return '<div class="kv"><b>' + esc(label) + '</b><span class="mono">' + esc(value) +
+         (extra ? ' <span class="note" style="font-family:initial">' + esc(extra) + '</span>' : '') +
+         '</span></div>';
+}
+
+function render(d) {
+  BOOT = d.boot; PID = d.pid;
+  const mins = Math.floor(d.uptimeSec / 60), up =
+    mins < 60 ? mins + ' min' : Math.floor(mins / 60) + ' h ' + (mins % 60) + ' min';
+  const sched = d.schedulerDisabled ? 'DISABLED for this instance'
+              : (d.schedulerLoaded ? 'running' : 'module not loaded');
+  let h = '';
+  h += kv('Port', d.port, d.label ? '[' + d.label + ']' : '');
+  h += kv('Process', 'pid ' + d.pid, 'started ' + d.bootLabel + ' · up ' + up);
+  h += kv('Python', d.pyVersion, d.python);
+  h += kv('Launched with', d.argv);
+  h += kv('App folder', d.codeDir);
+  h += kv('Pages served from', d.webDir);
+  h += kv('Data root', d.dataRoot, d.dataSplit ? 'separate data folder' : 'inside the app folder');
+  h += kv('Data root chosen by', d.dataRootWhy || '(default)');
+  h += kv('Scheduler', sched);
+  h += kv('Watchdog', d.watchdogOn ? 'ON, every ' + d.watchdogEveryMin + ' min' : 'off');
+  $('info').innerHTML = h;
+
+  $('logPath').textContent = '· ' + d.logFile;
+  $('log').innerHTML = (d.log || []).map(function (ln) {
+    const bad = /\|\s*(ERROR|EXIT)\s*\|/.test(ln);
+    return bad ? '<span class="err">' + esc(ln) + '</span>' : esc(ln);
+  }).join('\n') || '(empty)';
+}
+
+function load() {
+  return fetch('/api/dev/info', { cache: 'no-store' })
+    .then(r => r.json()).then(render)
+    .catch(e => { $('info').innerHTML = '<p class="stat bad">Could not read /api/dev/info: ' + esc(e) + '</p>'; });
+}
+
+// ---- restart ---------------------------------------------------------------
+// The wait is for a DIFFERENT process, not merely for "something answers": the old server is
+// still listening for a moment after it replies, so polling for a live port would reload the
+// page against the process we just asked to leave.
+function restart() {
+  const btn = $('btnRestart'), stat = $('restartStat');
+  btn.disabled = true;
+  stat.className = 'stat';
+  stat.textContent = 'Asking the server to restart…';
+  fetch('/api/dev/restart', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+    .then(r => r.json())
+    .then(d => { waitForNew(d.boot, d.pid, Date.now()); })
+    .catch(() => {
+      // The socket can close before the reply lands. That is a successful restart too, so keep
+      // waiting rather than reporting a failure — the poll below decides the real outcome.
+      stat.textContent = 'Server is going down… waiting for it to come back.';
+      waitForNew(BOOT, PID, Date.now());
+    });
+}
+
+function waitForNew(oldBoot, oldPid, t0) {
+  const stat = $('restartStat'), LIMIT = 40000;   // 40s: a cold start on a slow disk is ~20s
+  (function poll() {
+    const secs = Math.round((Date.now() - t0) / 1000);
+    if (Date.now() - t0 > LIMIT) {
+      stat.className = 'stat bad';
+      stat.innerHTML = 'The server did not come back within ' + Math.round(LIMIT / 1000) +
+        's. Double-click <b>Start Here.bat</b>, then check <code>logs/execution.log</code>.';
+      $('btnRestart').disabled = false;
+      return;
+    }
+    stat.textContent = 'Waiting for the new server… ' + secs + 's';
+    fetch('/api/dev/ping', { cache: 'no-store' })
+      .then(r => r.json())
+      .then(d => {
+        if (d.boot !== oldBoot || d.pid !== oldPid) {   // a genuinely new process answered
+          stat.className = 'stat good';
+          stat.textContent = 'Back up as pid ' + d.pid + ' in ' + secs + 's. Reloading…';
+          setTimeout(() => location.reload(), 600);
+        } else {
+          setTimeout(poll, 700);                        // still the old one; keep waiting
+        }
+      })
+      .catch(() => setTimeout(poll, 700));              // down right now — expected mid-restart
+  })();
+}
+
+load();
+setInterval(load, 15000);          // keep the log tail and uptime current while the page sits open
+</script>
+</body>
+</html>

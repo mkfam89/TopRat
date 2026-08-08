@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Rat — Archived</title>
+<link rel="stylesheet" href="/ui.css">
+<style>
+  /* This page had a beige "aged paper" palette. No other page used it, so the page looked like
+     a different product instead of like older data. It now uses the shared light theme. Two things
+     show that this is the archive and not the live board: the amber accent on the header, and the
+     muted rows. A separate color scheme is not necessary. */
+  :root { --panel:var(--surface,#fbfcfd); --mut:var(--muted,#5f6b7a); --link:var(--accent,#3d6fd4); }
+  .wrap { max-width:var(--page-max); margin:0 auto; padding:20px 20px 80px; }
+  .head { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px; }
+  .head h1 { font-size:20px; margin:0; }
+  .head h1::before { content:"🗄 "; }
+  .head .count { color:var(--mut); font-weight:600; }
+  .note { color:var(--mut); margin:0 0 16px; font-size:13px; max-width:70ch; }
+  .tools { display:flex; gap:10px; margin-bottom:12px; }
+  input[type=search]{ font:inherit; padding:9px 12px; border:1px solid var(--line-strong);
+    border-radius:var(--r-sm); background:var(--surface); color:var(--ink); min-width:240px; flex:1 1 260px;
+    max-width:380px; }
+  input[type=search]:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  /* clip, not hidden — `hidden` makes this a scroll container, and the sticky th below then
+     pins to IT instead of the window: the header row gets pushed 52px down over the first row
+     and never pins under the nav. Same reason .tscroll only takes overflow-x when narrow.
+     (Same fix as cards.html #tableWrap.) */
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:var(--r-lg);
+    overflow:clip; box-shadow:var(--shadow-sm); }
+  .tscroll { -webkit-overflow-scrolling:touch; }
+  @media (max-width:900px){ .tscroll { overflow-x:auto; } }
+  table { width:100%; border-collapse:collapse; min-width:820px; }
+  th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { background:var(--surface-2); color:var(--muted); font-size:11.5px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.05em; position:sticky; top:var(--nav-h,52px); z-index:2;
+    white-space:nowrap; }
+  tbody tr:nth-child(even){ background:var(--surface-2); }
+  tbody tr:hover{ background:var(--accent-soft); }
+  tbody tr:last-child td { border-bottom:none; }
+  .co { font-weight:700; color:var(--ink-strong); }
+  .role a, .resume a { color:var(--link); text-decoration:none; }
+  .role a:hover, .resume a:hover { text-decoration:underline; }
+  .muted { color:var(--faint); }
+  .pill { display:inline-block; font-size:11.5px; font-weight:600; padding:2px 9px; border-radius:20px;
+    background:var(--amber-soft); color:var(--amber-ink); border:1px solid var(--amber-line); }
+  .empty { padding:40px 20px; text-align:center; color:var(--mut); }
+  .resume a::before { content:"📄 "; }
+
+  @media (max-width:760px){
+    .wrap { padding:15px 14px 72px; }
+    input[type=search]{ font-size:16px; max-width:none; }
+    th { position:static; }   /* on a phone, a sticky header and horizontal scroll conflict */
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>Archived Applications</h1><span class="count" id="count"></span>
+  </div>
+  <p class="note">These are your older applications. The archive job moves them here automatically once
+    they pass the age you set on the <a href="/schedule">Schedule</a> page. The app compresses their
+    tailored resumes into zip files. Click a resume name to open it. The live tracker keeps a bookmarked
+    job until you delete the bookmark.</p>
+  <div class="tools"><input type="search" id="q" placeholder="Filter by company or role…"></div>
+  <div class="panel">
+    <div class="tscroll">
+      <table>
+        <thead><tr>
+          <th>Company</th><th>Role</th><th>Applied</th><th>Found</th><th>Archived</th>
+          <th>Salary</th><th>Match</th><th>Resume</th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="empty" style="display:none">
+      No archived applications yet. The archive job moves an applied job here when it is older than the age
+      you set on the <a href="/schedule">Schedule</a> page.
+    </div>
+  </div>
+</div>
+<script>
+let ROWS = [];
+const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const base = p => (p||'').split('/').pop();
+const pct = v => { const n=parseFloat(v); return isNaN(n)?'':Math.round(n*100)+'%'; };
+/* Salary display format — the SAME abbreviation the board uses (fmtPay in cards.html): K for
+   thousands, M for millions, display only, sub-1000 figures (hourly rates) left verbatim. Kept as
+   its own copy because this page is standalone and shares no script with cards.html; if the rule
+   changes, change it in both. */
+const payShort = n => (Math.round(n*10)/10).toFixed(1).replace(/\.0$/,'');
+const fmtPay = s => !s ? s : String(s).replace(/(\d[\d,]*(?:\.\d+)?)(?:\s*([kKmM]))?(?![\w%])/g,
+  (m, num, suf)=>{
+    const v = parseFloat(num.replace(/,/g,'')) * (suf ? (suf.toLowerCase()==='k' ? 1e3 : 1e6) : 1);
+    if(!isFinite(v)) return m;
+    if(v >= 1e6) return payShort(v/1e6) + 'M';
+    if(v >= 1e3) return payShort(v/1e3) + 'K';
+    return m;
+  });
+
+async function load(){
+  try{
+    const r = await fetch('/api/archived'); const d = await r.json();
+    ROWS = d.archived || [];
+  }catch(e){ ROWS = []; }
+  render();
+}
+
+function render(){
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const rows = ROWS.filter(r => !q ||
+    (r.company||'').toLowerCase().includes(q) || (r.role||'').toLowerCase().includes(q));
+  document.getElementById('count').textContent = ROWS.length ? '('+ROWS.length+')' : '';
+  const tb = document.getElementById('rows'); const empty = document.getElementById('empty');
+  if(!rows.length){ tb.innerHTML=''; empty.style.display = ROWS.length? 'none':'block';
+    if(ROWS.length && !rows.length) empty.style.display='block'; return; }
+  empty.style.display='none';
+  tb.innerHTML = rows.map(r=>{
+    const rf = base(r.resumePath);
+    const roleCell = r.applyUrl
+      ? `<a href="${esc(r.applyUrl)}" target="_blank" rel="noopener">${esc(r.role)}</a>` : esc(r.role);
+    const resumeCell = rf
+      ? `<span class="resume"><a href="/archived-resume?file=${encodeURIComponent(rf)}" target="_blank" rel="noopener" title="Open the resume">${esc(rf)}</a></span>`
+      : '<span class="muted">—</span>';
+    return `<tr>
+      <td class="co">${esc(r.company)}</td>
+      <td class="role">${roleCell}</td>
+      <td>${esc(r.statusDate)||'<span class="muted">—</span>'}</td>
+      <td class="muted">${esc(r.foundDate)}</td>
+      <td>${esc(r.archivedDate)||'<span class="muted">—</span>'}</td>
+      <td class="muted"${r.salary?` title="${esc(r.salary)}"`:''}>${esc(fmtPay(r.salary))}</td>
+      <td>${r.skillMatch?`<span class="pill">${pct(r.skillMatch)}</span>`:''}</td>
+      <td>${resumeCell}</td>
+    </tr>`;
+  }).join('');
+}
+
+document.getElementById('q').addEventListener('input', render);
+load();
+</script>
+</body>
+</html>

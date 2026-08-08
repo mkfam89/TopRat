@@ -1,0 +1,2161 @@
+[
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Vault",
+   "AWS Secrets Manager",
+   "Go",
+   "AWS",
+   "Cursor",
+   "Claude",
+   "OAuth 2.0"
+  ],
+  "id": "hc_sparkhire___reco%2F3A.00D___51.F6E",
+  "requiredSkills": [
+   "GitHub Actions",
+   "ArgoCD",
+   "Terraform",
+   "Pulumi",
+   "Kubernetes",
+   "EKS",
+   "GKE",
+   "Docker",
+   "Vault",
+   "AWS Secrets Manager",
+   "Datadog",
+   "Prometheus",
+   "Grafana",
+   "OpenTelemetry",
+   "Python",
+   "Go",
+   "Bash",
+   "Helm",
+   "AWS",
+   "Azure",
+   "CloudWatch",
+   "ELK",
+   "Cursor",
+   "Claude",
+   "OAuth 2.0"
+  ],
+  "skillMatch": 0.69,
+  "title": "DevOps Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseType": "docx",
+   "category": "TECH_SUPPORT"
+  },
+  "flagged": [
+   "QuickBooks Online",
+   "Microsoft Excel",
+   "Google Sheets",
+   "XLOOKUP",
+   "VLOOKUP",
+   "SUMIFS",
+   "COUNTIFS",
+   "Pivot Tables",
+   "Stripe",
+   "CRM"
+  ],
+  "id": "hc_sparkhire___medvidi%2F2A.003___A9.E63-15.60A",
+  "requiredSkills": [
+   "QuickBooks Online",
+   "Microsoft Excel",
+   "Google Sheets",
+   "XLOOKUP",
+   "VLOOKUP",
+   "SUMIFS",
+   "COUNTIFS",
+   "Pivot Tables",
+   "Stripe",
+   "CRM"
+  ],
+  "skillMatch": 0.0,
+  "title": "Refunds & Accounting Support Specialist"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Microsoft Office",
+   "Creo",
+   "SolidWorks",
+   "AutoCAD"
+  ],
+  "id": "hc_adp___b0e24f83-6e4d-492d-9d6a-bc0fea197d6a___569",
+  "requiredSkills": [
+   "Microsoft Office",
+   "Creo",
+   "SolidWorks",
+   "AutoCAD"
+  ],
+  "skillMatch": 0.0,
+  "title": "Test Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "LLMs",
+   "Spark SQL",
+   "Databricks",
+   "Delta Lake",
+   "Snowflake",
+   "BigQuery"
+  ],
+  "id": "hc_grnhse___machinifyinc___4333221009",
+  "requiredSkills": [
+   "LLMs",
+   "SQL",
+   "Spark SQL",
+   "Databricks",
+   "Delta Lake",
+   "Snowflake",
+   "BigQuery"
+  ],
+  "skillMatch": 0.12,
+  "title": "Senior Data Analyst "
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "AWS CloudWatch",
+   "Nagios",
+   "SumoLogic",
+   "CommVault",
+   "AWS Backup",
+   "PowerShell"
+  ],
+  "id": "hc_ashby___truelogic___90ccb731-6945-49f9-9c98-fc61",
+  "requiredSkills": [
+   "AWS CloudWatch",
+   "New Relic",
+   "Nagios",
+   "SumoLogic",
+   "Jenkins",
+   "GitLab",
+   "CommVault",
+   "AWS Backup",
+   "PowerShell",
+   "Python"
+  ],
+  "skillMatch": 0.36,
+  "title": "Senior Site Reliability Operations Engineer - Finance"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "Microsoft Word",
+   "Microsoft Excel",
+   "Microsoft Visio"
+  ],
+  "id": "hc_taleo_careersection_wvu_29976",
+  "requiredSkills": [
+   "Microsoft Word",
+   "Microsoft Excel",
+   "Microsoft Visio",
+   "Jira"
+  ],
+  "skillMatch": 0.2,
+  "title": "(Remote) Business Analyst - Information Technology Services"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "Salesforce",
+   "Account Engagement (Pardot)",
+   "LeanData",
+   "Salesloft"
+  ],
+  "id": "hc_paylocity___10dddce7-8ab8-484d-8acf-3754d32ec78d",
+  "requiredSkills": [
+   "Salesforce",
+   "Account Engagement (Pardot)",
+   "LeanData",
+   "Salesloft"
+  ],
+  "skillMatch": 0.0,
+  "title": "Senior GTM Operations Analyst"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "GCP",
+   "CloudSQL",
+   "Spanner",
+   "IAM"
+  ],
+  "id": "hc_deel___cellpoint-digital___341ec616-b79a-4450-a9",
+  "requiredSkills": [
+   "GCP",
+   "Kubernetes (GKE)",
+   "CloudSQL",
+   "Spanner",
+   "Terraform",
+   "IAM"
+  ],
+  "skillMatch": 0.29,
+  "title": "Senior Site Reliability Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Golang",
+   "C",
+   "C#",
+   "C++",
+   "Java",
+   "Rust",
+   "Django",
+   "Flask",
+   "Laravel",
+   "APM"
+  ],
+  "id": "hc_workable___multi_media_llc___78ef9ad3-3ed7-4615-",
+  "requiredSkills": [
+   "Python",
+   "Golang",
+   "C",
+   "C#",
+   "C++",
+   "Java",
+   "Rust",
+   "Django",
+   "Flask",
+   "Laravel",
+   "Linux",
+   "Bash",
+   "Terraform",
+   "Ansible",
+   "Docker",
+   "Kubernetes",
+   "ArgoCD",
+   "Helm",
+   "APM"
+  ],
+  "skillMatch": 0.45,
+  "title": "Senior Site Reliability Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "RingCentral EX/CX",
+   "Calabrio WFM/QM",
+   "Eltropy"
+  ],
+  "id": "hc_adp___041319ce-7907-435e-808d-9b109919d702___595",
+  "requiredSkills": [
+   "RingCentral EX/CX",
+   "Calabrio WFM/QM",
+   "Eltropy"
+  ],
+  "skillMatch": 0.0,
+  "title": "Contact Center Platform Manager (Omnichannel)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseType": "docx",
+   "category": "TECH_SUPPORT"
+  },
+  "flagged": [
+   "Salesforce",
+   "Microsoft Excel",
+   "Microsoft Word",
+   "Microsoft Outlook",
+   "TD-03",
+   "SmartHQ"
+  ],
+  "id": "hc_workday___haier-wd3-ge_appliances___technical-su",
+  "requiredSkills": [
+   "Salesforce",
+   "Microsoft Excel",
+   "Microsoft Word",
+   "Microsoft Outlook",
+   "TD-03",
+   "SmartHQ"
+  ],
+  "skillMatch": 0.0,
+  "title": "Technical Support Specialist \u2013 HVAC - REMOTE"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "T-MSIS",
+   "Tableau",
+   "Databricks",
+   "Snowflake"
+  ],
+  "id": "hc_workday___gdit-wd5-gdit_empl_ref___sr-healthcare",
+  "requiredSkills": [
+   "T-MSIS",
+   "SQL",
+   "Python",
+   "Tableau",
+   "Databricks",
+   "Snowflake"
+  ],
+  "skillMatch": 0.29,
+  "title": "Sr. Healthcare Data Analyst (Medicaid)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Node.js 22",
+   "TypeScript",
+   "Fastify",
+   "JSON Schema",
+   "OpenAPI 3.1",
+   "pgvector",
+   "Amazon Cognito",
+   "SQS",
+   "S3",
+   "Python 3.14",
+   "uv",
+   "pydantic-ai",
+   "Claude Code",
+   "Cursor",
+   "Neo4j",
+   "Stripe"
+  ],
+  "id": "hc_ashby___infinity-constellation___bfdcea87-ccf2-4",
+  "requiredSkills": [
+   "Node.js 22",
+   "TypeScript",
+   "Fastify",
+   "JSON Schema",
+   "OpenAPI 3.1",
+   "PostgreSQL 18",
+   "pgvector",
+   "Amazon Cognito",
+   "SQS",
+   "S3",
+   "Python 3.14",
+   "uv",
+   "pydantic-ai",
+   "OpenTelemetry",
+   "Terraform",
+   "Claude Code",
+   "Cursor",
+   "Neo4j",
+   "Stripe"
+  ],
+  "skillMatch": 0.15,
+  "title": "Backend Platform Engineer - Labrynth"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "C#",
+   ".NET",
+   "Vue",
+   "React",
+   "Angular",
+   "Claude Code",
+   "Playwright"
+  ],
+  "id": "hc_ashby___virtuous___dda8959a-1799-4bd7-ae29-cb426",
+  "requiredSkills": [
+   "C#",
+   ".NET",
+   "Vue",
+   "React",
+   "Angular",
+   "Azure",
+   "SQL Server",
+   "Claude Code",
+   "Datadog",
+   "Playwright"
+  ],
+  "skillMatch": 0.27,
+  "title": "Senior Software Engineer- CRM+ Platform"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [],
+  "id": "hc_ashby___flock%20safety___79de29be-0e3c-4d3b-a3f6",
+  "requiredSkills": [
+   "REST APIs"
+  ],
+  "skillMatch": 0.5,
+  "title": "Senior Product Manager, Cloud Video"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "AWS",
+   "GCP",
+   "Puppet",
+   "Chef",
+   "Large Language Models (LLMs)"
+  ],
+  "id": "hc_smartrecruiters___endava___720ec01a-8541-455b-9e",
+  "requiredSkills": [
+   "Terraform",
+   "AWS",
+   "Azure",
+   "GCP",
+   "Docker",
+   "Kubernetes",
+   "Python",
+   "Bash",
+   "Jenkins",
+   "GitLab CI",
+   "CircleCI",
+   "Ansible",
+   "Puppet",
+   "Chef",
+   "Large Language Models (LLMs)"
+  ],
+  "skillMatch": 0.62,
+  "title": "Senior DevOps Engineer (Terraform) "
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Pytest",
+   "Selenium",
+   "AWS"
+  ],
+  "id": "hc_breezy___magpie-health-analytics___0f4741641509",
+  "requiredSkills": [
+   "Pytest",
+   "Selenium",
+   "Postman",
+   "Python",
+   "Git",
+   "Jira",
+   "Confluence",
+   "AWS",
+   "CI/CD"
+  ],
+  "skillMatch": 0.6,
+  "title": "Test Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "Adobe Analytics",
+   "Adobe Launch",
+   "Google Tag Manager",
+   "Qualtrics",
+   "JavaScript",
+   "HTML",
+   "CSS",
+   "R",
+   "SAS",
+   "Microsoft Excel",
+   "ServiceNow"
+  ],
+  "id": "hc_grnhse___agilesix___7815777003",
+  "requiredSkills": [
+   "Adobe Analytics",
+   "Adobe Launch",
+   "Google Tag Manager",
+   "Qualtrics",
+   "Datadog",
+   "JavaScript",
+   "HTML",
+   "CSS",
+   "SQL",
+   "R",
+   "Python",
+   "SAS",
+   "Microsoft Excel",
+   "Jira",
+   "Confluence",
+   "ServiceNow"
+  ],
+  "skillMatch": 0.29,
+  "title": "Data Analyst "
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "PowerShell",
+   "Azure CLI",
+   "SD-WAN",
+   "ExpressRoute",
+   "TCP/IP"
+  ],
+  "id": "hc_adp___beb9960c-acce-44eb-beb5-775ef89b3ee8___620",
+  "requiredSkills": [
+   "Azure",
+   "PowerShell",
+   "Azure CLI",
+   "ARM",
+   "Bicep",
+   "SD-WAN",
+   "ExpressRoute",
+   "TCP/IP"
+  ],
+  "skillMatch": 0.33,
+  "title": "Cloud and Network Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "ASP.NET Core",
+   "Entity Framework Core",
+   "NUnit",
+   "Moq",
+   "Shouldly",
+   "Azure Container Apps",
+   "Azure Databricks",
+   "TypeScript"
+  ],
+  "id": "hc_paycor___8a7883d08145828d0181a5cbeb6c3933___8a78",
+  "requiredSkills": [
+   "Bicep",
+   "Pulumi",
+   "Terraform",
+   "ARM",
+   "Azure",
+   "Azure DevOps",
+   "ASP.NET Core",
+   "Entity Framework Core",
+   "PostgreSQL",
+   "NUnit",
+   "Moq",
+   "Shouldly",
+   "AKS",
+   "Azure Container Apps",
+   "Azure Databricks",
+   "Python",
+   "TypeScript"
+  ],
+  "skillMatch": 0.5,
+  "title": "DevOps Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Go (Golang)",
+   "Docker/OCI",
+   "GCP",
+   "AWS",
+   "Argo",
+   "Tekton",
+   "SBOM",
+   "SLSA",
+   "sigstore",
+   "Bazel",
+   "CMake",
+   "Ninja"
+  ],
+  "id": "hc_grnhse___chainguard___4699210006",
+  "requiredSkills": [
+   "Go (Golang)",
+   "Docker/OCI",
+   "Kubernetes",
+   "GCP",
+   "AWS",
+   "Azure",
+   "Terraform",
+   "GitHub Actions",
+   "Argo",
+   "Tekton",
+   "SBOM",
+   "SLSA",
+   "sigstore",
+   "Linux",
+   "Bazel",
+   "CMake",
+   "Ninja"
+  ],
+  "skillMatch": 0.28,
+  "title": "Software Engineer (Libraries Platform) "
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Django",
+   "Django REST Framework",
+   "EMR",
+   "EHR",
+   "FHIR",
+   "HL7",
+   "CCD/C-CDA",
+   "X12",
+   "ICD-10",
+   "CPT",
+   "HCPCS",
+   "LOINC",
+   "SNOMED CT",
+   "RxNorm",
+   "NDC",
+   "React",
+   "Vue",
+   "AI coding tools"
+  ],
+  "id": "hc_ashby___vitable___8f501dba-7a32-44ac-a75e-67c531",
+  "requiredSkills": [
+   "Python",
+   "Django",
+   "Django REST Framework",
+   "EMR",
+   "EHR",
+   "FHIR",
+   "HL7",
+   "CCD/C-CDA",
+   "X12",
+   "ICD-10",
+   "CPT",
+   "HCPCS",
+   "LOINC",
+   "SNOMED CT",
+   "RxNorm",
+   "NDC",
+   "SQL",
+   "PostgreSQL",
+   "React",
+   "Vue",
+   "AI coding tools"
+  ],
+  "skillMatch": 0.14,
+  "title": "Senior Product Engineer - EMR Platform "
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Django",
+   "Django REST Framework",
+   "React",
+   "Vue"
+  ],
+  "id": "hc_ashby___vitable___dac8e766-ae18-4afb-98bb-1d58c3",
+  "requiredSkills": [
+   "Python",
+   "SQL",
+   "PostgreSQL",
+   "Django",
+   "Django REST Framework",
+   "React",
+   "Vue"
+  ],
+  "skillMatch": 0.38,
+  "title": "Staff Product Engineer -API Platform"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Amazon Web Services (AWS)",
+   "Google Cloud Platform (GCP)",
+   "IBM Cloud",
+   "Oracle Cloud Infrastructure (OCI)"
+  ],
+  "id": "hc_ttcportals___saic___18039238",
+  "requiredSkills": [
+   "Microsoft Azure",
+   "Amazon Web Services (AWS)",
+   "Google Cloud Platform (GCP)",
+   "IBM Cloud",
+   "Oracle Cloud Infrastructure (OCI)",
+   "CI/CD"
+  ],
+  "skillMatch": 0.29,
+  "title": "Cloud Cyber SME"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseType": "docx",
+   "category": "TECH_SUPPORT"
+  },
+  "flagged": [
+   "SOAP",
+   "Salesforce"
+  ],
+  "id": "hc_paylocity___42e720d7-a6bc-4b69-9630-509cfe7e0575",
+  "requiredSkills": [
+   "SQL",
+   "Postman",
+   "RESTful",
+   "SOAP",
+   "Jira",
+   "Salesforce"
+  ],
+  "skillMatch": 0.57,
+  "title": "Technical Support Engineer | Remote | SaaS | Client-Facing"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "AWS",
+   "IAM",
+   "VPC",
+   "EC2",
+   "ELB",
+   "RDS",
+   "S3",
+   "Lambda",
+   "API Gateway",
+   "Secrets Manager",
+   "KMS",
+   "CloudTrail",
+   "Chef",
+   "Puppet",
+   "JFrog Artifactory"
+  ],
+  "id": "hc_grnhse___duettoresearch___8077087",
+  "requiredSkills": [
+   "AWS",
+   "IAM",
+   "VPC",
+   "EC2",
+   "ELB",
+   "RDS",
+   "S3",
+   "Lambda",
+   "API Gateway",
+   "Secrets Manager",
+   "KMS",
+   "CloudWatch",
+   "CloudTrail",
+   "Terraform",
+   "Terragrunt",
+   "Chef",
+   "Puppet",
+   "GitHub",
+   "GitHub Actions",
+   "Jenkins",
+   "JFrog Artifactory",
+   "GitOps",
+   "DataDog",
+   "Prometheus",
+   "Grafana"
+  ],
+  "skillMatch": 0.38,
+  "title": "Senior DevOps Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Java",
+   "Gradle",
+   "Aurora",
+   "OAuth2",
+   "OIDC",
+   "SAML",
+   "JWT",
+   "Kafka",
+   "Redis"
+  ],
+  "id": "hc_smartrecruiters___versant3___50960ecf-dc62-4194-",
+  "requiredSkills": [
+   "Java",
+   "Gradle",
+   "MySQL",
+   "Aurora",
+   "OAuth2",
+   "OIDC",
+   "SAML",
+   "JWT",
+   "Kafka",
+   "Redis"
+  ],
+  "skillMatch": 0.09,
+  "title": "Staff Software Engineer, Video Platform - Fandango at Home"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "HubSpot",
+   "Salesforce"
+  ],
+  "id": "hc_grnhse___antenna___6127458004",
+  "requiredSkills": [
+   "HubSpot",
+   "Salesforce"
+  ],
+  "skillMatch": 0.0,
+  "title": "Commercial Operations Analyst"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "BGP",
+   "HTTP/s",
+   "TCP",
+   "TLS",
+   "DNS",
+   "HLS",
+   "DASH",
+   "Load Balancing",
+   "Apache",
+   "NGINX",
+   "Sed",
+   "Awk",
+   "Perl",
+   "Ruby",
+   "Go",
+   "Node.js",
+   "AWS",
+   "GCP",
+   "Varnish",
+   "Varnish Configuration Language"
+  ],
+  "id": "hc_grnhse___fastly___8082266",
+  "requiredSkills": [
+   "BGP",
+   "HTTP/s",
+   "TCP",
+   "TLS",
+   "DNS",
+   "HLS",
+   "DASH",
+   "Load Balancing",
+   "Apache",
+   "NGINX",
+   "Python",
+   "Sed",
+   "Awk",
+   "Perl",
+   "JSON",
+   "Ruby",
+   "Go",
+   "Node.js",
+   "AWS",
+   "Azure",
+   "GCP",
+   "Varnish",
+   "Varnish Configuration Language"
+  ],
+  "skillMatch": 0.12,
+  "title": "Senior Cloud Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Claude",
+   "Databricks",
+   "Google Analytics",
+   "Search Console",
+   "Datawrapper",
+   "Infogram",
+   "gcloud",
+   "MCP",
+   "Cowork",
+   "OAuth 2.0"
+  ],
+  "id": "hc_grnhse___placerlabs___7817191003",
+  "requiredSkills": [
+   "Claude",
+   "Databricks",
+   "Google Analytics",
+   "Search Console",
+   "Datawrapper",
+   "Infogram",
+   "gcloud",
+   "Kubernetes",
+   "MCP",
+   "Cowork",
+   "OAuth 2.0",
+   "REST APIs"
+  ],
+  "skillMatch": 0.15,
+  "title": "Senior AI Platform Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "ESRI ARC GIS",
+   "CADD",
+   "Microstation",
+   "AutoCAD Civil 3D",
+   "Microsoft Office",
+   "BlueBeam",
+   "Fulcrum",
+   "Basecamp"
+  ],
+  "id": "hc_icims2___colliersengineering___13814",
+  "requiredSkills": [
+   "ESRI ARC GIS",
+   "CADD",
+   "Microstation",
+   "AutoCAD Civil 3D",
+   "Microsoft Office",
+   "BlueBeam",
+   "Fulcrum",
+   "Basecamp"
+  ],
+  "skillMatch": 0.0,
+  "title": "SUE (Subsurface Utility Engineering) Data Analyst/GIS Specialist"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Datuum.ai",
+   "Quadient",
+   "Wells Fargo Early Warning",
+   "SOVOS"
+  ],
+  "id": "hc_taleo_careersection_uhg_2372615",
+  "requiredSkills": [
+   "Datuum.ai",
+   "Quadient",
+   "Wells Fargo Early Warning",
+   "SOVOS",
+   "API"
+  ],
+  "skillMatch": 0.17,
+  "title": "Senior Product Manager, Platform Services and Third -Party Capabilities - Optum Financial - Remote"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "NoSQL",
+   "PowerShell",
+   "C#",
+   "Java",
+   "Helm Charts",
+   "AWS",
+   "Google Cloud Platform (GCP)"
+  ],
+  "id": "hc_breezy___nationsbenefits___22d1a3f20ba2",
+  "requiredSkills": [
+   "Datadog",
+   "Kubernetes",
+   "Docker",
+   "SQL",
+   "MySQL",
+   "NoSQL",
+   "Python",
+   "PowerShell",
+   "Bash",
+   "C#",
+   "Java",
+   "Helm Charts",
+   "Microsoft Azure",
+   "AWS",
+   "Google Cloud Platform (GCP)",
+   "CI/CD"
+  ],
+  "skillMatch": 0.53,
+  "title": "Site Reliability Engineer II"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Microsoft Defender for Cloud Apps",
+   "Microsoft Defender for Cloud",
+   "Microsoft purview",
+   "CASB",
+   "CNAPP"
+  ],
+  "id": "hc_avature___careers.bakermckenzie.com___2547",
+  "requiredSkills": [
+   "Microsoft Defender for Cloud Apps",
+   "Microsoft Defender for Cloud",
+   "Microsoft purview",
+   "CASB",
+   "CNAPP",
+   "Microsoft Entra ID"
+  ],
+  "skillMatch": 0.14,
+  "title": "Security Architect for Network and Cloud"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "Tapestry",
+   "Resolute",
+   "Cadence",
+   "MyChart",
+   "Microsoft Office Suite",
+   "Microsoft Outlook",
+   "Microsoft Teams",
+   "Concerto",
+   "ServiceNow",
+   "Electronic Medical Records (EMR)"
+  ],
+  "id": "hc_avature___kp___534433",
+  "requiredSkills": [
+   "Tapestry",
+   "Resolute",
+   "Cadence",
+   "MyChart",
+   "Microsoft Office Suite",
+   "Microsoft Outlook",
+   "Microsoft Teams",
+   "JIRA",
+   "Concerto",
+   "ServiceNow",
+   "Electronic Medical Records (EMR)"
+  ],
+  "skillMatch": 0.08,
+  "title": "KAISJP00253410 Business Analyst - Jr"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [],
+  "id": "hc_workable___covergo___11e86077-2933-4be6-8721-be2",
+  "requiredSkills": [],
+  "skillMatch": null,
+  "title": "Senior Business Analyst - Health Insurance (Fully Remote)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "Agile",
+   "Scrum"
+  ],
+  "id": "hc_workable___covergo___ef982a20-3949-4873-88c7-720",
+  "requiredSkills": [
+   "Agile",
+   "Scrum"
+  ],
+  "skillMatch": 0.0,
+  "title": "Senior Business Analyst - Health Insurance (Fully Remote)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [],
+  "id": "hc_workable___covergo___f92acca2-4336-49ba-85f6-195",
+  "requiredSkills": [],
+  "skillMatch": null,
+  "title": "Senior Business Analyst - Health Insurance (Fully Remote)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [],
+  "id": "hc_workable___covergo___9c4a0a8d-c88c-4ae3-b15e-ccd",
+  "requiredSkills": [],
+  "skillMatch": null,
+  "title": "Senior Business Analyst - Health Insurance (Fully Remote)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "Customer.io",
+   "Braze",
+   "Iterable",
+   "BigQuery",
+   "Snowflake",
+   "Redshift",
+   "AWS",
+   "Google Cloud Platform"
+  ],
+  "id": "hc_workable___gomining___38759ce0-3d27-4df1-9f3e-82",
+  "requiredSkills": [
+   "Customer.io",
+   "Braze",
+   "Iterable",
+   "SQL",
+   "Python",
+   "BigQuery",
+   "Snowflake",
+   "Redshift",
+   "AWS",
+   "Google Cloud Platform"
+  ],
+  "skillMatch": 0.18,
+  "title": "Senior Data Analyst (Marketing team)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "Amplitude",
+   "PostHog",
+   "GA4",
+   "BigQuery",
+   "Snowflake",
+   "Redshift",
+   "AWS",
+   "Google Cloud Platform",
+   "LLMs"
+  ],
+  "id": "hc_workable___gomining___1aff8859-82ee-4d6c-ade0-ad",
+  "requiredSkills": [
+   "Amplitude",
+   "PostHog",
+   "GA4",
+   "SQL",
+   "Python",
+   "BigQuery",
+   "Snowflake",
+   "Redshift",
+   "AWS",
+   "Google Cloud Platform",
+   "LLMs"
+  ],
+  "skillMatch": 0.17,
+  "title": "Senior Data Analyst (Product team)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Elasticsearch",
+   "Kafka",
+   "Azure Storage",
+   "Azure Key Vault",
+   "Microsoft PowerShell"
+  ],
+  "id": "hc_dayforce___mydayforce___alljobs___100269",
+  "requiredSkills": [
+   "Python",
+   "Azure",
+   "Docker",
+   "Kubernetes",
+   "Git",
+   "GitHub",
+   "Azure DevOps",
+   "Elasticsearch",
+   "Kafka",
+   "Azure SQL",
+   "Azure Functions",
+   "Azure Storage",
+   "Azure Key Vault",
+   "Azure Monitor",
+   "Log Analytics",
+   "Terraform",
+   "ARM templates",
+   "Microsoft PowerShell"
+  ],
+  "skillMatch": 0.68,
+  "title": "Intermediate or Sr Software Developer (AI Platform & Applications)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseType": "docx",
+   "category": "TECH_SUPPORT"
+  },
+  "flagged": [
+   "Microsoft Office",
+   "VisionLink",
+   "Cat Inspect",
+   "SIS",
+   "Foresight",
+   "Product Link"
+  ],
+  "id": "hc_dayforce___mustang___candidateportal___7196",
+  "requiredSkills": [
+   "Microsoft Office",
+   "VisionLink",
+   "Cat Inspect",
+   "SIS",
+   "Foresight",
+   "Product Link"
+  ],
+  "skillMatch": 0.0,
+  "title": "VisionLink Support Specialist"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Elasticsearch",
+   "Kafka",
+   "Azure Storage",
+   "Azure Key Vault",
+   "PowerShell"
+  ],
+  "id": "hc_dayforce___mydayforce___indeedjobs___100270",
+  "requiredSkills": [
+   "Python",
+   "Azure",
+   "Docker",
+   "Kubernetes",
+   "Git",
+   "GitHub",
+   "Azure DevOps",
+   "Elasticsearch",
+   "Kafka",
+   "Azure SQL",
+   "Azure Functions",
+   "Azure Storage",
+   "Azure Key Vault",
+   "Azure Monitor",
+   "Log Analytics",
+   "Terraform",
+   "ARM templates",
+   "PowerShell"
+  ],
+  "skillMatch": 0.68,
+  "title": "Intermediate or Sr Software Developer (AI Platform & Applications)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [],
+  "id": "hc_icims2___collegerecruitment-barrios___2829",
+  "requiredSkills": [],
+  "skillMatch": null,
+  "title": "Project Test Engineer-GARLIC"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "AWS",
+   "EC2",
+   "ECS",
+   "IAM",
+   "VPC",
+   "S3",
+   "RDS",
+   "CDK",
+   "CloudFormation",
+   "Salt",
+   "Chef",
+   "Puppet",
+   "PowerShell",
+   "Claude"
+  ],
+  "id": "hc_icims2___careers-healthedge___8188",
+  "requiredSkills": [
+   "AWS",
+   "Azure",
+   "EC2",
+   "EKS",
+   "ECS",
+   "IAM",
+   "VPC",
+   "S3",
+   "RDS",
+   "CloudWatch",
+   "Terraform",
+   "CDK",
+   "CloudFormation",
+   "Jenkins",
+   "GitHub Actions",
+   "Kubernetes",
+   "Salt",
+   "Ansible",
+   "Chef",
+   "Puppet",
+   "Python",
+   "Bash",
+   "PowerShell",
+   "GitHub Copilot",
+   "Claude"
+  ],
+  "skillMatch": 0.42,
+  "title": "Senior Cloud Infrastructure Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "Microsoft Project",
+   "Microsoft Word",
+   "Microsoft Visio",
+   "Microsoft Excel",
+   "Microsoft PowerPoint",
+   "Adobe InDesign",
+   "Adobe Photoshop",
+   "HTML"
+  ],
+  "id": "hc_dayforce___carhartt___candidateportal___5101",
+  "requiredSkills": [
+   "Microsoft Project",
+   "Microsoft Word",
+   "Microsoft Visio",
+   "Microsoft Excel",
+   "Microsoft PowerPoint",
+   "Adobe InDesign",
+   "Adobe Photoshop",
+   "Jira",
+   "Azure DevOps",
+   "HTML"
+  ],
+  "skillMatch": 0.18,
+  "title": "Business Analyst DCOE"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseType": "docx",
+   "category": "TECH_SUPPORT"
+  },
+  "flagged": [
+   "Microsoft Excel",
+   "Microsoft Word"
+  ],
+  "id": "hc_successfactors___com___BOKF___1412840900",
+  "requiredSkills": [
+   "Microsoft Excel",
+   "Microsoft Word"
+  ],
+  "skillMatch": 0.0,
+  "title": "Loan Coordination Specialist III (Commercial Lending Support Experience Preferred)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   ".NET",
+   "C#",
+   "Cosmos DB",
+   "OpenAI"
+  ],
+  "id": "hc_workday___allstate-wd5-allstate_careers___platfo",
+  "requiredSkills": [
+   "Postman",
+   ".NET",
+   "C#",
+   "SQL",
+   "Cosmos DB",
+   "Azure",
+   "Azure DevOps",
+   "GitHub",
+   "Terraform",
+   "OpenAI"
+  ],
+  "skillMatch": 0.55,
+  "title": "Platform Consultant"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Azure App Services",
+   "Azure Data Factory",
+   "ServiceNow"
+  ],
+  "id": "hc_workday___chevron-wd5-jobs___solution-architect-",
+  "requiredSkills": [
+   "Azure App Services",
+   "Azure Functions",
+   "Azure DevOps",
+   "Azure Data Factory",
+   "Azure SQL Database",
+   "GitHub Enterprise",
+   "Ansible",
+   "ServiceNow"
+  ],
+  "skillMatch": 0.56,
+  "title": "Solution Architect \u2013 DevOps Pipeline"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseType": "docx",
+   "category": "TECH_SUPPORT"
+  },
+  "flagged": [
+   "Exchange Online",
+   "Teams",
+   "SharePoint",
+   "Exchange 2013",
+   "Exchange 2016",
+   "SonicWall",
+   "Fortinet",
+   "Palo Alto",
+   "Unifi",
+   "Ubiquiti",
+   "Cisco",
+   "Meraki",
+   "Dell",
+   "HP",
+   "AnyConnect",
+   "L2TP",
+   "DMVPN",
+   "EIGRP",
+   "OSPF",
+   "MPLS",
+   "STP",
+   "VTP",
+   "NTP",
+   "DHCP"
+  ],
+  "id": "hc_bamboohr___ergos___42",
+  "requiredSkills": [
+   "Microsoft 365",
+   "Exchange Online",
+   "Teams",
+   "SharePoint",
+   "Exchange 2013",
+   "Exchange 2016",
+   "SonicWall",
+   "Fortinet",
+   "Palo Alto",
+   "Unifi",
+   "Ubiquiti",
+   "Cisco",
+   "Meraki",
+   "Dell",
+   "HP",
+   "AnyConnect",
+   "L2TP",
+   "DMVPN",
+   "EIGRP",
+   "OSPF",
+   "MPLS",
+   "STP",
+   "VTP",
+   "NTP",
+   "DHCP"
+  ],
+  "skillMatch": 0.04,
+  "title": "Dispatchable Support Engineer - Tier 3 "
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "Packer",
+   "ServiceNow",
+   "HashiCorp Vault"
+  ],
+  "id": "hc_workday___regions-wd5-regions_careers___cloud-de",
+  "requiredSkills": [
+   "Python",
+   "Jenkins",
+   "Azure DevOps",
+   "Ansible",
+   "Terraform",
+   "Packer",
+   "Git",
+   "ServiceNow",
+   "OpenShift",
+   "Azure Kubernetes Service (AKS)",
+   "HashiCorp Vault"
+  ],
+  "skillMatch": 0.67,
+  "title": "Cloud DevSecOps Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "AWS",
+   "AWS CloudFormation",
+   "Azure Resource Manager",
+   "Salesforce",
+   ".NET",
+   "J2EE",
+   "Oracle",
+   "Kafka",
+   "Confluent",
+   "Kafka Connect",
+   "Apache Flink",
+   "Kafka Streams",
+   "ksqlDB"
+  ],
+  "id": "hc_workday___regions-wd5-regions_careers___cloud-so",
+  "requiredSkills": [
+   "AWS",
+   "Azure",
+   "Terraform",
+   "AWS CloudFormation",
+   "Azure Resource Manager",
+   "Kubernetes",
+   "OpenShift",
+   "OpenTelemetry",
+   "DynaTrace",
+   "Splunk",
+   "Salesforce",
+   ".NET",
+   "J2EE",
+   "Oracle",
+   "Kafka",
+   "Confluent",
+   "Kafka Connect",
+   "Apache Flink",
+   "Kafka Streams",
+   "ksqlDB"
+  ],
+  "skillMatch": 0.33,
+  "title": "Cloud Solutions Architect"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseType": "docx",
+   "category": "TECH_SUPPORT"
+  },
+  "flagged": [
+   "Relativity",
+   "CloudNine LAW/Explore",
+   "NUIX",
+   "iPro",
+   "RevealAI",
+   "Brainspace",
+   "ConnectWise",
+   "EDRM Framework",
+   "Windows Server",
+   "Microsoft SQL Server",
+   "Microsoft IIS",
+   "Microsoft Clustering"
+  ],
+  "id": "hc_jazzhr___georgejon___job_20260727150820_TXMLTGXQ",
+  "requiredSkills": [
+   "Relativity",
+   "CloudNine LAW/Explore",
+   "NUIX",
+   "iPro",
+   "RevealAI",
+   "Brainspace",
+   "ConnectWise",
+   "EDRM Framework",
+   "Windows Server",
+   "Microsoft SQL Server",
+   "Microsoft IIS",
+   "Microsoft Clustering"
+  ],
+  "skillMatch": 0.0,
+  "title": "Senior eDiscovery Application Support Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "MongoDB",
+   "Azure Cosmos DB",
+   "Neo4j",
+   "vector databases",
+   "Google Cloud Platform",
+   "Claude"
+  ],
+  "id": "hc_workday___humana-wd5-humana_external_career_site",
+  "requiredSkills": [
+   "MongoDB",
+   "Azure Cosmos DB",
+   "Neo4j",
+   "vector databases",
+   "Azure",
+   "Google Cloud Platform",
+   "Python",
+   "Azure DevOps",
+   "GitHub",
+   "GitLab",
+   "Jenkins",
+   "Terraform",
+   "Ansible",
+   "GitHub Copilot",
+   "Claude",
+   "Kubernetes"
+  ],
+  "skillMatch": 0.59,
+  "title": "Lead Cloud Architect - NoSQL Databases"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseType": "docx",
+   "category": "TECH_SUPPORT"
+  },
+  "flagged": [],
+  "id": "hc_workday___spectris-wd3-malvern_panalytical_caree",
+  "requiredSkills": [],
+  "skillMatch": null,
+  "title": "Technical Support Specialist"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseType": "docx",
+   "category": "TECH_SUPPORT"
+  },
+  "flagged": [
+   "Oracle",
+   "AWS",
+   "Google Cloud",
+   "Centric 8"
+  ],
+  "id": "hc_workday___centricsoftware-wd501-centric___senior",
+  "requiredSkills": [
+   "SQL Server",
+   "Oracle",
+   "AWS",
+   "Azure",
+   "Google Cloud",
+   "Centric 8"
+  ],
+  "skillMatch": 0.29,
+  "title": "Senior Technical Support Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [],
+  "id": "hc_eightfold___netflix___790317534842",
+  "requiredSkills": [],
+  "skillMatch": null,
+  "title": "Product Manager - Games, Social Platform (L5)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [],
+  "id": "hc_eightfold___netflix___790317534955",
+  "requiredSkills": [],
+  "skillMatch": null,
+  "title": "Product Manager - Games, Cloud Infrastructure (L5)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [
+   "Oracle PIM",
+   "Oracle database",
+   "Agile"
+  ],
+  "id": "hc_workday___taylor-wd1-external___oracle-product-i",
+  "requiredSkills": [
+   "Oracle PIM",
+   "Oracle database",
+   "Agile"
+  ],
+  "skillMatch": 0.0,
+  "title": "Oracle Product Information Management (PIM) Business Analyst"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "AWS",
+   "RDS",
+   "IAM",
+   "Route 53",
+   "VPC",
+   "AWS Backup",
+   "PowerShell",
+   "Go",
+   "Jira Service Management",
+   "Istio"
+  ],
+  "id": "hc_workday___ssctech-wd1-ssctechnologies___site-rel",
+  "requiredSkills": [
+   "Kubernetes",
+   "AWS",
+   "EKS",
+   "RDS",
+   "IAM",
+   "CloudWatch",
+   "Route 53",
+   "VPC",
+   "AWS Backup",
+   "Prometheus",
+   "Grafana",
+   "Datadog",
+   "Splunk",
+   "OpenTelemetry",
+   "Python",
+   "Bash",
+   "PowerShell",
+   "Go",
+   "PagerDuty",
+   "Jira Service Management",
+   "Istio",
+   "CI/CD"
+  ],
+  "skillMatch": 0.52,
+  "title": "Site Reliability Engineer/L3 Support"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "API Gateway",
+   "AWS VPC",
+   "AWS IAM",
+   "AWS EC2",
+   "AWS EKS",
+   "Istio",
+   "Tyk",
+   "Go",
+   "JavaScript"
+  ],
+  "id": "hc_workday___availity-wd1-availity_careers_us___pla",
+  "requiredSkills": [
+   "API Gateway",
+   "Terraform",
+   "Ansible",
+   "Helm",
+   "AWS VPC",
+   "AWS IAM",
+   "AWS EC2",
+   "AWS EKS",
+   "Istio",
+   "Splunk",
+   "New Relic",
+   "Tyk",
+   "Go",
+   "JavaScript",
+   "Python"
+  ],
+  "skillMatch": 0.38,
+  "title": "Platform Engineer III"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [
+   "AWS",
+   "GCP",
+   "CDK",
+   "CloudFormation",
+   "Google Workspace",
+   "Slack",
+   "Notion",
+   "Linear",
+   "Okta",
+   "Azure AD/Entra ID",
+   "VPN"
+  ],
+  "id": "hc_zohorecruit___ayrindigital___203055000001627012",
+  "requiredSkills": [
+   "AWS",
+   "Azure",
+   "GCP",
+   "Terraform",
+   "Pulumi",
+   "CDK",
+   "CloudFormation",
+   "Docker",
+   "Kubernetes",
+   "GitHub Actions",
+   "Jenkins",
+   "GitLab CI",
+   "Prometheus",
+   "Grafana",
+   "ELK",
+   "Datadog",
+   "Google Workspace",
+   "Slack",
+   "GitHub",
+   "Notion",
+   "Linear",
+   "Okta",
+   "Azure AD/Entra ID",
+   "VPN",
+   "Bash"
+  ],
+  "skillMatch": 0.54,
+  "title": "DevOps & IT Support engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [],
+  "id": "li_4437627285",
+  "requiredSkills": [
+   "SQL"
+  ],
+  "skillMatch": 0.5,
+  "title": "Business Systems Analyst (BSA)"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [],
+  "id": "li_4445491110",
+  "requiredSkills": [
+   "SLA",
+   "REST APIs",
+   "Azure",
+   "CI/CD",
+   "Bash",
+   "IaC",
+   "Linux"
+  ],
+  "skillMatch": 0.88,
+  "title": "IT Analyst"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseType": "docx",
+   "category": "TECH_SUPPORT"
+  },
+  "flagged": [],
+  "id": "li_4435688829",
+  "requiredSkills": [
+   "Monitoring",
+   "SRE",
+   "Incident Management",
+   "Python",
+   "SQL"
+  ],
+  "skillMatch": 0.83,
+  "title": "Production Support Analyst"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [],
+  "id": "li_4434586021",
+  "requiredSkills": [
+   "Automation",
+   "Observability",
+   "Incident Management",
+   "Azure",
+   "Ansible",
+   "CI/CD",
+   "Azure DevOps",
+   "SRE",
+   "Monitoring",
+   "Git",
+   "Infrastructure as Code",
+   "Bash",
+   "Terraform",
+   "Linux",
+   "REST APIs",
+   "Networking",
+   "Python"
+  ],
+  "skillMatch": 0.94,
+  "title": "DevOps Engineer II - Applications"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [],
+  "id": "li_4445471875",
+  "requiredSkills": [
+   "Azure",
+   "Azure DevOps",
+   "Python",
+   "Automation",
+   "Monitoring",
+   "Infrastructure as Code",
+   "Change Management",
+   "Ansible",
+   "CI/CD",
+   "Terraform",
+   "SQL",
+   "REST APIs"
+  ],
+  "skillMatch": 0.92,
+  "title": "Sr. IT Analyst"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [],
+  "id": "li_4387512726",
+  "requiredSkills": [
+   "Incident Management",
+   "Monitoring",
+   "Azure DevOps",
+   "High Availability",
+   "SRE",
+   "Infrastructure as Code",
+   "Terraform",
+   "Automation",
+   "Docker",
+   "Kubernetes",
+   "Observability",
+   "Prometheus",
+   "Grafana",
+   "Bash",
+   "Python",
+   "CI/CD"
+  ],
+  "skillMatch": 0.94,
+  "title": "Site Reliability Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [],
+  "id": "li_4444085479",
+  "requiredSkills": [
+   "CI/CD",
+   "Azure DevOps"
+  ],
+  "skillMatch": 0.67,
+  "title": "AI Solutions QA Analyst"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [],
+  "id": "li_4442411340",
+  "requiredSkills": [],
+  "skillMatch": null,
+  "title": "IT Business Analyst"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseType": "docx",
+   "category": "CORE"
+  },
+  "flagged": [],
+  "id": "li_4361080373",
+  "requiredSkills": [
+   "CI/CD",
+   "Azure DevOps",
+   "Automation",
+   "Docker",
+   "Git",
+   "Infrastructure as Code",
+   "Terraform",
+   "Kubernetes",
+   "Bash",
+   "Ansible",
+   "Networking",
+   "Incident Management",
+   "SRE",
+   "Azure",
+   "REST APIs",
+   "Monitoring",
+   "Observability"
+  ],
+  "skillMatch": 0.94,
+  "title": "Platform Engineer"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseType": "docx",
+   "category": "ANALYST"
+  },
+  "flagged": [],
+  "id": "li_4444615120",
+  "requiredSkills": [
+   "Monitoring",
+   "Incident Management"
+  ],
+  "skillMatch": 0.67,
+  "title": "Analyst II, IT - Leak Detection"
+ },
+ {
+  "classify": {
+   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseType": "docx",
+   "category": "TECH_SUPPORT"
+  },
+  "flagged": [],
+  "id": "li_4400786969",
+  "requiredSkills": [
+   "Ansible",
+   "Git",
+   "Azure DevOps",
+   "Confluence",
+   "Jira",
+   "Linux",
+   "Bash",
+   "Python",
+   "Monitoring"
+  ],
+  "skillMatch": 0.9,
+  "title": "Mission Operations Support Engineer"
+ }
+]

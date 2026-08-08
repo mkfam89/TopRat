@@ -1,0 +1,7 @@
+{
+  "_readme": "Per-instance overrides for THIS working copy only. Copy to config/instance.json (git-ignored) to neutralize a staging/test worktree without touching committed config. Live has no instance.json, so it keeps all defaults (notifications on, scheduler on, port 8765). Env vars override these keys: JOB_AGENT_DISABLE_NOTIFY, JOB_AGENT_DISABLE_SCHEDULER, JOB_AGENT_PORT.",
+  "label": "STAGING",
+  "disable_notifications": true,
+  "disable_scheduler": true,
+  "port": 8766
+}

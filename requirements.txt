@@ -1,0 +1,24 @@
+# Top Rat — optional dependencies.
+#
+# THE APP RUNS WITH NONE OF THESE. Everything here is import-guarded: the
+# dashboard, scraping, scoring, tracking and the scheduler are plain Python 3
+# and the standard library. Each line below unlocks one extra feature, and the
+# app tells you which one is missing rather than crashing.
+#
+# Install all of them:      pip install -r requirements.txt
+# Install just one:         pip install python-docx
+
+# Resume rendering. Without it you still get scored jobs and the dashboard,
+# but no tailored .docx is produced.
+python-docx>=1.1.0
+
+# Validates config files and gives a readable error instead of a traceback
+# when a hand-edited JSON file has the wrong shape.
+jsonschema>=4.0.0
+
+# LinkedIn search only. Every other job source works without it.
+python-jobspy>=1.1.80
+
+# Native desktop window. Without it the app opens in your normal browser,
+# which works exactly the same — it just is not its own window.
+pywebview>=5.0

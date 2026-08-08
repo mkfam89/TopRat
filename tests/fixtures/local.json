@@ -1,0 +1,146 @@
+[
+ {
+  "isLocal": false,
+  "location": ""
+ },
+ {
+  "isLocal": false,
+  "location": "Atlanta or Boston or Chicago or Denver or Los Angeles or New York City or San Francisco or Austin (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Atlanta or North America (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Baltimore, Maryland, United States (Remote)"
+ },
+ {
+  "isLocal": true,
+  "location": "Belfast or Chicago or Dallas or Houston or Los Angeles or Manila or Miami or New York or Palo Alto or San Francisco or Tampa or Washington"
+ },
+ {
+  "isLocal": false,
+  "location": "Boston, Massachusetts, United States (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Copenhagen or Dallas or Dubai or London or Miami or Pune or Buenos Aires or Bogota or Mexico or Singapore (Remote)"
+ },
+ {
+  "isLocal": true,
+  "location": "Dallas or Houston or San Antonio"
+ },
+ {
+  "isLocal": false,
+  "location": "Dearborn, Michigan, United States (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Eden Prairie or Minneapolis or Washington or United States (Remote)"
+ },
+ {
+  "isLocal": true,
+  "location": "Faribault or Troy or Houston or Merrimack or Burnsville or Murfreesboro or Waukesha or Charlotte or Mayfield or Loveland or Montreal"
+ },
+ {
+  "isLocal": false,
+  "location": "Georgia, United States (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Hoover or United States (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Hoover, Alabama, United States (Remote)"
+ },
+ {
+  "isLocal": true,
+  "location": "Houston, TX"
+ },
+ {
+  "isLocal": true,
+  "location": "Houston, Texas, United States"
+ },
+ {
+  "isLocal": false,
+  "location": "Illinois or United States (Remote)"
+ },
+ {
+  "isLocal": true,
+  "location": "Katy, TX"
+ },
+ {
+  "isLocal": false,
+  "location": "Louisville, Kentucky, United States (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Minnesota or Ohio or Texas or Georgia (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Morgantown, West Virginia, United States (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "New York City or Panama (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "New York or Kansas or New Hampshire (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Orlando or California or Los Angeles County (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Pennsylvania or United States (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Philadelphia or United States (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Raleigh, North Carolina, United States (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "San Francisco, California, United States (Remote)"
+ },
+ {
+  "isLocal": true,
+  "location": "Spring, TX"
+ },
+ {
+  "isLocal": false,
+  "location": "Tampa, Florida, United States (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "United States (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "United States or Georgia (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "United States or North America (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "United States or Phoenix (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "United States or Poland or India (Remote)"
+ },
+ {
+  "isLocal": false,
+  "location": "Virginia or United States (Remote)"
+ }
+]

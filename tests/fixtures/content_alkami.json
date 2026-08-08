@@ -1,0 +1,140 @@
+{
+  "company": "Alkami",
+  "role": "PlatformSolutionEngineerMANTL",
+  "name": "Khoa Pham",
+  "contact": "Houston, Texas 77062  |  (713) 478-0433  |  p.khoa89@yahoo.com  |  linkedin.com/in/khoa-pham-cloud",
+  "summary": "Site reliability engineer with 7 years of hands-on cloud infrastructure, observability, and incident management experience, and 5 years of customer-facing implementation work spanning on-site deployments, performance remediation, and enterprise software delivery.",
+  "skills_groups": [
+    {
+      "label": "Cloud and Platform",
+      "items": [
+        "Azure",
+        "Linux",
+        "Kubernetes",
+        "Docker",
+        "Azure DevOps",
+        "High Availability",
+        "Infrastructure as Code (IaC)",
+        "Terraform",
+        "Networking"
+      ]
+    },
+    {
+      "label": "Automation and Observability",
+      "items": [
+        "Ansible",
+        "Rundeck",
+        "PagerDuty",
+        "Bash",
+        "Python",
+        "Prometheus",
+        "Grafana",
+        "Logstash"
+      ]
+    },
+    {
+      "label": "Reliability and Data",
+      "items": [
+        "SRE",
+        "Incident Management",
+        "SLO/SLA/SLI",
+        "Post-Mortem Analysis",
+        "Toil Reduction",
+        "Change Management"
+      ]
+    },
+    {
+      "label": "Certifications",
+      "items": [
+        "HashiCorp Certified: Terraform Associate"
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "company": "PROS",
+      "location": "Houston, Texas",
+      "title": "Site Reliability Engineer",
+      "dates": "01/2024–02/2026",
+      "bullet_ids": [
+        "pros-sre-ansible-rundeck-toil",
+        "pros-sre-weekend-upgrades-hotfix",
+        "pros-sre-ha-azure-maintenance-window",
+        "pros-sre-langflow-log-parsing",
+        "pros-sre-azure-devops-docker-k8s",
+        "pros-sre-critsit-pagerduty-sla"
+      ],
+      "bullet_overrides": {}
+    },
+    {
+      "company": "PROS",
+      "location": "Houston, Texas",
+      "title": "Cloud Operations Engineer",
+      "dates": "04/2019–01/2024",
+      "bullet_ids": [
+        "pros-cloudops-bash-python-30k",
+        "pros-cloudops-perf-error-monitoring",
+        "pros-cloudops-prometheus-alert-rules",
+        "pros-cloudops-optimized-code-20pct",
+        "pros-cloudops-delivery-planning-golive",
+        "pros-cloudops-grafana-server-health"
+      ],
+      "bullet_overrides": {}
+    },
+    {
+      "company": "PROS",
+      "location": "Houston, Texas",
+      "title": "Senior Implementation Consultant",
+      "dates": "02/2017–04/2019",
+      "bullet_ids": [
+        "pros-sic-onsite-engagements",
+        "pros-sic-technical-training",
+        "pros-sic-performance-remediation-10-40",
+        "pros-sic-mentoring-juniors"
+      ],
+      "bullet_overrides": {}
+    },
+    {
+      "company": "PROS",
+      "location": "Houston, Texas",
+      "title": "Implementation Analyst",
+      "dates": "02/2014–01/2017",
+      "bullet_ids": [
+        "pros-ia-setup-test-environments",
+        "pros-ia-data-quality-50pct",
+        "pros-ia-deployments-incident-resolution"
+      ],
+      "bullet_overrides": {}
+    },
+    {
+      "company": "HEWLETT-PACKARD",
+      "location": "Houston, Texas",
+      "title": "Performance Engineering Intern",
+      "dates": "06/2013–12/2013",
+      "bullet_ids": [
+        "hp-intern-install-configure-os",
+        "hp-intern-analyze-perf-issues",
+        "hp-intern-benchmarking-roi"
+      ],
+      "bullet_overrides": {}
+    }
+  ],
+  "education": {
+    "institution": "UNIVERSITY OF HOUSTON",
+    "location": "Houston, Texas",
+    "degree": "Bachelor of Science, Computer Information Systems",
+    "dates": "05/2011–12/2013"
+  },
+  "volunteer": {
+    "organization": "RUTHERFORD B.H. YATES MUSEUM",
+    "location": "Houston, Texas",
+    "title": "Volunteer — IT Support & Historic Restoration",
+    "dates": "",
+    "bullet_ids": [
+      "volunteer-museum-it-support-network",
+      "volunteer-museum-carpentry-restoration"
+    ],
+    "bullet_overrides": {}
+  },
+  "spacer_lines": 0
+}

@@ -1,0 +1,30 @@
+{
+  "min_match": 0.6,
+  "note": "Auto-tailor threshold: scheduled runs discover jobs into candidates.csv and auto-tailor ONLY Houston-metro jobs >= local_min_match; remote jobs are tailored on-demand from the dashboard. Default 0.60.",
+  "discovery_min_match": 0.1,
+  "remote_min_match": 0.3,
+  "discovery_note": "Three skill-match floors, all driven by the dashboard Settings sliders (gui_settings.json globalFloor/remoteFloor/localFloor; these strategy.json values are fallbacks). globalFloor (discovery_min_match, default 0.10) = HARD cutoff: jobs below it are dropped from candidates.csv entirely by every search. remoteFloor (remote_min_match, 0.30) and localFloor (local_min_match, 0.20) filter which jobs appear on the dashboard and trigger phone alerts, by location. So a job is stored if >= globalFloor, and shown/alerted if (local and >= localFloor) or (remote and >= remoteFloor).",
+  "max_post_age_days": 30,
+  "max_post_age_note": "scrape.py drops hiringcafe.com hits whose estimated_publish_date is older than this many days (stale/re-indexed reposts). Set 0 to disable. Postings with no publish date are kept.",
+  "local_min_match": 0.2,
+  "skill_match_shrinkage_k": 1.0,
+  "skill_match_prior": 0.0,
+  "title_offlane_factor": 0.35,
+  "title_lane_note": "Title-relevance gate (scoring.title_fit / score_job). Nothing in the pipeline ever checked whether the ROLE was in your lane — classify() only picks which base resume to use — so an off-lane posting that happened to share tool keywords ranked as high as a real one. A title matching an explicit off-lane phrase has its skillMatch MULTIPLIED by title_offlane_factor (0.35), which drops it under remote_min_match so it stops showing/alerting, but it stays in candidates.csv with the reason in the titleFit column — nothing is silently lost. IN-LANE terms default to config/profile.json search.titles (the same titles the searches use, so it works per-user); override with title_lane_terms here. OFF-LANE phrases default to scoring._TITLE_OFFLANE; override with title_offlane_terms. Unrecognized titles are NEVER penalized (factor 1.0) — the list can only demote what it explicitly recognizes. OFF-LANE WINS over in-lane: the in-lane list holds bare modifiers ('cloud', 'platform', 'support') that appear inside off-lane titles, e.g. 'Senior Product Manager, Cloud Video'. Set title_offlane_factor to 1.0 to disable the gate. Verified against 210 historical titles: 2 penalized (both real product-manager roles), 0 false positives.",
+  "skill_match_shrinkage_note": "Confidence correction for thin skill extractions. Raw skillMatch = matched/extracted, so a posting hiring.cafe tagged with ONE skill you happen to have scored 1.00 — outranking a real SRE posting with 16 skills. Shrunk score = (matched + k*prior)/(extracted + k). Defaults k=1.0, prior=0.0 ('one phantom unmatched skill'): 1-of-1 -> 0.50, 2-of-2 -> 0.67, 5-of-5 -> 0.83, 16-of-16 -> 0.94, so thick well-matched postings barely move and thin ones stop pinning the top. k=0 restores the old raw fraction. prior>0 pulls small-n scores toward that value instead of down; a job with ZERO matched skills always returns 0.00 regardless of prior, so no-overlap jobs still fall under discovery_min_match. NOTE: because all scores shift down slightly, the floors above (min_match / remote_min_match / resume_customize_threshold) are now effectively a bit stricter.",
+  "resume_customize_threshold": 0.8,
+  "exclude_many_applicants": true,
+  "max_applicants": 50,
+  "applicants_note": "scrape.py drops jobs with more than max_applicants when exclude_many_applicants is on (dashboard toggle: excludeManyApplicants/maxApplicants in gui_settings.json). IMPORTANT: hiringcafe.com does NOT report applicant counts, so this only filters sources that do (e.g. LinkedIn via jobspy). For hiringcafe.com jobs, freshness (max_post_age_days) is the practical proxy since older postings accumulate applicants.",
+  "resume_customize_note": "Token saver, driven by the dashboard 'Resume customization trigger' slider (gui_settings.resumeCustomizeThreshold). AI-tailor a resume ONLY when skillMatch < this value; at/above it the template already covers the JD, so the run copies the classified base resume as-is (still does salary lookup). process-queue emits action:'customize'|'template' + customize:true/false per job. 1.01=always customize; 0.80=high; 0.60=many; 0.40=some; 0.20=few.",
+  "local_keywords": [
+    "houston",
+    "katy",
+    "sugar land",
+    "the woodlands",
+    "pearland"
+  ],
+  "local_note": "Jobs whose location matches local_keywords auto-tailor at local_min_match (0.20) instead of min_match, and are processed FIRST (before remote/other jobs) within the per-run cap.",
+  "local_geo_enabled": true,
+  "local_geo_note": "Geo pass (locality.py, zero tokens): a job whose 'City, ST' geocodes within the profile's search radius counts as local even if the city isn't in local_keywords (e.g. Spring/Conroe for a Houston profile). Cache-only at decision time (geo_cache.json); geocoding happens after each scrape or via 'python locality.py --refresh'. Works for any user's city — center+radius come from config/profile.json (Settings tab). Set false for keyword-only."
+}

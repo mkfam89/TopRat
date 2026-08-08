@@ -1,0 +1,79 @@
+{
+  "_readme": "Salary bands per role family. Empty range => the pipeline WebSearches ONCE, then persists it via `jobpipe.py salary-set` so that family is never searched again. Refresh ranges every 2-3 months by clearing them.",
+  "families": {
+    "sre_cloud_devops": {
+      "match": [
+        "cloud",
+        "devops",
+        "devsecops",
+        "infrastructure",
+        "platform",
+        "platform engineer",
+        "production engineer",
+        "reliability",
+        "site reliability",
+        "site reliability engineer",
+        "sre",
+        "system engineer",
+        "systems engineer"
+      ],
+      "range": "$110,000-$145,000 (est.)",
+      "seniorRange": "$127,000-$190,000 (est.)",
+      "updated": "2026-07"
+    },
+    "tech_support": {
+      "match": [
+        "help desk",
+        "helpdesk",
+        "service desk",
+        "support",
+        "support engineer",
+        "tse"
+      ],
+      "range": "$70,000-$100,000 (est.)",
+      "seniorRange": "$90,000-$120,000 (est.)",
+      "updated": "2026-07"
+    },
+    "data_business_analyst": {
+      "match": [
+        "data analyst",
+        "business analyst",
+        "operations analyst",
+        "data quality",
+        "reporting analyst",
+        "analyst"
+      ],
+      "range": "$85,000-$120,000 (est.)",
+      "seniorRange": "$110,000-$150,000 (est.)",
+      "updated": "2026-07"
+    },
+    "qa_test": {
+      "match": [
+        "test engineer",
+        "qa",
+        "quality engineer",
+        "quality assurance",
+        "sdet"
+      ],
+      "range": "$75,000-$110,000 (est.)",
+      "seniorRange": "$100,000-$135,000 (est.)",
+      "updated": "2026-07"
+    },
+    "data_engineering": {
+      "match": [
+        "data analysis engineer",
+        "data engineer"
+      ],
+      "range": "$100,000-$140,000 (est.)",
+      "seniorRange": "$130,000-$170,000 (est.)",
+      "updated": "2026-07"
+    },
+    "performance_engineer": {
+      "match": [
+        "performance engineer"
+      ],
+      "range": "$105,000-$150,000 (est.)",
+      "updated": "2026-07"
+    }
+  }
+}

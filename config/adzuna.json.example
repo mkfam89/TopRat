@@ -1,0 +1,5 @@
+{
+  "_readme": "Adzuna API credentials for salary_probe.py stage 2 (Jobsworth salary predictor). Register free at https://developer.adzuna.com/signup - you get an app_id and app_key. Copy this file to config/adzuna.json (git-ignored) and fill them in. Free tier limits: 25 hits/min, 250/day, 1000/week, 2500/month. 'Personal research' is permitted use under their ToS. If config/adzuna.json is absent, salary_probe.py silently runs stage 1 only (posting scrape) - no signup required.",
+  "app_id": "",
+  "app_key": ""
+}

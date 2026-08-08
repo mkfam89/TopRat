@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Rat — Set up unattended resume tailoring</title>
+<link rel="stylesheet" href="/ui.css">
+<style>
+  /* The colors come from the shared design system (ui.css). The names below are aliases,
+     matching help_ntfy.html and help_adzuna.html so the three help pages read alike. */
+  :root { --card:var(--surface,#fbfcfd); --fg:var(--ink,#2b3440); --mut:var(--muted,#5f6b7a);
+          --acc:var(--accent,#3d6fd4); --acc-soft:var(--accent-soft,#eef3fc);
+          --ok:var(--green-ink,#1d7a53); --ok-soft:var(--green-soft,#eaf7f1);
+          --warn:var(--amber-ink,#96620f); --warn-soft:var(--amber-soft,#fdf5e7); }
+  body { font-size:15px; line-height:1.6; }
+  .wrap { max-width:820px; margin:0 auto; padding:26px 20px 80px; }
+  h1 { font-size:24px; margin:0 0 4px; font-weight:700; }
+  .sub { color:var(--mut); margin:0 0 22px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px;
+          padding:18px 22px; margin:0 0 16px; box-shadow:0 1px 2px rgba(16,24,40,.04); }
+  .card h2 { font-size:12px; text-transform:uppercase; letter-spacing:.05em;
+             color:var(--mut); margin:0 0 12px; font-weight:600; }
+  ol.steps { margin:0; padding:0; list-style:none; counter-reset:step; }
+  ol.steps > li { position:relative; padding:0 0 18px 44px; counter-increment:step; }
+  ol.steps > li:last-child { padding-bottom:0; }
+  ol.steps > li::before { content:counter(step); position:absolute; left:0; top:1px;
+    width:26px; height:26px; border-radius:50%; background:var(--acc); color:#fff;
+    font-weight:600; display:flex; align-items:center; justify-content:center; font-size:13px; }
+  ol.steps > li b { color:var(--ink); }
+  a { color:var(--acc); }
+  code { background:#f3f4f6; border:1px solid var(--line); padding:1px 6px;
+         border-radius:4px; font-size:13px; color:#374151; }
+  pre { background:#f9fafb; border:1px solid var(--line); border-radius:8px; padding:12px 14px;
+        overflow:auto; font-size:13px; margin:10px 0 0; color:#374151; }
+  .note { font-size:13px; color:var(--mut); }
+  .cta { display:inline-block; background:var(--acc); color:#fff; text-decoration:none;
+         border-radius:8px; padding:10px 18px; font-weight:600; margin:4px 8px 0 0; }
+  .cta.alt { background:var(--card); color:var(--acc); border:1px solid var(--acc); }
+  .back { display:inline-block; color:var(--mut); text-decoration:none; margin-bottom:14px; font-size:14px; }
+  .back:hover { color:var(--fg); }
+  .callout { border-left:3px solid var(--acc); background:var(--acc-soft);
+             border-radius:0 8px 8px 0; padding:12px 16px; margin:0 0 16px; font-size:14px; color:#1e3a8a; }
+  .callout.warn { border-left-color:#f59e0b; background:var(--warn-soft); color:#78350f; }
+  .kv { display:flex; gap:12px; padding:7px 0; border-bottom:1px solid var(--line); font-size:14px; }
+  .kv:last-child { border-bottom:none; }
+  .kv b { min-width:150px; color:var(--mut); font-weight:500; }
+  @media (max-width:760px){
+    .wrap { padding:18px 14px 72px; }
+    ol.steps > li { padding-left:36px; }
+    .kv { flex-direction:column; gap:2px; }
+    .kv b { min-width:0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/setup">← Back to Settings</a>
+  <h1>Set up unattended resume tailoring</h1>
+  <p class="sub">Optional. Lets the hourly queue rewrite a resume for each posting, using the Claude plan you already pay for.</p>
+
+  <div class="callout">
+    <b>Flat rate. Nothing metered.</b> This app has no API key and never bills you per use. It
+    calls <b>Claude Code</b> on your own machine, which draws from your Claude subscription's
+    usage limits. If you already pay for Pro, there is nothing further to buy.
+  </div>
+
+  <div class="card">
+    <h2>What it changes</h2>
+    <div class="kv"><b>Without Claude Code</b><span>A queued job gets a copy of your base resume from
+      <code>resume_template/</code>. The tailoring instructions you typed on the card sit unread
+      until you open Claude yourself.</span></div>
+    <div class="kv"><b>With Claude Code</b><span>The hourly queue processor rewrites the summary, the
+      bullet order, and the skills line for that posting, and it reads the instructions you typed.
+      The result still passes the same lint gate, so a bad rewrite is rejected rather than shipped.</span></div>
+    <div class="kv"><b>What it costs</b><span>Nothing beyond your plan. It shares the same usage
+      limits as your interactive Claude sessions, which is why the daily and hourly auto-tailor
+      caps in Settings are worth keeping low.</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Steps</h2>
+    <ol class="steps">
+      <li><b>Install Claude Code.</b> Follow
+        <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">docs.claude.com/en/docs/claude-code</a>.
+        It is a command-line tool; you do not have to use it directly.</li>
+      <li><b>Log in with your plan.</b> Open a terminal and run <code>claude login</code>. Sign in
+        with the Claude account that holds your subscription. <b>Do not</b> paste a Console API
+        key during login — that is the pay-per-use path this app deliberately avoids.</li>
+      <li><b>Confirm it works.</b> Run <code>claude -p "say OK"</code>. A one-word reply means
+        you are set.</li>
+      <li><b>Check from the app.</b> Return to <a href="/setup">Settings → Integrations</a> and
+        press <b>Check now</b> under <b>Unattended tailoring</b>. A green line means the queue can
+        tailor on its own from here.</li>
+    </ol>
+  </div>
+
+  <div class="callout warn">
+    <b>Watch the ANTHROPIC_API_KEY environment variable.</b> Claude Code prefers an API key over
+    your subscription whenever one is present, which would move every run onto pay-per-use billing.
+    This app strips that variable before it calls Claude Code, so tailoring here always stays on
+    your plan — but if you set it for some other tool, your own <code>claude</code> sessions in the
+    terminal will be billed at API rates. To check, run <code>echo %ANTHROPIC_API_KEY%</code> on
+    Windows. To clear it: <code>setx ANTHROPIC_API_KEY ""</code>, then open a new terminal.
+  </div>
+
+  <div class="card">
+    <h2>If the check fails</h2>
+    <div class="kv"><b>Not found</b><span>Claude Code is not installed, or not on your PATH. Install it,
+      or put the full path in <code>config/claude_cli.json</code> as <code>"binary"</code> (copy
+      <code>config/claude_cli.json.example</code>).</span></div>
+    <div class="kv"><b>Found, call failed</b><span>Usually logged out. Run <code>claude login</code>.
+      It can also mean your plan's usage limit is spent — it resets on its own.</span></div>
+    <div class="kv"><b>Timed out</b><span>The default cap is 240 seconds. Raise <code>timeout</code>
+      in <code>config/claude_cli.json</code> if your machine is slow to start the CLI.</span></div>
+    <p class="note" style="margin-top:12px">You can run the same check from a terminal in the app
+      folder: <code>python llm_tailor.py --check</code></p>
+  </div>
+
+  <div class="card">
+    <h2>Nothing here is required</h2>
+    <p>Search, match scores, salary estimates, phone alerts, the tracker, and resume generation all
+      run as plain scripts with no Claude involved. Turning this off costs you the rewrite, not the
+      pipeline.</p>
+  </div>
+
+  <a class="cta" href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Install Claude Code</a>
+  <a class="cta alt" href="/setup">Back to Settings</a>
+</div>
+</body>
+</html>

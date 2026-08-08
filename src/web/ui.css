@@ -1,0 +1,311 @@
+/* ui.css — ONE design system for every dashboard page.
+   Served by dashboard_server.py at /ui.css and linked from cards.html, setup.html,
+   schedule.html, archived.html, help_adzuna.html, help_ntfy.html.
+
+   Why this file exists: the pages had drifted into three unrelated themes (light blue-gray
+   board + settings, dark-navy schedule, beige-parchment archived) with a near-black nav bar
+   on top of all of them, and only cards.html had a single responsive breakpoint. Colors,
+   spacing, and type now come from the tokens below, so a change here moves every page.
+
+   PALETTE INTENT — "soft light, low glare":
+   - Surfaces are off-white (#fbfcfd), not pure #fff, and sit on a slightly deeper neutral
+     page background. Pure-white panels on a light gray page is the highest-glare combination
+     in common use; dropping the panel a couple of points kills most of the eye strain while
+     keeping the page unmistakably light.
+   - Body text is a soft slate (#2b3440) rather than near-black. Contrast on --surface is
+     ~12:1, far above the 4.5:1 WCAG AA floor, so nothing is lost by softening it.
+   - The accent blue is desaturated from #2563eb to #3d6fd4 so buttons and active tabs stop
+     vibrating against the neutral background.
+   - Every muted/secondary color is checked at >=4.5:1 on its own background, so "softer"
+     never means "less readable".
+*/
+
+:root{
+  /* ---- surfaces ---- */
+  --bg:#eef1f5;            /* page background */
+  --surface:#fbfcfd;       /* cards, panels, table rows */
+  --surface-2:#f4f6f9;     /* subtle fills: table headers, hover rows, inset blocks */
+  --surface-3:#e9edf2;     /* pressed / heavier fill */
+
+  /* ---- ink ---- */
+  --ink:#2b3440;           /* body text */
+  --ink-strong:#18202b;    /* headings */
+  --muted:#5f6b7a;         /* secondary text (>=4.5:1 on --bg and --surface) */
+  --faint:#8a94a2;         /* placeholders, disabled, de-emphasized meta */
+
+  /* ---- lines ---- */
+  --line:#dfe4eb;
+  --line-strong:#c9d1db;
+
+  /* ---- accent ---- */
+  --accent:#3d6fd4;
+  --accent-hover:#3260c2;
+  --accent-soft:#eef3fc;
+  --accent-line:#c2d4f4;
+
+  /* ---- semantic ---- */
+  --green:#2f9e6f;  --green-soft:#eaf7f1; --green-ink:#1d7a53; --green-line:#b3e2ce;
+  --amber:#c07f18;  --amber-soft:#fdf5e7; --amber-ink:#96620f; --amber-line:#ecd39b;
+  --red:#c94a41;    --red-soft:#fdefee;   --red-ink:#a8352d;   --red-line:#efc0bb;
+  --violet:#6b5bc4; --violet-soft:#f1effc; --violet-ink:#584bab; --violet-line:#cdc5ef;
+  --teal:#2c8b86;   --teal-soft:#eaf6f5;  --teal-ink:#1f6f6b;
+  --gray-soft:#eef1f5;
+
+  /* ---- shape & depth ---- */
+  --r-sm:8px; --r-md:11px; --r-lg:14px; --r-pill:999px;
+  --shadow-sm:0 1px 2px rgba(24,32,43,.06);
+  --shadow-md:0 4px 14px rgba(24,32,43,.08);
+  --shadow-lg:0 16px 44px rgba(24,32,43,.16);
+
+  /* ---- type ---- */
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --fs-body:14px; --fs-sm:12.5px; --fs-xs:11.5px; --fs-lg:16px;
+
+  /* ---- layout ---- */
+  --nav-h:52px;
+  --page-max:1180px;
+}
+
+/* ================= base ================= */
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:var(--fs-body)/1.5 var(--font);
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{color:var(--ink-strong);line-height:1.25;margin:0 0 .4em;}
+h1{font-size:21px;font-weight:700;}
+h2{font-size:17px;font-weight:700;}
+h3{font-size:15px;font-weight:700;}
+p{margin:0 0 .8em;}
+a{color:var(--accent);}
+code,kbd,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em;}
+hr{border:none;border-top:1px solid var(--line);margin:20px 0;}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+/* Text that explains a control or a page — used all over Settings and the help pages. */
+.ui-sub{color:var(--muted);font-size:13px;margin:0 0 14px;}
+.ui-page{max-width:var(--page-max);margin:0 auto;padding:18px 20px 80px;}
+
+/* ================= shared top nav ================= */
+/* Markup comes from dashboard_server.nav_html(); styling lives here so it matches the pages. */
+.ui-nav{
+  position:sticky;top:0;z-index:99999;
+  display:flex;align-items:center;gap:6px;
+  min-height:var(--nav-h);
+  padding:8px 16px;
+  background:var(--surface);
+  border-bottom:1px solid var(--line);
+  box-shadow:var(--shadow-sm);
+  font:var(--fs-body) var(--font);
+}
+.ui-nav.is-labeled{background:#fdf5e7;border-bottom-color:var(--amber-line);}
+/* Brand = the rat mark + the name. Flex (not an inline emoji) so the image sits on the text
+   baseline at any font size, and so the narrow-screen rule below can drop the words and leave
+   a correctly-centred mark behind. The PNG already carries its own rounded dark tile. */
+.ui-nav-brand{
+  font-weight:700;color:var(--ink-strong);margin-right:6px;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:7px;
+}
+.ui-nav-mark{width:20px;height:20px;border-radius:5px;display:block;flex:0 0 auto;}
+.ui-nav-badge{
+  padding:2px 9px;border-radius:var(--r-sm);background:var(--amber);color:#fff;
+  font-weight:700;font-size:var(--fs-xs);letter-spacing:.04em;white-space:nowrap;
+}
+.ui-nav-links{display:flex;gap:4px;align-items:center;overflow-x:auto;scrollbar-width:none;}
+.ui-nav-links::-webkit-scrollbar{display:none;}
+.ui-nav-links a{
+  color:var(--muted);text-decoration:none;padding:7px 13px;border-radius:var(--r-sm);
+  white-space:nowrap;font-weight:500;transition:background .12s,color .12s;
+}
+.ui-nav-links a:hover{background:var(--surface-2);color:var(--ink);}
+.ui-nav-links a.active{background:var(--accent);color:#fff;font-weight:600;}
+
+/* Live scheduler chip — right-hand end of the nav on every page. Answers "is a job running,
+   and when is the next one" without leaving the board. Markup is written by
+   dashboard_server.SCHED_PILL_JS. */
+/* The chip's anchor. The bubble below hangs off THIS box's right edge, so it lines up with
+   the chip on every page width without JS measuring anything. */
+.ui-sched-wrap{margin-left:auto;position:relative;display:inline-flex;}
+.ui-nav-sched{
+  display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+  padding:5px 11px;border-radius:20px;border:1px solid var(--line-strong);
+  background:var(--surface-2);color:var(--muted);text-decoration:none;
+  font-size:var(--fs-xs,12px);font-weight:600;white-space:nowrap;
+  transition:background .12s,border-color .12s;
+}
+.ui-nav-sched:hover{background:var(--surface);border-color:var(--accent);color:var(--ink);}
+/* "Scheduled tasks status:" — names what the chip is reporting. It is the only run-status
+   readout in the app now, so it cannot rely on the /schedule page's section pills for context.
+   Dimmed and lighter than the value, so the eye still lands on the state, not the label. */
+.ui-nav-sched .slbl{font-weight:600;opacity:.7;margin-right:2px;}
+.ui-nav-sched .seta{font-weight:500;opacity:.85;}
+.ui-nav-sched .smiss{font-weight:700;opacity:.9;}
+.ui-nav-sched .smiss::after{content:" ·";opacity:.5;}
+.ui-nav-sched .sdot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:none;}
+.ui-nav-sched.is-idle{color:var(--muted);}
+.ui-nav-sched.is-idle .sdot{background:var(--green,#2f9e6f);}
+.ui-nav-sched.is-running{background:var(--green-soft);border-color:var(--green-line);color:var(--green-ink);}
+.ui-nav-sched.is-missed{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber-ink);}
+.ui-nav-sched.is-error{background:var(--red-soft);border-color:var(--red-line);color:var(--red-ink);}
+.ui-nav-sched.is-error .seta{font-weight:700;opacity:1;}
+/* A pulsing ring, not a spinner: it reads as "working" at 8px where a rotating arc is mush. */
+.ui-nav-sched .sdot.spin{animation:uiSchedPulse 1.1s ease-in-out infinite;}
+@keyframes uiSchedPulse{
+  0%,100%{box-shadow:0 0 0 0 currentColor;opacity:1;}
+  50%{box-shadow:0 0 0 4px transparent;opacity:.45;}
+}
+
+/* Scheduler bubble — the chip's own answer to "which job?".
+   The chip can only ever say one word ("2 missed"), and the question that follows is which
+   job and when. That answer used to be a page away: click the chip, land on /schedule, read
+   six cards. The bubble grows out of the chip it belongs to (transform-origin is the top
+   right corner, so it visibly comes FROM the chip) and names the jobs, with a Run now on
+   each. The Schedule page is still one click down in the footer, for the things a bubble
+   should not do: edit a time, switch a job off. */
+.ui-sched-pop{
+  position:absolute;top:calc(100% + 9px);right:0;z-index:100000;
+  width:min(340px,calc(100vw - 24px));
+  padding:12px 13px;
+  background:var(--surface,#fff);border:1px solid var(--line);border-radius:var(--r-md,12px);
+  box-shadow:0 14px 34px rgba(24,32,43,.17);
+  font:var(--fs-sm,13px) var(--font);color:var(--ink);
+  text-align:left;white-space:normal;cursor:default;
+  transform-origin:top right;animation:uiSchedPop .13s ease-out;
+}
+@keyframes uiSchedPop{from{opacity:0;transform:scale(.88) translate(6px,-6px);}to{opacity:1;transform:none;}}
+/* The tail that ties the bubble back to the chip. */
+.ui-sched-pop::before{
+  content:'';position:absolute;top:-6px;right:18px;width:10px;height:10px;
+  background:var(--surface,#fff);border-left:1px solid var(--line);border-top:1px solid var(--line);
+  transform:rotate(45deg);
+}
+.ui-sched-pop h4{margin:0 0 9px;font:700 13.5px var(--font);color:var(--ink-strong);}
+.ui-sched-pop .sjob{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line);}
+.ui-sched-pop .sjmain{min-width:0;flex:1;}
+.ui-sched-pop .sjname{font-weight:600;color:var(--ink-strong);}
+.ui-sched-pop .swhen{color:var(--muted);font-size:12px;margin-top:2px;}
+.ui-sched-pop .stag{display:inline-block;margin-left:5px;padding:1px 7px;border-radius:999px;
+  font-size:10.5px;font-weight:700;letter-spacing:.02em;vertical-align:1px;}
+.ui-sched-pop .stag.miss{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line);}
+.ui-sched-pop .stag.fail{background:var(--red-soft);color:var(--red-ink);border:1px solid var(--red-line);}
+.ui-sched-pop .stag.run{background:var(--green-soft);color:var(--green-ink);border:1px solid var(--green-line);}
+.ui-sched-pop .srun{flex:none;border:1px solid var(--line-strong);background:var(--surface);
+  color:var(--ink);border-radius:7px;padding:4px 9px;font:600 11.5px var(--font);cursor:pointer;
+  white-space:nowrap;}
+.ui-sched-pop .srun:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);}
+.ui-sched-pop .srun:disabled{opacity:.55;cursor:default;}
+.ui-sched-pop .snote{margin-top:9px;color:var(--muted);font-size:12px;}
+.ui-sched-pop .sempty{color:var(--muted);}
+.ui-sched-pop .sfoot{margin-top:10px;padding-top:9px;border-top:1px solid var(--line);}
+.ui-sched-pop .sfoot a{color:var(--accent);text-decoration:none;font-weight:600;}
+.ui-sched-pop .sfoot a:hover{text-decoration:underline;}
+
+/* ================= buttons ================= */
+.ui-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);
+  border-radius:var(--r-sm);padding:8px 14px;font:600 13px var(--font);
+  cursor:pointer;transition:background .12s,border-color .12s,color .12s;
+}
+.ui-btn:hover{background:var(--surface-2);border-color:var(--faint);}
+.ui-btn:disabled{opacity:.55;cursor:default;}
+.ui-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.ui-btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);}
+.ui-btn.success{background:var(--green);border-color:var(--green);color:#fff;}
+.ui-btn.success:hover{background:var(--green-ink);border-color:var(--green-ink);}
+.ui-btn.danger{background:var(--red);border-color:var(--red);color:#fff;}
+.ui-btn.danger:hover{background:var(--red-ink);border-color:var(--red-ink);}
+.ui-btn.ghost{background:transparent;border-color:transparent;color:var(--accent);}
+.ui-btn.ghost:hover{background:var(--accent-soft);}
+.ui-btn.sm{padding:5px 10px;font-size:12px;}
+
+/* ================= form controls ================= */
+.ui-input,.ui-select,.ui-textarea{
+  width:100%;background:var(--surface);color:var(--ink);
+  border:1px solid var(--line-strong);border-radius:var(--r-sm);
+  padding:9px 11px;font:14px var(--font);
+}
+.ui-textarea{resize:vertical;min-height:70px;}
+.ui-input:focus,.ui-select:focus,.ui-textarea:focus{
+  outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);
+}
+.ui-input::placeholder,.ui-textarea::placeholder{color:var(--faint);}
+.ui-label{display:block;font-weight:600;font-size:13px;color:var(--ink-strong);margin-bottom:5px;}
+.ui-help{font-size:12.5px;color:var(--muted);margin-top:5px;}
+
+/* ================= panels ================= */
+.ui-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:18px 20px;box-shadow:var(--shadow-sm);
+}
+.ui-card + .ui-card{margin-top:14px;}
+.ui-note{
+  background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:var(--r-md);
+  padding:12px 14px;font-size:13px;color:var(--ink);
+}
+.ui-note.warn{background:var(--amber-soft);border-color:var(--amber-line);}
+.ui-note.ok{background:var(--green-soft);border-color:var(--green-line);}
+.ui-note.bad{background:var(--red-soft);border-color:var(--red-line);}
+
+/* ================= chips ================= */
+.ui-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:var(--fs-sm);font-weight:600;padding:4px 9px;border-radius:var(--r-pill);
+  background:var(--gray-soft);color:#41505f;white-space:nowrap;
+  border:1px solid transparent;
+}
+.ui-chip.green{background:var(--green-soft);color:var(--green-ink);border-color:var(--green-line);}
+.ui-chip.amber{background:var(--amber-soft);color:var(--amber-ink);border-color:var(--amber-line);}
+.ui-chip.red{background:var(--red-soft);color:var(--red-ink);border-color:var(--red-line);}
+.ui-chip.violet{background:var(--violet-soft);color:var(--violet-ink);border-color:var(--violet-line);}
+.ui-chip.teal{background:var(--teal-soft);color:var(--teal-ink);}
+
+/* ================= tables ================= */
+.ui-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;}
+.ui-table th,.ui-table td{padding:10px 12px;text-align:left;vertical-align:top;}
+.ui-table thead th{
+  background:var(--surface-2);color:var(--muted);
+  font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  border-bottom:1px solid var(--line);white-space:nowrap;
+}
+.ui-table tbody td{border-bottom:1px solid var(--line);}
+.ui-table tbody tr:hover{background:var(--surface-2);}
+.ui-table tbody tr:last-child td{border-bottom:none;}
+
+/* ================= responsive ================= */
+/* Every page shares these. Before this file only cards.html had a breakpoint at all, so
+   Settings / Schedule / Archived overflowed horizontally on a phone. */
+@media (max-width:760px){
+  :root{ --fs-body:14.5px; }   /* nudge up: phone reading distance, not desktop */
+  .ui-page{padding:14px 14px 72px;}
+  .ui-card{padding:15px 15px;border-radius:var(--r-md);}
+  .ui-nav{padding:7px 10px;gap:4px;}
+  .ui-nav-brand{font-size:13.5px;}
+  .ui-nav-links a{padding:7px 11px;}
+  /* The nav already scrolls its links on a phone; the chip keeps its own space at the end
+     rather than being pushed off-screen, but drops to the dot + time. */
+  .ui-nav-sched{padding:4px 9px;font-size:11.5px;margin-left:6px;}
+  /* No room for the label on a phone — the chip drops to dot + state, which is the whole
+     point of the narrow layout. The tooltip still spells it out. */
+  .ui-nav-sched .slbl{display:none;}
+  h1{font-size:19px;}
+  /* Any table marked .ui-table-scroll gets a horizontal scroller instead of blowing out
+     the viewport width. */
+  .ui-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .ui-table-scroll .ui-table{min-width:640px;}
+  /* Touch targets: 44px is the platform minimum for a comfortable tap. */
+  .ui-btn{min-height:40px;padding:9px 14px;}
+  .ui-input,.ui-select,.ui-textarea{font-size:16px;} /* 16px stops iOS zoom-on-focus */
+}
+@media (max-width:420px){
+  .ui-nav-brand span.brand-text{display:none;}  /* keep the icon, drop the words */
+}
+
+/* Respect a user's reduced-motion setting — several pages animate drawers and toasts. */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+}

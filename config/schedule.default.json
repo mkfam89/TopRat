@@ -1,0 +1,168 @@
+{
+  "_note": "Default job definitions for scheduler.py. This file is versioned with the code. Do not edit it by hand. The live schedule is the user copy in <data_root>/config/schedule.json. The user copy sets the times and the on/off state. This file sets the label, the group, the type, and the steps of each job. The group decides which collapsible section the job appears under on the schedule page: search, resumes, or upkeep. A job with no group falls into 'other'. If the user copy is absent, scheduler.py reads this file, and the schedule page shows the default jobs. Times are local, in 24-hour HH:MM format. In the days list, 0 is Monday and 6 is Sunday. To change the live schedule, use the schedule page of the dashboard.",
+  "tick_seconds": 30,
+  "grace_seconds": 300,
+  "jobs": {
+    "radar": {
+      "label": "Hourly scrape - find new jobs and send an alert",
+      "group": "search",
+      "enabled": true,
+      "type": "interval_window",
+      "interval_minutes": 60,
+      "window_start": "09:00",
+      "window_end": "15:00",
+      "days": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "steps": [
+        [
+          "scrape.py",
+          "--url-key",
+          "hiringcafe_24h",
+          "--max-age-days",
+          "1"
+        ],
+        [
+          "jobpipe.py",
+          "candidates",
+          "--listings",
+          "listings.json"
+        ],
+        [
+          "salary_probe.py",
+          "--no-adzuna"
+        ],
+        [
+          "notify.py"
+        ]
+      ],
+      "description": "This task searches for new job postings every hour. It scores each posting against your skills. If a posting is a good match, the task sends an alert to your phone."
+    },
+    "daily_scrape": {
+      "label": "Daily scrape - find the jobs of the last 5 days",
+      "group": "search",
+      "enabled": true,
+      "type": "daily",
+      "at": "05:20",
+      "days": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "steps": [
+        [
+          "scrape.py",
+          "--url-key",
+          "hiringcafe_24h",
+          "--max-age-days",
+          "5"
+        ],
+        [
+          "jobpipe.py",
+          "candidates",
+          "--listings",
+          "listings.json"
+        ],
+        [
+          "salary_probe.py"
+        ]
+      ],
+      "description": "This task searches for new job postings each weekday morning. It looks back 5 days, so it finds the postings that the hourly search missed. It adds them to the tracker with a score."
+    },
+    "weekly_sweep": {
+      "label": "Weekly scrape - find the jobs of the last 7 days",
+      "group": "search",
+      "enabled": true,
+      "type": "weekly",
+      "at": "22:45",
+      "weekday": 6,
+      "steps": [
+        [
+          "scrape.py",
+          "--url-key",
+          "hiringcafe_7d",
+          "--max-age-days",
+          "5"
+        ],
+        [
+          "jobpipe.py",
+          "candidates",
+          "--listings",
+          "listings.json"
+        ],
+        [
+          "salary_probe.py"
+        ]
+      ],
+      "description": "This task searches on Sunday night. It looks back 7 days and finds the postings of the weekend. This is the largest search of the week."
+    },
+    "git_checkpoint": {
+      "label": "Daily backup - commit the code and the tracker to git",
+      "group": "upkeep",
+      "enabled": true,
+      "type": "daily",
+      "at": "18:30",
+      "days": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "steps": [
+        [
+          "git_daily.py"
+        ]
+      ],
+      "description": "This task saves your work to git each weekday evening. It commits the code and the tracker data, and it pushes them to the remote. This is your backup if a file becomes damaged."
+    },
+    "monthly_archive": {
+      "label": "Archive - move the old applied jobs off the board",
+      "group": "upkeep",
+      "enabled": true,
+      "type": "monthly",
+      "day": 1,
+      "at": "04:00",
+      "archive_age": 1,
+      "archive_age_unit": "months",
+      "steps": [
+        [
+          "archive.py",
+          "--apply"
+        ]
+      ],
+      "description": "This task starts on the day of the month that you set. It moves the old applied job postings into the archive. The board then shows only the current postings. Set how old a posting must be with the age field. The age counts from the later of the two dates: the day the job was found, and the day you marked it applied."
+    },
+    "tailor_local": {
+      "label": "Template tailoring - make a resume without AI (manual runs only)",
+      "group": "resumes",
+      "enabled": false,
+      "type": "interval_window",
+      "interval_minutes": 2,
+      "window_start": "00:00",
+      "window_end": "23:59",
+      "days": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "steps": [
+        [
+          "tailor_local.py"
+        ]
+      ],
+      "_why_disabled": "This job only acts on a to_process.json queue that has runNow set. Nothing sets runNow: /api/queue writes the ids without it, and the Tailor button of the dashboard goes to the hourly queue processor. So every 2-minute tick was a no-op. Use the Run now button of the schedule page, or 'python tailor_local.py --force', for a manual run.",
+      "description": "This task makes a resume without AI. It does not write new text. It copies the base resume that fits the role, and then it makes a PDF. It does this only when your skills already cover the job posting. If your skills do not cover it, the AI writes the resume later. This task is off, because it starts only from the Run now button."
+    }
+  }
+}

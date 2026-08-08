@@ -1,0 +1,98 @@
+{
+  "_readme": "SINGLE source of per-user personalization. Copy to profile.json and edit (or run `python setup.py`). After any change, regenerate derived configs with `python profile_lib.py --regen` (the wizard and the dashboard /setup page do this automatically). Fields marked (advanced) can be left as-is by non-technical users.",
+
+  "identity": {
+    "full_name": "Jane Doe",
+    "resume_prefix": "Jane_Doe_Resume_",
+    "real_titles": ["Data Analyst", "Operations Analyst"],
+    "past_companies": ["Acme Corp", "Globex"],
+    "_note": "resume_prefix names every tailored output file, e.g. Jane_Doe_Resume_Acme_DataAnalyst.docx (no spaces). real_titles/past_companies fill the summary-rule guardrails so tailoring never invents a title you never held or mirrors the job posting."
+  },
+
+  "resume": {
+    "template_dir": "resume_template",
+    "_note": "Folder (relative to the project, or an absolute path) holding your base resume(s) + optional STAR-stories source. Any .docx/.pdf filename is accepted."
+  },
+
+  "skills": {
+    "have": [
+      "Azure", "Linux", "Kubernetes", "Docker", "Terraform", "Python", "Bash",
+      "SQL", "CI/CD", "Monitoring", "REST APIs", "Git", "Data Quality"
+    ],
+    "_note": "Your REAL, claimable skills. Drives the job-match score and the never-invent rule (the pipeline flags posting tools NOT in this list rather than fabricating them). Regenerating writes config/skills.json and a generic starter config/skill_aliases.json (common synonyms only) — hand-tune the alias map afterward for best matching."
+  },
+
+  "search": {
+    "titles": [
+      "site reliability",
+      "cloud",
+      "platform",
+      "devops",
+      "data analyst",
+      "support"
+    ],
+    "titles_note": "Plain role keywords. The generators build the boolean query for each board. Multi-word phrases are auto-quoted.",
+
+    "exclude_terms": ["principal", "staff", "manager", "director"],
+    "exclude_note": "Titles to filter OUT (added as NOT (...) on both boards).",
+
+    "location": {
+      "query": "Houston, Texas",
+      "city": "Houston",
+      "state": "TX",
+      "country": "US",
+      "lat": 29.76328,
+      "lon": -95.36327,
+      "population": 2304580,
+      "formatted_address": "Houston, TX, US",
+      "_note": "Only `query` is user-entered; the wizard / dashboard geocodes it to fill city/state/country/lat/lon/formatted_address (hiringcafe.com needs coordinates). Edit `query` and re-geocode rather than hand-editing coordinates."
+    },
+    "radius_miles": 55,
+
+    "workplace_types": ["Remote", "Hybrid", "Onsite"],
+    "workplace_types_note": "Any of: Remote, Hybrid, Onsite, Field. 'Field' is hiringcafe.com-only (ignored on LinkedIn).",
+
+    "include_remote_anywhere_in_country": true,
+    "include_remote_note": "When true and Remote is selected, also pulls country-wide remote roles (hiringcafe.com adds a country location; LinkedIn widens via the country in the location string).",
+
+    "seniority": ["Mid Level", "Senior Level"],
+    "seniority_note": "Any of: Internship, Entry Level, Mid Level, Senior Level, Director, Executive. Mapped to LinkedIn f_E buckets and hiringcafe.com seniorityLevel.",
+
+    "years_experience": [2, 9],
+    "years_experience_note": "[min, max] years. hiringcafe.com roleYoeRange only (LinkedIn has no YoE filter — approximated by seniority).",
+
+    "employment_types": ["Full Time", "Part Time", "Contract", "Temporary"],
+    "employment_types_note": "Any of: Full Time, Part Time, Contract, Temporary, Internship. Mapped to LinkedIn f_JT and hiringcafe.com commitmentTypes.",
+
+    "salary_min": 90000,
+    "salary_max": 150000,
+    "salary_note": "hiringcafe.com uses exact min/max. LinkedIn only supports a coarse min bucket (rounded down to the nearest $20k step from $40k).",
+
+    "security_clearances": ["None"],
+    "air_travel_ok": ["Minimal", "None"],
+    "land_travel_ok": ["Minimal", "None"],
+    "advanced_filters_note": "(advanced) hiringcafe.com-only. Leave defaults unless you know you want otherwise.",
+
+    "date_presets": {"fresh": 1, "weekly": 7},
+    "date_presets_note": "Days-back for the 24h (fresh) and 7d (weekly) scrape passes. Drives hiringcafe.com dateFetchedPastNDays and LinkedIn f_TPR.",
+
+    "use_linkedin": true,
+    "use_hiringcafe": true,
+    "linkedin_top_applicant": true,
+    "sources_note": "Toggle which boards to generate URLs for. linkedin_top_applicant adds LinkedIn's Top-Applicant collection feed — a UI-only Premium page: it renders only in a browser already signed in to LinkedIn Premium, and no API/OAuth path exists for the app to authenticate to it."
+  },
+
+  "notify": {
+    "service": "ntfy",
+    "topic": "CHANGE-ME-to-a-private-random-topic",
+    "enabled": true,
+    "_note": "Free phone push via ntfy.sh — pick a long random topic and subscribe to it in the ntfy app. Anyone who knows the topic can read it, so keep it secret-ish."
+  },
+
+  "git": {
+    "name": "Jane Doe",
+    "email": "jane.doe@example.com",
+    "remote": "",
+    "_note": "Identity for the daily auto-commit. remote is optional (leave blank to skip pushing)."
+  }
+}

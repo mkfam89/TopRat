@@ -1,0 +1,5246 @@
+{
+ "appliedPairs": [
+  [
+   "4MINDS_ForwardDeployedEng",
+   "2026-07-08"
+  ],
+  [
+   "Akamai_SrBusinessAnalyst",
+   "2026-07-08"
+  ],
+  [
+   "Alkami_SrSRERelease",
+   "2026-07-08"
+  ],
+  [
+   "Amplifire_DevOpsEngineer",
+   "2026-07-08"
+  ],
+  [
+   "AscendLearning_SrDataAnalyst",
+   "2026-07-08"
+  ],
+  [
+   "Babylist_StaffSRE",
+   "2026-07-08"
+  ],
+  [
+   "BedrockOcean_SrSRECloud",
+   "2026-07-09"
+  ],
+  [
+   "BoxerProperty_InfraCloudEng",
+   "2026-07-08"
+  ],
+  [
+   "BridgewayBenefit_SrPlatformEng",
+   "2026-07-09"
+  ],
+  [
+   "ByteSearch_PlatformEngineer",
+   "2026-07-08"
+  ],
+  [
+   "CSAA_SoftwareEngPlatformOps",
+   "2026-07-08"
+  ],
+  [
+   "CadreGovernment_BusinessAnalyst",
+   "2026-07-09"
+  ],
+  [
+   "Carnival_SrDevOpsEngineer",
+   "2026-07-08"
+  ],
+  [
+   "CasaInc_DevSecOpsEngineer",
+   "2026-07-09"
+  ],
+  [
+   "CastleBio_SrCloudEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Cenikor_AppliedDataAnalyst",
+   "2026-07-08"
+  ],
+  [
+   "ClickHouse_SrCloudEngineer",
+   "2026-07-09"
+  ],
+  [
+   "CloudBees_DevSupportEngineer",
+   "2026-07-08"
+  ],
+  [
+   "CodeGeniusRecruit_PlatformEng",
+   "2026-07-08"
+  ],
+  [
+   "CodeVertex_CloudInfraEngineer",
+   "2026-07-08"
+  ],
+  [
+   "ComagineHealth_PrincipalCloudEng",
+   "2026-07-08"
+  ],
+  [
+   "Conduent_SiebelSupportEng",
+   "2026-07-08"
+  ],
+  [
+   "Connection_SrEndpointSupportEng",
+   "2026-07-08"
+  ],
+  [
+   "CoreSpecialty_SRE",
+   "2026-07-08"
+  ],
+  [
+   "Cortex_SrProfServicesEng",
+   "2026-07-09"
+  ],
+  [
+   "Cotiviti_LeadSupportEngineer",
+   "2026-07-09"
+  ],
+  [
+   "CrossingHurdles_CloudEngineer",
+   "2026-07-08"
+  ],
+  [
+   "CrossingHurdles_DevOpsEngineer",
+   "2026-07-08"
+  ],
+  [
+   "CrossingHurdles_SRE",
+   "2026-07-08"
+  ],
+  [
+   "Cyolo_TechSupportEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Cytora_SrPlatformEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Datavant_CloudInfraEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Dayforce_DevOpsEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Dayforce_SRE",
+   "2026-07-08"
+  ],
+  [
+   "Delinea",
+   "2026-07-09"
+  ],
+  [
+   "Docupace_TechSupportEngineer",
+   "2026-07-08"
+  ],
+  [
+   "EQT_BusinessAnalyst",
+   "2026-07-09"
+  ],
+  [
+   "EnergyServicesGroup_SrCloudEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Engelhart_DevOpsEngineer",
+   "2026-07-08"
+  ],
+  [
+   "EntertainmentPartners_SrPlatformEng",
+   "2026-07-08"
+  ],
+  [
+   "FIS_SiteReliabilityEngineer",
+   "2026-07-08"
+  ],
+  [
+   "FORT_SiteReliabilityEngineer",
+   "2026-07-08"
+  ],
+  [
+   "FelixPago_SrSoftwareEngineer",
+   "2026-07-08"
+  ],
+  [
+   "FileCloud_TechSupportEng",
+   "2026-07-08"
+  ],
+  [
+   "Foundant_SupportEngineer",
+   "2026-07-08"
+  ],
+  [
+   "FranklinFitch_DevOpsEngineer",
+   "2026-07-08"
+  ],
+  [
+   "GcAI_SrPlatformEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Givzey_AIPlatformEngineer",
+   "2026-07-08"
+  ],
+  [
+   "GoldstonePartners_CloudEng",
+   "2026-07-08"
+  ],
+  [
+   "GoodShip_SrPlatformEng",
+   "2026-07-09"
+  ],
+  [
+   "Granicus_SRE3",
+   "2026-07-08"
+  ],
+  [
+   "Gunvor_BIDataAnalyst",
+   "2026-07-08"
+  ],
+  [
+   "HRAcuity_SrDevOpsEng",
+   "2026-07-08"
+  ],
+  [
+   "Hackajob_StaffSRE",
+   "2026-07-08"
+  ],
+  [
+   "HamiltonBarnes_StaffSRE",
+   "2026-07-08"
+  ],
+  [
+   "HarrisAllied_SrAWSDevOpsEng",
+   "2026-07-08"
+  ],
+  [
+   "HealthCatalyst_SRE_AIEnablement",
+   "2026-07-08"
+  ],
+  [
+   "Hexion_SrAzurePlatformEng",
+   "2026-07-08"
+  ],
+  [
+   "InsightGlobal_SREDevOpsEng",
+   "2026-07-08"
+  ],
+  [
+   "InspiraFinancial_CloudEngineer",
+   "2026-07-08"
+  ],
+  [
+   "IntegraConnect_SrITEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Karbon_SrSupportEngineer",
+   "2026-07-09"
+  ],
+  [
+   "Kraken_SREAIAgents",
+   "2026-07-09"
+  ],
+  [
+   "LSDOpen_SrCloudEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Ladders_ClusterCapacityEng",
+   "2026-07-08"
+  ],
+  [
+   "Ladders_SrInfraSystemsEng",
+   "2026-07-08"
+  ],
+  [
+   "Ladders_SrProductionEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Ladders_SrSupportEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Ladders_SrTSE",
+   "2026-07-08"
+  ],
+  [
+   "Ledgebrook_CloudSecurityEngAWS",
+   "2026-07-08"
+  ],
+  [
+   "Legalfy_CloudSecurityEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Liatrio_SrModernizationEngineer",
+   "2026-07-08"
+  ],
+  [
+   "LiveKit_DistributedSystemsEngineer",
+   "2026-07-08"
+  ],
+  [
+   "LiveKit_SrInfraEng",
+   "2026-07-08"
+  ],
+  [
+   "Made4net_CloudOpsEngineer",
+   "2026-07-08"
+  ],
+  [
+   "MillenniumStaffing_SystemEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Moniepoint_SrSRE",
+   "2026-07-09"
+  ],
+  [
+   "Omnicell_SrBusinessAnalyst",
+   "2026-07-08"
+  ],
+  [
+   "Optomi_StaffInfraSoftwareEng",
+   "2026-07-08"
+  ],
+  [
+   "OxleyEnterprises_SRE",
+   "2026-07-08"
+  ],
+  [
+   "PKCompanies_LeadAzureDevOps",
+   "2026-07-08"
+  ],
+  [
+   "Pax8_SrCloudSecurityEng",
+   "2026-07-08"
+  ],
+  [
+   "PlusPower_SrPlatformBackend",
+   "2026-07-09"
+  ],
+  [
+   "PremierHealth_SrAzureCloudEng",
+   "2026-07-08"
+  ],
+  [
+   "Progressive_DataAnalystLead",
+   "2026-07-08"
+  ],
+  [
+   "Progressive_ITDevOpsLead",
+   "2026-07-08"
+  ],
+  [
+   "Prosum_PrincipalOpenShiftEng",
+   "2026-07-08"
+  ],
+  [
+   "REEMedical_SupportSysEng",
+   "2026-07-08"
+  ],
+  [
+   "Ramp_ProductionEngineering",
+   "2026-07-08"
+  ],
+  [
+   "Ramp_SecurityEngineerCloud",
+   "2026-07-08"
+  ],
+  [
+   "ReWorkGroup_SrDevOpsEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Redis_TechnicalSupportEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Revecore_SrCloudDevOps",
+   "2026-07-08"
+  ],
+  [
+   "Rockwell_SrCloudServicesEng",
+   "2026-07-08"
+  ],
+  [
+   "Runlayer_SupportEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Sanity_SrSRE",
+   "2026-07-09"
+  ],
+  [
+   "Scrunch_SrInfrastructureEng",
+   "2026-07-09"
+  ],
+  [
+   "Sedgwick_DataAnalyst",
+   "2026-07-08"
+  ],
+  [
+   "SentinelOne_SrTechSupportEng",
+   "2026-07-08"
+  ],
+  [
+   "SingleStore_SupportEng",
+   "2026-07-09"
+  ],
+  [
+   "SkyBridgeResources_CloudSupportEng",
+   "2026-07-08"
+  ],
+  [
+   "Solugenix_ProductionSupportEng",
+   "2026-07-08"
+  ],
+  [
+   "SouthlandIndustries_SrBusinessAnalystHR",
+   "2026-07-08"
+  ],
+  [
+   "Sprezzatura_PlatformEng",
+   "2026-07-08"
+  ],
+  [
+   "SrSiteReliabilityEng",
+   "2026-07-08"
+  ],
+  [
+   "StackBlitz_StaffSRE",
+   "2026-07-08"
+  ],
+  [
+   "Starbucks_DataAnalyst",
+   "2026-07-08"
+  ],
+  [
+   "StrategicStaffing_AppSupportEng",
+   "2026-07-08"
+  ],
+  [
+   "TDIndustries_ITAppSupportAnalyst",
+   "2026-07-08"
+  ],
+  [
+   "TailoredBrands_DataAnalystII",
+   "2026-07-08"
+  ],
+  [
+   "Tailscale_SupportEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Tangible_SupportEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Teamworks_PlatformEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Tekniforce_PrincipalCloudEng",
+   "2026-07-08"
+  ],
+  [
+   "Transform9_InfraDevOpsEng",
+   "2026-07-08"
+  ],
+  [
+   "Truelogic_SrCloudDevOpsGCP",
+   "2026-07-09"
+  ],
+  [
+   "Truelogic_SrDataPlatformEng",
+   "2026-07-08"
+  ],
+  [
+   "Trulieve_PlatformEngineer",
+   "2026-07-08"
+  ],
+  [
+   "UnitedHealthGroup_ClinicalOperationsAnalyst",
+   "2026-07-08"
+  ],
+  [
+   "UpstreamRehabilitation_SrBusinessAnalyst",
+   "2026-07-09"
+  ],
+  [
+   "Versant_DataEngineerII",
+   "2026-07-08"
+  ],
+  [
+   "Versant_SrPlatformOps",
+   "2026-07-08"
+  ],
+  [
+   "VibeIQ_SupportEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Virtasant_SrDevOpsEngineer",
+   "2026-07-08"
+  ],
+  [
+   "VoleonGroup_SrClusterSRE",
+   "2026-07-08"
+  ],
+  [
+   "Voxel_Tier2SupportEngineer",
+   "2026-07-08"
+  ],
+  [
+   "Voxel_Tier3SupportEngineer",
+   "2026-07-09"
+  ],
+  [
+   "WorldWideTech_CloudEngineer",
+   "2026-07-08"
+  ],
+  [
+   "WorldWideTech_InfraEngCloud",
+   "2026-07-08"
+  ],
+  [
+   "WorldWideTech_PlatformEngineer",
+   "2026-07-08"
+  ],
+  [
+   "WorldWideTechnology_SrSiteReliabilityEngineer",
+   "2026-07-08"
+  ],
+  [
+   "YorkSolutions_CloudSecurityEng",
+   "2026-07-08"
+  ],
+  [
+   "Prove_SiteReliabilityEngineer",
+   "2026-07-10"
+  ],
+  [
+   "Truelogic_SeniorCloudEngineerDevOpsGCPMarketing",
+   "2026-07-10"
+  ],
+  [
+   "ConcordTechnologies_SiteReliabilityEngineer",
+   "2026-07-10"
+  ],
+  [
+   "GlobalBusinessIT_SeniorAzureCloudEngineer",
+   "2026-07-10"
+  ],
+  [
+   "HDIGlobalInsuranceCompany_DevOpsEngineer",
+   "2026-07-10"
+  ],
+  [
+   "HWKaufmanGroup_TechnicalBusinessAnalyst",
+   "2026-07-10"
+  ],
+  [
+   "LSDOpen_SeniorCloudEngineer",
+   "2026-07-10"
+  ],
+  [
+   "MountvilleMills_DevOpsEngineerII",
+   "2026-07-10"
+  ],
+  [
+   "Paramount_LeadDevOpsEngineer",
+   "2026-07-10"
+  ],
+  [
+   "Pliant_SupportEngineerRemote",
+   "2026-07-10"
+  ],
+  [
+   "Sonatype_AzureDevOpsEngineer",
+   "2026-07-10"
+  ],
+  [
+   "WorldWideTechnology_SrEngineerSiteReliability",
+   "2026-07-10"
+  ],
+  [
+   "Aequilibrium_SeniorDevOpsEngineerAzureCloudNetworkingPlatform",
+   "2026-07-10"
+  ],
+  [
+   "Discogs_SeniorSiteReliabilityEngineerREMOTE",
+   "2026-07-10"
+  ],
+  [
+   "CACI_NASAComputerSystemsEngineer",
+   "2026-07-10"
+  ],
+  [
+   "KinderMorgan_ApplicationDeveloperAnalyst",
+   "2026-07-10"
+  ],
+  [
+   "Veriff_SeniorTechnicalSupportEngineer",
+   "2026-07-15"
+  ],
+  [
+   "Fis_ManagedServiceChangeAnalystSpecialistsSiteReliabilityEngineerSRE",
+   "2026-07-15"
+  ],
+  [
+   "ESGUSA_SeniorCloudEngineer",
+   "2026-07-15"
+  ],
+  [
+   "Offchainlabs_SiteReliabilityEngineer",
+   "2026-07-15"
+  ],
+  [
+   "LaunchTech_AzureCloudOperationsEngineerRemote",
+   "2026-07-15"
+  ],
+  [
+   "NetBoxLabs_SeniorCustomerSupportEngineer",
+   "2026-07-15"
+  ],
+  [
+   "BRG_SiteReliabilityEngineer",
+   "2026-07-16"
+  ],
+  [
+   "Harvey_SupportOperationsEngineer",
+   "2026-07-16"
+  ],
+  [
+   "Ketjen_SalesAndOperationsExecutionAnalyst",
+   "2026-07-16"
+  ],
+  [
+   "CLACliftonLarsonAllen_CloudOperationsAnalyst",
+   "2026-07-16"
+  ],
+  [
+   "Microvast_BMSDataAnalysisEngineer",
+   "2026-07-16"
+  ],
+  [
+   "Nscale_InfrastructureSupportEngineer",
+   "2026-07-16"
+  ],
+  [
+   "SkilledWoundCare_DevOpsEngineer",
+   "2026-07-16"
+  ],
+  [
+   "Tekmetric_SiteReliabilityEngineer",
+   "2026-07-16"
+  ],
+  [
+   "TailoredBrandsInc_ManagedServiceDeliveryAnalyst",
+   "2026-07-16"
+  ],
+  [
+   "Mthree_ProductionSupportAnalyst",
+   "2026-07-16"
+  ],
+  [
+   "ClickHouse_SeniorSiteReliabilityEngineerRemote",
+   "2026-07-16"
+  ],
+  [
+   "CloudBeesInc_DevelopmentSupportEngineer",
+   "2026-07-16"
+  ],
+  [
+   "DNVCareers_CascadeTechnicalSupportAnalyst",
+   "2026-07-16"
+  ],
+  [
+   "MNTN_SeniorDataAnalystDataMonitoring",
+   "2026-07-16"
+  ],
+  [
+   "MHKTECHINC_DataAnalystDataEngineer",
+   "2026-07-16"
+  ],
+  [
+   "Gtlaw_AIPlatformEngineer",
+   "2026-07-20"
+  ],
+  [
+   "21XAG_BusinessAnalystUSAllGenders100REMOTEUSEastCoastTimezonePreferred",
+   "2026-07-20"
+  ],
+  [
+   "Excis_DesktopSupportEngineerL2US",
+   "2026-07-20"
+  ],
+  [
+   "LightologyLLC_DevOpsEngineer",
+   "2026-07-20"
+  ],
+  [
+   "Mirantis_SeniorAIInfrastructurePlatformOperationsEngineerRemoteInTheUS",
+   "2026-07-20"
+  ],
+  [
+   "NIGHTINGALEEDUCATIONLLCSOLEMB_EngineerIIPlatform",
+   "2026-07-20"
+  ],
+  [
+   "Swa_CloudDevOpsEngineer",
+   "2026-07-20"
+  ],
+  [
+   "VASTData_CustomerSupportEngineer",
+   "2026-07-20"
+  ],
+  [
+   "StallionInfrastructureServices_BusinessAnalystIT",
+   "2026-07-20"
+  ],
+  [
+   "Skygrid_SeniorSoftwareEngineerCloudArchitect",
+   "2026-07-20"
+  ],
+  [
+   "Vantagebank_DataQualityEngineer",
+   "2026-07-20"
+  ],
+  [
+   "ZedcorSecuritySolutions_CloudAzureServerEngineerHoustonTX",
+   "2026-07-20"
+  ],
+  [
+   "Zerohash_TechnicalSupportEngineerAMER",
+   "2026-07-20"
+  ],
+  [
+   "Oddball_QABusinessAnalyst",
+   "2026-07-20"
+  ],
+  [
+   "QuestDiagnosticsCareers_SrDataAnalystLooker",
+   "2026-07-20"
+  ],
+  [
+   "ENGIENorthAmericaInc_PerformanceEngineerII",
+   "2026-07-22"
+  ],
+  [
+   "FDMGroup_ApplicationSupportEngineer",
+   "2026-07-22"
+  ],
+  [
+   "Frostbank_SoftwareEngineerIIIPowerPlatform",
+   "2026-07-22"
+  ],
+  [
+   "Kurtosys_TechnicalBusinessAnalystUSAPACSupport",
+   "2026-07-22"
+  ],
+  [
+   "N8n_SeniorSupportEngineerRemoteUS",
+   "2026-07-22"
+  ],
+  [
+   "Prolific_HumanDataQualityEngineerFoundingTeam",
+   "2026-07-22"
+  ],
+  [
+   "Rackner_SeniorBusinessAnalystDataQualityAssuranceEngineerFederalHealthcare",
+   "2026-07-22"
+  ],
+  [
+   "Rackner_SeniorBusinessAnalyst",
+   "2026-07-22"
+  ],
+  [
+   "JPMCCandidateExperiencePage_SiteReliabilityEngineerIII",
+   "2026-07-22"
+  ],
+  [
+   "DonnelleyFinancial_SrSiteReliabilityEngineer",
+   "2026-07-23"
+  ],
+  [
+   "BeneSys_DevOpsEngineer",
+   "2026-07-23"
+  ],
+  [
+   "Hilton_LeadDevOpsEngineer",
+   "2026-07-23"
+  ],
+  [
+   "CloverHealth_SeniorSiteReliabilityEngineer",
+   "2026-07-23"
+  ],
+  [
+   "CounterpartHealth_SeniorSiteReliabilityEngineer",
+   "2026-07-23"
+  ],
+  [
+   "UnitedHealth_SeniorDevOpsEngineer",
+   "2026-07-24"
+  ],
+  [
+   "K2Integrity_SeniorDataAnalyst",
+   "2026-07-24"
+  ],
+  [
+   "Utila_ProductSupportEngineer",
+   "2026-07-24"
+  ],
+  [
+   "Proscia_StrategicSupportEngineer",
+   "2026-07-24"
+  ],
+  [
+   "MDaudit_CloudDevOpsEngineer",
+   "2026-07-24"
+  ],
+  [
+   "Lumen_SrLeadCloudEngineer",
+   "2026-07-24"
+  ],
+  [
+   "TataConsultancy_AutomationPlatformEngineer",
+   "2026-07-24"
+  ],
+  [
+   "BetterHelp_SeniorDevOpsEngineer",
+   "2026-07-24"
+  ],
+  [
+   "Cbrlgroup_SiteReliabilityEngineer",
+   "2026-07-24"
+  ],
+  [
+   "NIGHTINGALEEDUCATIONSOLE_EngineerII",
+   "2026-07-24"
+  ],
+  [
+   "SentinelOne_SrPreSaleSupportEngineer",
+   "2026-07-24"
+  ],
+  [
+   "SAPBusinessApplications_SAPNS2SrDevOpsEngineer",
+   "2026-07-24"
+  ],
+  [
+   "MKS2_SeniorDevOpsEngineer",
+   "2026-07-24"
+  ],
+  [
+   "NBCUniversal_SeniorDevOpsEngineer",
+   "2026-07-24"
+  ],
+  [
+   "CornelisNetworks_AIPlatformEngineer",
+   "2026-07-24"
+  ],
+  [
+   "StrategicTalentSourcing_SeniorAtlassianPlatformAndRequirementsTraceabilityEngine",
+   "2026-07-24"
+  ],
+  [
+   "DreamWorksAnimation_SeniorDevOpsEngineer",
+   "2026-07-24"
+  ],
+  [
+   "JPMorganChase_LeadSiteReliabilityEngineer",
+   "2026-07-24"
+  ],
+  [
+   "Deloitte_InfrastructureEngineer",
+   "2026-07-24"
+  ],
+  [
+   "SouthwestAirlines_CloudDevOpsEngineer",
+   "2026-07-24"
+  ],
+  [
+   "GreenbergTraurig_AIPlatformEngineer",
+   "2026-07-24"
+  ],
+  [
+   "Brain_TechnicalSupportEngineerIV",
+   "2026-07-24"
+  ],
+  [
+   "McDermottWill_AISolutionsQAAnalyst",
+   "2026-07-24"
+  ],
+  [
+   "FIRSTSERVICECREDIT_DataAnalyst",
+   "2026-07-24"
+  ],
+  [
+   "Oec_SeniorPlatformEngineer",
+   "2026-07-24"
+  ],
+  [
+   "Humana_LeadCloudDataPlatformEngineer",
+   "2026-07-24"
+  ],
+  [
+   "NVIDIA_SeniorSoftwareEngineer",
+   "2026-07-24"
+  ],
+  [
+   "Bcbst_SeniorCloudEngineer",
+   "2026-07-27"
+  ],
+  [
+   "NationsBenefits_SiteReliabilityEngineerII",
+   "2026-07-28"
+  ]
+ ],
+ "canon": [
+  {
+   "canonCompany": "21xag",
+   "key": "21XAG_BusinessAnalystUSAllGenders100REMOTEUSEastCoastTimezonePreferred",
+   "roleTokens": [
+    "all",
+    "analyst",
+    "business",
+    "coast",
+    "east",
+    "genders100",
+    "preferred",
+    "remoteus",
+    "timezone"
+   ]
+  },
+  {
+   "canonCompany": "4minds",
+   "key": "4MINDS_ForwardDeployedEng",
+   "roleTokens": [
+    "deployed",
+    "eng",
+    "forward"
+   ]
+  },
+  {
+   "canonCompany": "aequilibrium",
+   "key": "Aequilibrium_SeniorDevOpsEngineerAzureCloudNetworkingPlatform",
+   "roleTokens": [
+    "azure",
+    "cloud",
+    "dev",
+    "eng",
+    "networking",
+    "ops",
+    "platform",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "akamai",
+   "key": "Akamai_SrBusinessAnalyst",
+   "roleTokens": [
+    "analyst",
+    "business",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "alkami",
+   "key": "Alkami_SrSRERelease",
+   "roleTokens": [
+    "release",
+    "sr",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "amplifire",
+   "key": "Amplifire_DevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "ascendlearning",
+   "key": "AscendLearning_SrDataAnalyst",
+   "roleTokens": [
+    "analyst",
+    "data",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "brg",
+   "key": "BRG_SiteReliabilityEngineer",
+   "roleTokens": [
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "babylist",
+   "key": "Babylist_StaffSRE",
+   "roleTokens": [
+    "sre",
+    "staff"
+   ]
+  },
+  {
+   "canonCompany": "bcbst",
+   "key": "Bcbst_SeniorCloudEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "bedrockocean",
+   "key": "BedrockOcean_SrSRECloud",
+   "roleTokens": [
+    "cloud",
+    "sr",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "benesys",
+   "key": "BeneSys_DevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "betterhelp",
+   "key": "BetterHelp_SeniorDevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "boxerproperty",
+   "key": "BoxerProperty_InfraCloudEng",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "infra"
+   ]
+  },
+  {
+   "canonCompany": "brain",
+   "key": "Brain_TechnicalSupportEngineerIV",
+   "roleTokens": [
+    "4",
+    "eng",
+    "support",
+    "tech"
+   ]
+  },
+  {
+   "canonCompany": "bridgewaybenefit",
+   "key": "BridgewayBenefit_SrPlatformEng",
+   "roleTokens": [
+    "eng",
+    "platform",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "bytesearch",
+   "key": "ByteSearch_PlatformEngineer",
+   "roleTokens": [
+    "eng",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "caci",
+   "key": "CACI_NASAComputerSystemsEngineer",
+   "roleTokens": [
+    "computer",
+    "eng",
+    "nasa",
+    "sys"
+   ]
+  },
+  {
+   "canonCompany": "clacliftonlarsonallen",
+   "key": "CLACliftonLarsonAllen_CloudOperationsAnalyst",
+   "roleTokens": [
+    "analyst",
+    "cloud",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "csaa",
+   "key": "CSAA_SoftwareEngPlatformOps",
+   "roleTokens": [
+    "eng",
+    "ops",
+    "platform",
+    "software"
+   ]
+  },
+  {
+   "canonCompany": "cadregovernment",
+   "key": "CadreGovernment_BusinessAnalyst",
+   "roleTokens": [
+    "analyst",
+    "business"
+   ]
+  },
+  {
+   "canonCompany": "carnival",
+   "key": "Carnival_SrDevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "casa",
+   "key": "CasaInc_DevSecOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops",
+    "sec"
+   ]
+  },
+  {
+   "canonCompany": "castlebio",
+   "key": "CastleBio_SrCloudEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "cbrlgroup",
+   "key": "Cbrlgroup_SiteReliabilityEngineer",
+   "roleTokens": [
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "cenikor",
+   "key": "Cenikor_AppliedDataAnalyst",
+   "roleTokens": [
+    "analyst",
+    "applied",
+    "data"
+   ]
+  },
+  {
+   "canonCompany": "clickhouse",
+   "key": "ClickHouse_SeniorSiteReliabilityEngineerRemote",
+   "roleTokens": [
+    "sr",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "clickhouse",
+   "key": "ClickHouse_SrCloudEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "cloudbees",
+   "key": "CloudBeesInc_DevelopmentSupportEngineer",
+   "roleTokens": [
+    "development",
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "cloudbees",
+   "key": "CloudBees_DevSupportEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "cloverhealth",
+   "key": "CloverHealth_SeniorSiteReliabilityEngineer",
+   "roleTokens": [
+    "sr",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "codegeniusrecruit",
+   "key": "CodeGeniusRecruit_PlatformEng",
+   "roleTokens": [
+    "eng",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "codevertex",
+   "key": "CodeVertex_CloudInfraEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "infra"
+   ]
+  },
+  {
+   "canonCompany": "comaginehealth",
+   "key": "ComagineHealth_PrincipalCloudEng",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "principal"
+   ]
+  },
+  {
+   "canonCompany": "concordtechnologies",
+   "key": "ConcordTechnologies_SiteReliabilityEngineer",
+   "roleTokens": [
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "conduent",
+   "key": "Conduent_SiebelSupportEng",
+   "roleTokens": [
+    "eng",
+    "siebel",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "connection",
+   "key": "Connection_SrEndpointSupportEng",
+   "roleTokens": [
+    "endpoint",
+    "eng",
+    "sr",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "corespecialty",
+   "key": "CoreSpecialty_SRE",
+   "roleTokens": [
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "cornelisnetworks",
+   "key": "CornelisNetworks_AIPlatformEngineer",
+   "roleTokens": [
+    "ai",
+    "eng",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "cortex",
+   "key": "Cortex_SrProfServicesEng",
+   "roleTokens": [
+    "eng",
+    "prof",
+    "sr",
+    "svc"
+   ]
+  },
+  {
+   "canonCompany": "cotiviti",
+   "key": "Cotiviti_LeadSupportEngineer",
+   "roleTokens": [
+    "eng",
+    "lead",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "counterparthealth",
+   "key": "CounterpartHealth_SeniorSiteReliabilityEngineer",
+   "roleTokens": [
+    "sr",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "crossinghurdles",
+   "key": "CrossingHurdles_CloudEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng"
+   ]
+  },
+  {
+   "canonCompany": "crossinghurdles",
+   "key": "CrossingHurdles_DevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "crossinghurdles",
+   "key": "CrossingHurdles_SRE",
+   "roleTokens": [
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "cyolo",
+   "key": "Cyolo_TechSupportEngineer",
+   "roleTokens": [
+    "eng",
+    "support",
+    "tech"
+   ]
+  },
+  {
+   "canonCompany": "cytora",
+   "key": "Cytora_SrPlatformEngineer",
+   "roleTokens": [
+    "eng",
+    "platform",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "dnvcareers",
+   "key": "DNVCareers_CascadeTechnicalSupportAnalyst",
+   "roleTokens": [
+    "analyst",
+    "cascade",
+    "support",
+    "tech"
+   ]
+  },
+  {
+   "canonCompany": "datavant",
+   "key": "Datavant_CloudInfraEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "infra"
+   ]
+  },
+  {
+   "canonCompany": "dayforce",
+   "key": "Dayforce_DevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "dayforce",
+   "key": "Dayforce_SRE",
+   "roleTokens": [
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "delinea",
+   "key": "Delinea",
+   "roleTokens": []
+  },
+  {
+   "canonCompany": "deloitte",
+   "key": "Deloitte_InfrastructureEngineer",
+   "roleTokens": [
+    "eng",
+    "infra"
+   ]
+  },
+  {
+   "canonCompany": "discogs",
+   "key": "Discogs_SeniorSiteReliabilityEngineerREMOTE",
+   "roleTokens": [
+    "sr",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "docupace",
+   "key": "Docupace_TechSupportEngineer",
+   "roleTokens": [
+    "eng",
+    "support",
+    "tech"
+   ]
+  },
+  {
+   "canonCompany": "donnelleyfinancial",
+   "key": "DonnelleyFinancial_SrSiteReliabilityEngineer",
+   "roleTokens": [
+    "sr",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "dreamworksanimation",
+   "key": "DreamWorksAnimation_SeniorDevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "engienorthamerica",
+   "key": "ENGIENorthAmericaInc_PerformanceEngineerII",
+   "roleTokens": [
+    "2",
+    "eng",
+    "performance"
+   ]
+  },
+  {
+   "canonCompany": "eqt",
+   "key": "EQT_BusinessAnalyst",
+   "roleTokens": [
+    "analyst",
+    "business"
+   ]
+  },
+  {
+   "canonCompany": "esgusa",
+   "key": "ESGUSA_SeniorCloudEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "energysvcgroup",
+   "key": "EnergyServicesGroup_SrCloudEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "engelhart",
+   "key": "Engelhart_DevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "entertainmentpartners",
+   "key": "EntertainmentPartners_SrPlatformEng",
+   "roleTokens": [
+    "eng",
+    "platform",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "excis",
+   "key": "Excis_DesktopSupportEngineerL2US",
+   "roleTokens": [
+    "desktop",
+    "eng",
+    "l2",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "fdmgroup",
+   "key": "FDMGroup_ApplicationSupportEngineer",
+   "roleTokens": [
+    "application",
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "firstservicecredit",
+   "key": "FIRSTSERVICECREDIT_DataAnalyst",
+   "roleTokens": [
+    "analyst",
+    "data"
+   ]
+  },
+  {
+   "canonCompany": "fis",
+   "key": "FIS_SiteReliabilityEngineer",
+   "roleTokens": [
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "fort",
+   "key": "FORT_SiteReliabilityEngineer",
+   "roleTokens": [
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "felixpago",
+   "key": "FelixPago_SrSoftwareEngineer",
+   "roleTokens": [
+    "eng",
+    "software",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "filecloud",
+   "key": "FileCloud_TechSupportEng",
+   "roleTokens": [
+    "eng",
+    "support",
+    "tech"
+   ]
+  },
+  {
+   "canonCompany": "fis",
+   "key": "Fis_ManagedServiceChangeAnalystSpecialistsSiteReliabilityEngineerSRE",
+   "roleTokens": [
+    "analyst",
+    "change",
+    "managed",
+    "specialists",
+    "sre",
+    "svc"
+   ]
+  },
+  {
+   "canonCompany": "foundant",
+   "key": "Foundant_SupportEngineer",
+   "roleTokens": [
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "franklinfitch",
+   "key": "FranklinFitch_DevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "frostbank",
+   "key": "Frostbank_SoftwareEngineerIIIPowerPlatform",
+   "roleTokens": [
+    "3",
+    "eng",
+    "platform",
+    "power",
+    "software"
+   ]
+  },
+  {
+   "canonCompany": "gcai",
+   "key": "GcAI_SrPlatformEngineer",
+   "roleTokens": [
+    "eng",
+    "platform",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "givzey",
+   "key": "Givzey_AIPlatformEngineer",
+   "roleTokens": [
+    "ai",
+    "eng",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "globalbusinessit",
+   "key": "GlobalBusinessIT_SeniorAzureCloudEngineer",
+   "roleTokens": [
+    "azure",
+    "cloud",
+    "eng",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "goldstonepartners",
+   "key": "GoldstonePartners_CloudEng",
+   "roleTokens": [
+    "cloud",
+    "eng"
+   ]
+  },
+  {
+   "canonCompany": "goodship",
+   "key": "GoodShip_SrPlatformEng",
+   "roleTokens": [
+    "eng",
+    "platform",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "granicus",
+   "key": "Granicus_SRE3",
+   "roleTokens": [
+    "sre3"
+   ]
+  },
+  {
+   "canonCompany": "greenbergtraurig",
+   "key": "GreenbergTraurig_AIPlatformEngineer",
+   "roleTokens": [
+    "ai",
+    "eng",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "gtlaw",
+   "key": "Gtlaw_AIPlatformEngineer",
+   "roleTokens": [
+    "ai",
+    "eng",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "gunvor",
+   "key": "Gunvor_BIDataAnalyst",
+   "roleTokens": [
+    "analyst",
+    "bi",
+    "data"
+   ]
+  },
+  {
+   "canonCompany": "hdiglobalinsurancecompany",
+   "key": "HDIGlobalInsuranceCompany_DevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "hracuity",
+   "key": "HRAcuity_SrDevOpsEng",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "hwkaufmangroup",
+   "key": "HWKaufmanGroup_TechnicalBusinessAnalyst",
+   "roleTokens": [
+    "analyst",
+    "business",
+    "tech"
+   ]
+  },
+  {
+   "canonCompany": "hackajob",
+   "key": "Hackajob_StaffSRE",
+   "roleTokens": [
+    "sre",
+    "staff"
+   ]
+  },
+  {
+   "canonCompany": "hamiltonbarnes",
+   "key": "HamiltonBarnes_StaffSRE",
+   "roleTokens": [
+    "sre",
+    "staff"
+   ]
+  },
+  {
+   "canonCompany": "harrisallied",
+   "key": "HarrisAllied_SrAWSDevOpsEng",
+   "roleTokens": [
+    "aws",
+    "dev",
+    "eng",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "harvey",
+   "key": "Harvey_SupportOperationsEngineer",
+   "roleTokens": [
+    "eng",
+    "ops",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "healthcatalyst",
+   "key": "HealthCatalyst_SRE_AIEnablement",
+   "roleTokens": [
+    "ai",
+    "enablement",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "hexion",
+   "key": "Hexion_SrAzurePlatformEng",
+   "roleTokens": [
+    "azure",
+    "eng",
+    "platform",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "hilton",
+   "key": "Hilton_LeadDevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "lead",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "humana",
+   "key": "Humana_LeadCloudDataPlatformEngineer",
+   "roleTokens": [
+    "cloud",
+    "data",
+    "eng",
+    "lead",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "insightglobal",
+   "key": "InsightGlobal_SREDevOpsEng",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "inspirafinancial",
+   "key": "InspiraFinancial_CloudEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng"
+   ]
+  },
+  {
+   "canonCompany": "integraconnect",
+   "key": "IntegraConnect_SrITEngineer",
+   "roleTokens": [
+    "eng",
+    "it",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "jpmccandidateexperiencepage",
+   "key": "JPMCCandidateExperiencePage_SiteReliabilityEngineerIII",
+   "roleTokens": [
+    "3",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "jpmorganchase",
+   "key": "JPMorganChase_LeadSiteReliabilityEngineer",
+   "roleTokens": [
+    "lead",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "k2integrity",
+   "key": "K2Integrity_SeniorDataAnalyst",
+   "roleTokens": [
+    "analyst",
+    "data",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "karbon",
+   "key": "Karbon_SrSupportEngineer",
+   "roleTokens": [
+    "eng",
+    "sr",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "ketjen",
+   "key": "Ketjen_SalesAndOperationsExecutionAnalyst",
+   "roleTokens": [
+    "analyst",
+    "execution",
+    "ops",
+    "sales"
+   ]
+  },
+  {
+   "canonCompany": "kindermorgan",
+   "key": "KinderMorgan_ApplicationDeveloperAnalyst",
+   "roleTokens": [
+    "analyst",
+    "application",
+    "dev"
+   ]
+  },
+  {
+   "canonCompany": "kraken",
+   "key": "Kraken_SREAIAgents",
+   "roleTokens": [
+    "agents",
+    "sreai"
+   ]
+  },
+  {
+   "canonCompany": "kurtosys",
+   "key": "Kurtosys_TechnicalBusinessAnalystUSAPACSupport",
+   "roleTokens": [
+    "analyst",
+    "business",
+    "support",
+    "tech",
+    "usapac"
+   ]
+  },
+  {
+   "canonCompany": "lsdopen",
+   "key": "LSDOpen_SeniorCloudEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "lsdopen",
+   "key": "LSDOpen_SrCloudEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "ladders",
+   "key": "Ladders_ClusterCapacityEng",
+   "roleTokens": [
+    "capacity",
+    "cluster",
+    "eng"
+   ]
+  },
+  {
+   "canonCompany": "ladders",
+   "key": "Ladders_SrInfraSystemsEng",
+   "roleTokens": [
+    "eng",
+    "infra",
+    "sr",
+    "sys"
+   ]
+  },
+  {
+   "canonCompany": "ladders",
+   "key": "Ladders_SrProductionEngineer",
+   "roleTokens": [
+    "eng",
+    "production",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "ladders",
+   "key": "Ladders_SrSupportEngineer",
+   "roleTokens": [
+    "eng",
+    "sr",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "ladders",
+   "key": "Ladders_SrTSE",
+   "roleTokens": [
+    "sr",
+    "tse"
+   ]
+  },
+  {
+   "canonCompany": "launchtech",
+   "key": "LaunchTech_AzureCloudOperationsEngineerRemote",
+   "roleTokens": [
+    "azure",
+    "cloud",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "ledgebrook",
+   "key": "Ledgebrook_CloudSecurityEngAWS",
+   "roleTokens": [
+    "aws",
+    "cloud",
+    "eng",
+    "security"
+   ]
+  },
+  {
+   "canonCompany": "legalfy",
+   "key": "Legalfy_CloudSecurityEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "security"
+   ]
+  },
+  {
+   "canonCompany": "liatrio",
+   "key": "Liatrio_SrModernizationEngineer",
+   "roleTokens": [
+    "eng",
+    "modernization",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "lightology",
+   "key": "LightologyLLC_DevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "livekit",
+   "key": "LiveKit_DistributedSystemsEngineer",
+   "roleTokens": [
+    "distributed",
+    "eng",
+    "sys"
+   ]
+  },
+  {
+   "canonCompany": "livekit",
+   "key": "LiveKit_SrInfraEng",
+   "roleTokens": [
+    "eng",
+    "infra",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "lumen",
+   "key": "Lumen_SrLeadCloudEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "lead",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "mdaudit",
+   "key": "MDaudit_CloudDevOpsEngineer",
+   "roleTokens": [
+    "cloud",
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "mhktechinc",
+   "key": "MHKTECHINC_DataAnalystDataEngineer",
+   "roleTokens": [
+    "analyst",
+    "data",
+    "eng"
+   ]
+  },
+  {
+   "canonCompany": "mks2",
+   "key": "MKS2_SeniorDevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "mntn",
+   "key": "MNTN_SeniorDataAnalystDataMonitoring",
+   "roleTokens": [
+    "analyst",
+    "data",
+    "monitoring",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "made4net",
+   "key": "Made4net_CloudOpsEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "mcdermottwill",
+   "key": "McDermottWill_AISolutionsQAAnalyst",
+   "roleTokens": [
+    "ai",
+    "analyst",
+    "qa",
+    "solutions"
+   ]
+  },
+  {
+   "canonCompany": "microvast",
+   "key": "Microvast_BMSDataAnalysisEngineer",
+   "roleTokens": [
+    "analysis",
+    "bms",
+    "data",
+    "eng"
+   ]
+  },
+  {
+   "canonCompany": "millenniumstaffing",
+   "key": "MillenniumStaffing_SystemEngineer",
+   "roleTokens": [
+    "eng",
+    "sys"
+   ]
+  },
+  {
+   "canonCompany": "mirantis",
+   "key": "Mirantis_SeniorAIInfrastructurePlatformOperationsEngineerRemoteInTheUS",
+   "roleTokens": [
+    "ai",
+    "eng",
+    "in",
+    "infra",
+    "ops",
+    "platform",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "moniepoint",
+   "key": "Moniepoint_SrSRE",
+   "roleTokens": [
+    "sr",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "mountvillemills",
+   "key": "MountvilleMills_DevOpsEngineerII",
+   "roleTokens": [
+    "2",
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "mthree",
+   "key": "Mthree_ProductionSupportAnalyst",
+   "roleTokens": [
+    "analyst",
+    "production",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "n8n",
+   "key": "N8n_SeniorSupportEngineerRemoteUS",
+   "roleTokens": [
+    "eng",
+    "sr",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "nbcuniversal",
+   "key": "NBCUniversal_SeniorDevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "nightingaleeducationllcsolemb",
+   "key": "NIGHTINGALEEDUCATIONLLCSOLEMB_EngineerIIPlatform",
+   "roleTokens": [
+    "2",
+    "eng",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "nightingaleeducationsole",
+   "key": "NIGHTINGALEEDUCATIONSOLE_EngineerII",
+   "roleTokens": [
+    "2",
+    "eng"
+   ]
+  },
+  {
+   "canonCompany": "nvidia",
+   "key": "NVIDIA_SeniorSoftwareEngineer",
+   "roleTokens": [
+    "eng",
+    "software",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "nationsbenefits",
+   "key": "NationsBenefits_SiteReliabilityEngineerII",
+   "roleTokens": [
+    "2",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "netboxlabs",
+   "key": "NetBoxLabs_SeniorCustomerSupportEngineer",
+   "roleTokens": [
+    "customer",
+    "eng",
+    "sr",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "nscale",
+   "key": "Nscale_InfrastructureSupportEngineer",
+   "roleTokens": [
+    "eng",
+    "infra",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "oddball",
+   "key": "Oddball_QABusinessAnalyst",
+   "roleTokens": [
+    "analyst",
+    "business",
+    "qa"
+   ]
+  },
+  {
+   "canonCompany": "oec",
+   "key": "Oec_SeniorPlatformEngineer",
+   "roleTokens": [
+    "eng",
+    "platform",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "offchainlabs",
+   "key": "Offchainlabs_SiteReliabilityEngineer",
+   "roleTokens": [
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "omnicell",
+   "key": "Omnicell_SrBusinessAnalyst",
+   "roleTokens": [
+    "analyst",
+    "business",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "optomi",
+   "key": "Optomi_StaffInfraSoftwareEng",
+   "roleTokens": [
+    "eng",
+    "infra",
+    "software",
+    "staff"
+   ]
+  },
+  {
+   "canonCompany": "oxleyenterprises",
+   "key": "OxleyEnterprises_SRE",
+   "roleTokens": [
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "pkcompanies",
+   "key": "PKCompanies_LeadAzureDevOps",
+   "roleTokens": [
+    "azure",
+    "dev",
+    "lead",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "paramount",
+   "key": "Paramount_LeadDevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "lead",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "pax8",
+   "key": "Pax8_SrCloudSecurityEng",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "security",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "pliant",
+   "key": "Pliant_SupportEngineerRemote",
+   "roleTokens": [
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "pluspower",
+   "key": "PlusPower_SrPlatformBackend",
+   "roleTokens": [
+    "backend",
+    "platform",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "premierhealth",
+   "key": "PremierHealth_SrAzureCloudEng",
+   "roleTokens": [
+    "azure",
+    "cloud",
+    "eng",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "progressive",
+   "key": "Progressive_DataAnalystLead",
+   "roleTokens": [
+    "analyst",
+    "data",
+    "lead"
+   ]
+  },
+  {
+   "canonCompany": "progressive",
+   "key": "Progressive_ITDevOpsLead",
+   "roleTokens": [
+    "dev",
+    "it",
+    "lead",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "prolific",
+   "key": "Prolific_HumanDataQualityEngineerFoundingTeam",
+   "roleTokens": [
+    "data",
+    "eng",
+    "founding",
+    "human",
+    "quality",
+    "team"
+   ]
+  },
+  {
+   "canonCompany": "proscia",
+   "key": "Proscia_StrategicSupportEngineer",
+   "roleTokens": [
+    "eng",
+    "strategic",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "prosum",
+   "key": "Prosum_PrincipalOpenShiftEng",
+   "roleTokens": [
+    "eng",
+    "open",
+    "principal",
+    "shift"
+   ]
+  },
+  {
+   "canonCompany": "prove",
+   "key": "Prove_SiteReliabilityEngineer",
+   "roleTokens": [
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "questdiagnosticscareers",
+   "key": "QuestDiagnosticsCareers_SrDataAnalystLooker",
+   "roleTokens": [
+    "analyst",
+    "data",
+    "looker",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "reemedical",
+   "key": "REEMedical_SupportSysEng",
+   "roleTokens": [
+    "eng",
+    "support",
+    "sys"
+   ]
+  },
+  {
+   "canonCompany": "rackner",
+   "key": "Rackner_SeniorBusinessAnalyst",
+   "roleTokens": [
+    "analyst",
+    "business",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "rackner",
+   "key": "Rackner_SeniorBusinessAnalystDataQualityAssuranceEngineerFederalHealthcare",
+   "roleTokens": [
+    "analyst",
+    "assurance",
+    "business",
+    "data",
+    "eng",
+    "federal",
+    "healthcare",
+    "quality",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "ramp",
+   "key": "Ramp_ProductionEngineering",
+   "roleTokens": [
+    "eng",
+    "production"
+   ]
+  },
+  {
+   "canonCompany": "ramp",
+   "key": "Ramp_SecurityEngineerCloud",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "security"
+   ]
+  },
+  {
+   "canonCompany": "reworkgroup",
+   "key": "ReWorkGroup_SrDevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "redis",
+   "key": "Redis_TechnicalSupportEngineer",
+   "roleTokens": [
+    "eng",
+    "support",
+    "tech"
+   ]
+  },
+  {
+   "canonCompany": "revecore",
+   "key": "Revecore_SrCloudDevOps",
+   "roleTokens": [
+    "cloud",
+    "dev",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "rockwell",
+   "key": "Rockwell_SrCloudServicesEng",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "sr",
+    "svc"
+   ]
+  },
+  {
+   "canonCompany": "runlayer",
+   "key": "Runlayer_SupportEngineer",
+   "roleTokens": [
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "sapbusinessapplications",
+   "key": "SAPBusinessApplications_SAPNS2SrDevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops",
+    "sapns2",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "sanity",
+   "key": "Sanity_SrSRE",
+   "roleTokens": [
+    "sr",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "scrunch",
+   "key": "Scrunch_SrInfrastructureEng",
+   "roleTokens": [
+    "eng",
+    "infra",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "sedgwick",
+   "key": "Sedgwick_DataAnalyst",
+   "roleTokens": [
+    "analyst",
+    "data"
+   ]
+  },
+  {
+   "canonCompany": "sentinelone",
+   "key": "SentinelOne_SrPreSaleSupportEngineer",
+   "roleTokens": [
+    "eng",
+    "pre",
+    "sale",
+    "sr",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "sentinelone",
+   "key": "SentinelOne_SrTechSupportEng",
+   "roleTokens": [
+    "eng",
+    "sr",
+    "support",
+    "tech"
+   ]
+  },
+  {
+   "canonCompany": "singlestore",
+   "key": "SingleStore_SupportEng",
+   "roleTokens": [
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "skilledwoundcare",
+   "key": "SkilledWoundCare_DevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "skybridgeresources",
+   "key": "SkyBridgeResources_CloudSupportEng",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "skygrid",
+   "key": "Skygrid_SeniorSoftwareEngineerCloudArchitect",
+   "roleTokens": [
+    "architect",
+    "cloud",
+    "eng",
+    "software",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "solugenix",
+   "key": "Solugenix_ProductionSupportEng",
+   "roleTokens": [
+    "eng",
+    "production",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "sonatype",
+   "key": "Sonatype_AzureDevOpsEngineer",
+   "roleTokens": [
+    "azure",
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "southlandindustries",
+   "key": "SouthlandIndustries_SrBusinessAnalystHR",
+   "roleTokens": [
+    "analyst",
+    "business",
+    "hr",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "southwestairlines",
+   "key": "SouthwestAirlines_CloudDevOpsEngineer",
+   "roleTokens": [
+    "cloud",
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "sprezzatura",
+   "key": "Sprezzatura_PlatformEng",
+   "roleTokens": [
+    "eng",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "srsreeng",
+   "key": "SrSiteReliabilityEng",
+   "roleTokens": []
+  },
+  {
+   "canonCompany": "stackblitz",
+   "key": "StackBlitz_StaffSRE",
+   "roleTokens": [
+    "sre",
+    "staff"
+   ]
+  },
+  {
+   "canonCompany": "stallioninfrasvc",
+   "key": "StallionInfrastructureServices_BusinessAnalystIT",
+   "roleTokens": [
+    "analyst",
+    "business",
+    "it"
+   ]
+  },
+  {
+   "canonCompany": "starbucks",
+   "key": "Starbucks_DataAnalyst",
+   "roleTokens": [
+    "analyst",
+    "data"
+   ]
+  },
+  {
+   "canonCompany": "strategicstaffing",
+   "key": "StrategicStaffing_AppSupportEng",
+   "roleTokens": [
+    "app",
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "strategictalentsourcing",
+   "key": "StrategicTalentSourcing_SeniorAtlassianPlatformAndRequirementsTraceabilityEngine",
+   "roleTokens": [
+    "atlassian",
+    "engine",
+    "platform",
+    "requirements",
+    "sr",
+    "traceability"
+   ]
+  },
+  {
+   "canonCompany": "swa",
+   "key": "Swa_CloudDevOpsEngineer",
+   "roleTokens": [
+    "cloud",
+    "dev",
+    "eng",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "tdindustries",
+   "key": "TDIndustries_ITAppSupportAnalyst",
+   "roleTokens": [
+    "analyst",
+    "app",
+    "it",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "tailoredbrands",
+   "key": "TailoredBrandsInc_ManagedServiceDeliveryAnalyst",
+   "roleTokens": [
+    "analyst",
+    "delivery",
+    "managed",
+    "svc"
+   ]
+  },
+  {
+   "canonCompany": "tailoredbrands",
+   "key": "TailoredBrands_DataAnalystII",
+   "roleTokens": [
+    "2",
+    "analyst",
+    "data"
+   ]
+  },
+  {
+   "canonCompany": "tailscale",
+   "key": "Tailscale_SupportEngineer",
+   "roleTokens": [
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "tangible",
+   "key": "Tangible_SupportEngineer",
+   "roleTokens": [
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "tataconsultancy",
+   "key": "TataConsultancy_AutomationPlatformEngineer",
+   "roleTokens": [
+    "automation",
+    "eng",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "teamworks",
+   "key": "Teamworks_PlatformEngineer",
+   "roleTokens": [
+    "eng",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "tekmetric",
+   "key": "Tekmetric_SiteReliabilityEngineer",
+   "roleTokens": [
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "tekniforce",
+   "key": "Tekniforce_PrincipalCloudEng",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "principal"
+   ]
+  },
+  {
+   "canonCompany": "transform9",
+   "key": "Transform9_InfraDevOpsEng",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "infra",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "truelogic",
+   "key": "Truelogic_SeniorCloudEngineerDevOpsGCPMarketing",
+   "roleTokens": [
+    "cloud",
+    "dev",
+    "eng",
+    "gcp",
+    "marketing",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "truelogic",
+   "key": "Truelogic_SrCloudDevOpsGCP",
+   "roleTokens": [
+    "cloud",
+    "dev",
+    "gcp",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "truelogic",
+   "key": "Truelogic_SrDataPlatformEng",
+   "roleTokens": [
+    "data",
+    "eng",
+    "platform",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "trulieve",
+   "key": "Trulieve_PlatformEngineer",
+   "roleTokens": [
+    "eng",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "healthgroup",
+   "key": "UnitedHealthGroup_ClinicalOperationsAnalyst",
+   "roleTokens": [
+    "analyst",
+    "clinical",
+    "ops"
+   ]
+  },
+  {
+   "canonCompany": "health",
+   "key": "UnitedHealth_SeniorDevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "upstreamrehabilitation",
+   "key": "UpstreamRehabilitation_SrBusinessAnalyst",
+   "roleTokens": [
+    "analyst",
+    "business",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "utila",
+   "key": "Utila_ProductSupportEngineer",
+   "roleTokens": [
+    "eng",
+    "product",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "vastdata",
+   "key": "VASTData_CustomerSupportEngineer",
+   "roleTokens": [
+    "customer",
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "vantagebank",
+   "key": "Vantagebank_DataQualityEngineer",
+   "roleTokens": [
+    "data",
+    "eng",
+    "quality"
+   ]
+  },
+  {
+   "canonCompany": "veriff",
+   "key": "Veriff_SeniorTechnicalSupportEngineer",
+   "roleTokens": [
+    "eng",
+    "sr",
+    "support",
+    "tech"
+   ]
+  },
+  {
+   "canonCompany": "versant",
+   "key": "Versant_DataEngineerII",
+   "roleTokens": [
+    "2",
+    "data",
+    "eng"
+   ]
+  },
+  {
+   "canonCompany": "versant",
+   "key": "Versant_SrPlatformOps",
+   "roleTokens": [
+    "ops",
+    "platform",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "vibeiq",
+   "key": "VibeIQ_SupportEngineer",
+   "roleTokens": [
+    "eng",
+    "support"
+   ]
+  },
+  {
+   "canonCompany": "virtasant",
+   "key": "Virtasant_SrDevOpsEngineer",
+   "roleTokens": [
+    "dev",
+    "eng",
+    "ops",
+    "sr"
+   ]
+  },
+  {
+   "canonCompany": "voleongroup",
+   "key": "VoleonGroup_SrClusterSRE",
+   "roleTokens": [
+    "cluster",
+    "sr",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "voxel",
+   "key": "Voxel_Tier2SupportEngineer",
+   "roleTokens": [
+    "eng",
+    "support",
+    "tier2"
+   ]
+  },
+  {
+   "canonCompany": "voxel",
+   "key": "Voxel_Tier3SupportEngineer",
+   "roleTokens": [
+    "eng",
+    "support",
+    "tier3"
+   ]
+  },
+  {
+   "canonCompany": "worldwidetech",
+   "key": "WorldWideTech_CloudEngineer",
+   "roleTokens": [
+    "cloud",
+    "eng"
+   ]
+  },
+  {
+   "canonCompany": "worldwidetech",
+   "key": "WorldWideTech_InfraEngCloud",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "infra"
+   ]
+  },
+  {
+   "canonCompany": "worldwidetech",
+   "key": "WorldWideTech_PlatformEngineer",
+   "roleTokens": [
+    "eng",
+    "platform"
+   ]
+  },
+  {
+   "canonCompany": "worldwidetechnology",
+   "key": "WorldWideTechnology_SrEngineerSiteReliability",
+   "roleTokens": [
+    "eng",
+    "sr",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "worldwidetechnology",
+   "key": "WorldWideTechnology_SrSiteReliabilityEngineer",
+   "roleTokens": [
+    "sr",
+    "sre"
+   ]
+  },
+  {
+   "canonCompany": "yorksolutions",
+   "key": "YorkSolutions_CloudSecurityEng",
+   "roleTokens": [
+    "cloud",
+    "eng",
+    "security"
+   ]
+  },
+  {
+   "canonCompany": "zedcorsecuritysolutions",
+   "key": "ZedcorSecuritySolutions_CloudAzureServerEngineerHoustonTX",
+   "roleTokens": [
+    "azure",
+    "cloud",
+    "eng",
+    "houston",
+    "server",
+    "tx"
+   ]
+  },
+  {
+   "canonCompany": "zerohash",
+   "key": "Zerohash_TechnicalSupportEngineerAMER",
+   "roleTokens": [
+    "amer",
+    "eng",
+    "support",
+    "tech"
+   ]
+  }
+ ],
+ "resolve": [
+  {
+   "appliedMatch": null,
+   "company": "Alkami",
+   "id": "Alkami_PlatformSolutionEngineerMANTL",
+   "role": "Platform Solution Engineer MANTL",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Blink Rx",
+   "id": "BlinkRx_StrategyAndOperationsAnalystProviderOperations",
+   "role": "Strategy And Operations Analyst Provider Operations",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "CLA Clifton Larson Allen",
+   "id": "CLACliftonLarsonAllen_CloudOperationsAnalyst",
+   "role": "Cloud Operations Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Cisive",
+   "id": "Cisive_SeniorBusinessAnalyst",
+   "role": "Senior Business Analyst",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Click House",
+   "id": "ClickHouse_CloudEngineerProductMetrics",
+   "role": "Cloud Engineer Product Metrics",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Cytora Applied Systems",
+   "id": "CytoraAppliedSystems_ProductSupportEngineer",
+   "role": "Product Support Engineer",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Danaher",
+   "id": "Danaher_TechnicalSupportEngineerEnterpriseSolutionsREMOTE",
+   "role": "Technical Support Engineer Enterprise Solutions REMOTE",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "EMPLOYERS",
+   "id": "EMPLOYERS_SeniorDevOpsEngineer",
+   "role": "Senior Dev Ops Engineer",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "E Ncloud",
+   "id": "ENcloud_SrDevOpsEngineer",
+   "role": "Sr Dev Ops Engineer",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "EPAM Systems Inc",
+   "id": "EPAMSystemsInc_DevOpsPlatformEngineerAWSTerraformPythonHPC",
+   "role": "Dev Ops Platform Engineer AWS Terraform Python HPC",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Energy Transfer",
+   "id": "EnergyTransfer_LeadSpecialist",
+   "role": "Lead Specialist",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Energy Transfer Family",
+   "id": "EnergyTransferFamily_LeadSpecialist",
+   "role": "Lead Specialist",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Equipment Share",
+   "id": "EquipmentShare_SeniorDataAnalyst",
+   "role": "Senior Data Analyst",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Eurofins",
+   "id": "Eurofins_CloudInfrastructureEngineer",
+   "role": "Cloud Infrastructure Engineer",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Expand Energy",
+   "id": "ExpandEnergy_DevOpsEngineerII",
+   "role": "Dev Ops Engineer II",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "FIRSTSERVICECREDIT",
+   "id": "FIRSTSERVICECREDIT_DataAnalyst",
+   "role": "Data Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Farmers Educational Cooperative Union Of America ND Division",
+   "id": "FarmersEducationalCooperativeUnionOfAmericaNDDivision_ITBusinessSupportAnalyst",
+   "role": "IT Business Support Analyst",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "First Citizens Bank",
+   "id": "FirstCitizensBank_EnterpriseDataAnalystII",
+   "role": "Enterprise Data Analyst II",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "HP",
+   "id": "HP_DataAnalyticsAndCloudEngineer",
+   "role": "Data Analytics And Cloud Engineer",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Inspira",
+   "id": "Inspira_DevOpsEngineerRemote",
+   "role": "Dev Ops Engineer Remote",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Koch",
+   "id": "Koch_BusinessSystemsAnalyst",
+   "role": "Business Systems Analyst",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Layer Cake Technologies",
+   "id": "LayerCakeTechnologies_ClientSupportAnalystIII",
+   "role": "Client Support Analyst III",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Lumen",
+   "id": "Lumen_SeniorLeadDevOpsEngineer",
+   "role": "Senior Lead Dev Ops Engineer",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "Mc Dermott Will",
+   "id": "McDermottWill_AISolutionsQAAnalyst",
+   "role": "AI Solutions QA Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "NOV",
+   "id": "NOV_BusinessAnalyst",
+   "role": "Business Analyst",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "NOV",
+   "id": "NOV_SiteReliabilityEngineer",
+   "role": "Site Reliability Engineer",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Post Hog",
+   "id": "PostHog_SiteReliabilityEngineerUSCentralEasternTimezone",
+   "role": "Site Reliability Engineer US Central Eastern Timezone",
+   "status": "pending",
+   "statusDate": "",
+   "statusSource": ""
+  },
+  {
+   "appliedMatch": null,
+   "company": "Progressive",
+   "id": "Progressive_AzureDevOpsEngineerLead",
+   "role": "Azure Dev Ops Engineer Lead",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Stellus RX",
+   "id": "StellusRX_SeniorDataAnalyst",
+   "role": "Senior Data Analyst",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Stellus RX",
+   "id": "StellusRX_SeniorIntegrationEngineer",
+   "role": "Senior Integration Engineer",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Senior Traceability Engineer",
+   "id": "SeniorTraceabilityEngineer",
+   "role": "",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Venterra Realty",
+   "id": "VenterraRealty_ITSupportAnalyst",
+   "role": "IT Support Analyst",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Volta Grid",
+   "id": "VoltaGrid_DevOpsSiteReliabilityEngineer",
+   "role": "Dev Ops Site Reliability Engineer",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Webtrends",
+   "id": "Webtrends_TechnicalBusinessAnalyst",
+   "role": "Technical Business Analyst",
+   "status": "skipped",
+   "statusDate": "",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "21 XAG",
+   "id": "21XAG_BusinessAnalystUSAllGenders100REMOTEUSEastCoastTimezonePreferred",
+   "role": "Business Analyst US All Genders100 REMOTEUS East Coast Timezone Preferred",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "4 MINDS",
+   "id": "4MINDS_ForwardDeployedEng",
+   "role": "Forward Deployed Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "Aequilibrium",
+   "id": "Aequilibrium_SeniorDevOpsEngineerAzureCloudNetworkingPlatform",
+   "role": "Senior Dev Ops Engineer Azure Cloud Networking Platform",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Akamai",
+   "id": "Akamai_SrBusinessAnalyst",
+   "role": "Sr Business Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Alkami",
+   "id": "Alkami_SrSRERelease",
+   "role": "Sr SRE Release",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Amplifire",
+   "id": "Amplifire_DevOpsEngineer",
+   "role": "Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Ascend Learning",
+   "id": "AscendLearning_SrDataAnalyst",
+   "role": "Sr Data Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Babylist",
+   "id": "Babylist_StaffSRE",
+   "role": "Staff SRE",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Bedrock Ocean",
+   "id": "BedrockOcean_SrSRECloud",
+   "role": "Sr SRE Cloud",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Boxer Property",
+   "id": "BoxerProperty_InfraCloudEng",
+   "role": "Infra Cloud Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Bridgeway Benefit",
+   "id": "BridgewayBenefit_SrPlatformEng",
+   "role": "Sr Platform Eng",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Byte Search",
+   "id": "ByteSearch_PlatformEngineer",
+   "role": "Platform Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "CACI",
+   "id": "CACI_NASAComputerSystemsEngineer",
+   "role": "NASA Computer Systems Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "CSAA",
+   "id": "CSAA_SoftwareEngPlatformOps",
+   "role": "Software Eng Platform Ops",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Cadre Government",
+   "id": "CadreGovernment_BusinessAnalyst",
+   "role": "Business Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Carnival",
+   "id": "Carnival_SrDevOpsEngineer",
+   "role": "Sr Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Casa Inc",
+   "id": "CasaInc_DevSecOpsEngineer",
+   "role": "Dev Sec Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Castle Bio",
+   "id": "CastleBio_SrCloudEngineer",
+   "role": "Sr Cloud Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Cenikor",
+   "id": "Cenikor_AppliedDataAnalyst",
+   "role": "Applied Data Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "Click House",
+   "id": "ClickHouse_SeniorSiteReliabilityEngineerRemote",
+   "role": "Senior Site Reliability Engineer Remote",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Click House",
+   "id": "ClickHouse_SrCloudEngineer",
+   "role": "Sr Cloud Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Cloud Bees",
+   "id": "CloudBees_DevSupportEngineer",
+   "role": "Dev Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "Cloud Bees Inc",
+   "id": "CloudBeesInc_DevelopmentSupportEngineer",
+   "role": "Development Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-23",
+   "company": "Clover Health",
+   "id": "CloverHealth_SeniorSiteReliabilityEngineer",
+   "role": "Senior Site Reliability Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-23",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Code Genius Recruit",
+   "id": "CodeGeniusRecruit_PlatformEng",
+   "role": "Platform Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Code Vertex",
+   "id": "CodeVertex_CloudInfraEngineer",
+   "role": "Cloud Infra Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Comagine Health",
+   "id": "ComagineHealth_PrincipalCloudEng",
+   "role": "Principal Cloud Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "Concord Technologies",
+   "id": "ConcordTechnologies_SiteReliabilityEngineer",
+   "role": "Site Reliability Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Conduent",
+   "id": "Conduent_SiebelSupportEng",
+   "role": "Siebel Support Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Connection",
+   "id": "Connection_SrEndpointSupportEng",
+   "role": "Sr Endpoint Support Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Core Specialty",
+   "id": "CoreSpecialty_SRE",
+   "role": "SRE",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "Cornelis Networks",
+   "id": "CornelisNetworks_AIPlatformEngineer",
+   "role": "AI Platform Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Cortex",
+   "id": "Cortex_SrProfServicesEng",
+   "role": "Sr Prof Services Eng",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Cotiviti",
+   "id": "Cotiviti_LeadSupportEngineer",
+   "role": "Lead Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-23",
+   "company": "Counterpart Health",
+   "id": "CounterpartHealth_SeniorSiteReliabilityEngineer",
+   "role": "Senior Site Reliability Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-23",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Crossing Hurdles",
+   "id": "CrossingHurdles_CloudEngineer",
+   "role": "Cloud Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Crossing Hurdles",
+   "id": "CrossingHurdles_DevOpsEngineer",
+   "role": "Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Crossing Hurdles",
+   "id": "CrossingHurdles_SRE",
+   "role": "SRE",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Cyolo",
+   "id": "Cyolo_TechSupportEngineer",
+   "role": "Tech Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Cytora",
+   "id": "Cytora_SrPlatformEngineer",
+   "role": "Sr Platform Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "DNV Careers",
+   "id": "DNVCareers_CascadeTechnicalSupportAnalyst",
+   "role": "Cascade Technical Support Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Datavant",
+   "id": "Datavant_CloudInfraEngineer",
+   "role": "Cloud Infra Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Dayforce",
+   "id": "Dayforce_DevOpsEngineer",
+   "role": "Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Dayforce",
+   "id": "Dayforce_SRE",
+   "role": "SRE",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Delinea",
+   "id": "Delinea",
+   "role": "",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "Discogs",
+   "id": "Discogs_SeniorSiteReliabilityEngineerREMOTE",
+   "role": "Senior Site Reliability Engineer REMOTE",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Docupace",
+   "id": "Docupace_TechSupportEngineer",
+   "role": "Tech Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-22",
+   "company": "ENGIE North America Inc",
+   "id": "ENGIENorthAmericaInc_PerformanceEngineerII",
+   "role": "Performance Engineer II",
+   "status": "applied",
+   "statusDate": "2026-07-22",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "EQT",
+   "id": "EQT_BusinessAnalyst",
+   "role": "Business Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Energy Services Group",
+   "id": "EnergyServicesGroup_SrCloudEngineer",
+   "role": "Sr Cloud Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Engelhart",
+   "id": "Engelhart_DevOpsEngineer",
+   "role": "Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Entertainment Partners",
+   "id": "EntertainmentPartners_SrPlatformEng",
+   "role": "Sr Platform Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "Excis",
+   "id": "Excis_DesktopSupportEngineerL2US",
+   "role": "Desktop Support Engineer L2 US",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-22",
+   "company": "FDM Group",
+   "id": "FDMGroup_ApplicationSupportEngineer",
+   "role": "Application Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-22",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "FIS",
+   "id": "FIS_SiteReliabilityEngineer",
+   "role": "Site Reliability Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "FORT",
+   "id": "FORT_SiteReliabilityEngineer",
+   "role": "Site Reliability Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Felix Pago",
+   "id": "FelixPago_SrSoftwareEngineer",
+   "role": "Sr Software Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "File Cloud",
+   "id": "FileCloud_TechSupportEng",
+   "role": "Tech Support Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Foundant",
+   "id": "Foundant_SupportEngineer",
+   "role": "Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Franklin Fitch",
+   "id": "FranklinFitch_DevOpsEngineer",
+   "role": "Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-22",
+   "company": "Frostbank",
+   "id": "Frostbank_SoftwareEngineerIIIPowerPlatform",
+   "role": "Software Engineer III Power Platform",
+   "status": "applied",
+   "statusDate": "2026-07-22",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Gc AI",
+   "id": "GcAI_SrPlatformEngineer",
+   "role": "Sr Platform Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Givzey",
+   "id": "Givzey_AIPlatformEngineer",
+   "role": "AI Platform Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "Global Business IT",
+   "id": "GlobalBusinessIT_SeniorAzureCloudEngineer",
+   "role": "Senior Azure Cloud Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Goldstone Partners",
+   "id": "GoldstonePartners_CloudEng",
+   "role": "Cloud Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Good Ship",
+   "id": "GoodShip_SrPlatformEng",
+   "role": "Sr Platform Eng",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Granicus",
+   "id": "Granicus_SRE3",
+   "role": "SRE3",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "Gtlaw",
+   "id": "Gtlaw_AIPlatformEngineer",
+   "role": "AI Platform Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Gunvor",
+   "id": "Gunvor_BIDataAnalyst",
+   "role": "BI Data Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "HDI Global Insurance Company",
+   "id": "HDIGlobalInsuranceCompany_DevOpsEngineer",
+   "role": "Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "HR Acuity",
+   "id": "HRAcuity_SrDevOpsEng",
+   "role": "Sr Dev Ops Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "HW Kaufman Group",
+   "id": "HWKaufmanGroup_TechnicalBusinessAnalyst",
+   "role": "Technical Business Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Hackajob",
+   "id": "Hackajob_StaffSRE",
+   "role": "Staff SRE",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Hamilton Barnes",
+   "id": "HamiltonBarnes_StaffSRE",
+   "role": "Staff SRE",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Harris Allied",
+   "id": "HarrisAllied_SrAWSDevOpsEng",
+   "role": "Sr AWS Dev Ops Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Health Catalyst",
+   "id": "HealthCatalyst_SRE_AIEnablement",
+   "role": "SRE_AI Enablement",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Hexion",
+   "id": "Hexion_SrAzurePlatformEng",
+   "role": "Sr Azure Platform Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-23",
+   "company": "Hilton",
+   "id": "Hilton_LeadDevOpsEngineer",
+   "role": "Lead Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-23",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Insight Global",
+   "id": "InsightGlobal_SREDevOpsEng",
+   "role": "SRE Dev Ops Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Inspira Financial",
+   "id": "InspiraFinancial_CloudEngineer",
+   "role": "Cloud Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Integra Connect",
+   "id": "IntegraConnect_SrITEngineer",
+   "role": "Sr IT Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "K2 Integrity",
+   "id": "K2Integrity_SeniorDataAnalyst",
+   "role": "Senior Data Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Karbon",
+   "id": "Karbon_SrSupportEngineer",
+   "role": "Sr Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "Kinder Morgan",
+   "id": "KinderMorgan_ApplicationDeveloperAnalyst",
+   "role": "Application Developer Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Kraken",
+   "id": "Kraken_SREAIAgents",
+   "role": "SREAI Agents",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-22",
+   "company": "Kurtosys",
+   "id": "Kurtosys_TechnicalBusinessAnalystUSAPACSupport",
+   "role": "Technical Business Analyst USAPAC Support",
+   "status": "applied",
+   "statusDate": "2026-07-22",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "LSD Open",
+   "id": "LSDOpen_SeniorCloudEngineer",
+   "role": "Senior Cloud Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "LSD Open",
+   "id": "LSDOpen_SrCloudEngineer",
+   "role": "Sr Cloud Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Ladders",
+   "id": "Ladders_ClusterCapacityEng",
+   "role": "Cluster Capacity Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Ladders",
+   "id": "Ladders_SrInfraSystemsEng",
+   "role": "Sr Infra Systems Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Ladders",
+   "id": "Ladders_SrProductionEngineer",
+   "role": "Sr Production Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Ladders",
+   "id": "Ladders_SrSupportEngineer",
+   "role": "Sr Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Ladders",
+   "id": "Ladders_SrTSE",
+   "role": "Sr TSE",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": null,
+   "company": "Sr Site Reliability Eng",
+   "id": "SrSiteReliabilityEng",
+   "role": "",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Ledgebrook",
+   "id": "Ledgebrook_CloudSecurityEngAWS",
+   "role": "Cloud Security Eng AWS",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Legalfy",
+   "id": "Legalfy_CloudSecurityEngineer",
+   "role": "Cloud Security Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Liatrio",
+   "id": "Liatrio_SrModernizationEngineer",
+   "role": "Sr Modernization Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "Lightology LLC",
+   "id": "LightologyLLC_DevOpsEngineer",
+   "role": "Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Live Kit",
+   "id": "LiveKit_DistributedSystemsEngineer",
+   "role": "Distributed Systems Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Live Kit",
+   "id": "LiveKit_SrInfraEng",
+   "role": "Sr Infra Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "Lumen",
+   "id": "Lumen_SrLeadCloudEngineer",
+   "role": "Sr Lead Cloud Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "M Daudit",
+   "id": "MDaudit_CloudDevOpsEngineer",
+   "role": "Cloud Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "MHKTECHINC",
+   "id": "MHKTECHINC_DataAnalystDataEngineer",
+   "role": "Data Analyst Data Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "MKS2",
+   "id": "MKS2_SeniorDevOpsEngineer",
+   "role": "Senior Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "MNTN",
+   "id": "MNTN_SeniorDataAnalystDataMonitoring",
+   "role": "Senior Data Analyst Data Monitoring",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Made4net",
+   "id": "Made4net_CloudOpsEngineer",
+   "role": "Cloud Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "Microvast",
+   "id": "Microvast_BMSDataAnalysisEngineer",
+   "role": "BMS Data Analysis Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Millennium Staffing",
+   "id": "MillenniumStaffing_SystemEngineer",
+   "role": "System Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "Mirantis",
+   "id": "Mirantis_SeniorAIInfrastructurePlatformOperationsEngineerRemoteInTheUS",
+   "role": "Senior AI Infrastructure Platform Operations Engineer Remote In The US",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Moniepoint",
+   "id": "Moniepoint_SrSRE",
+   "role": "Sr SRE",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "Mountville Mills",
+   "id": "MountvilleMills_DevOpsEngineerII",
+   "role": "Dev Ops Engineer II",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-22",
+   "company": "N8n",
+   "id": "N8n_SeniorSupportEngineerRemoteUS",
+   "role": "Senior Support Engineer Remote US",
+   "status": "applied",
+   "statusDate": "2026-07-22",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "NBC Universal",
+   "id": "NBCUniversal_SeniorDevOpsEngineer",
+   "role": "Senior Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "NIGHTINGALEEDUCATIONLLCSOLEMB",
+   "id": "NIGHTINGALEEDUCATIONLLCSOLEMB_EngineerIIPlatform",
+   "role": "Engineer II Platform",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-15",
+   "company": "Net Box Labs",
+   "id": "NetBoxLabs_SeniorCustomerSupportEngineer",
+   "role": "Senior Customer Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-15",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "Nscale",
+   "id": "Nscale_InfrastructureSupportEngineer",
+   "role": "Infrastructure Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Omnicell",
+   "id": "Omnicell_SrBusinessAnalyst",
+   "role": "Sr Business Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Optomi",
+   "id": "Optomi_StaffInfraSoftwareEng",
+   "role": "Staff Infra Software Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Oxley Enterprises",
+   "id": "OxleyEnterprises_SRE",
+   "role": "SRE",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "PK Companies",
+   "id": "PKCompanies_LeadAzureDevOps",
+   "role": "Lead Azure Dev Ops",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "Paramount",
+   "id": "Paramount_LeadDevOpsEngineer",
+   "role": "Lead Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Pax8",
+   "id": "Pax8_SrCloudSecurityEng",
+   "role": "Sr Cloud Security Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "Pliant",
+   "id": "Pliant_SupportEngineerRemote",
+   "role": "Support Engineer Remote",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Plus Power",
+   "id": "PlusPower_SrPlatformBackend",
+   "role": "Sr Platform Backend",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Premier Health",
+   "id": "PremierHealth_SrAzureCloudEng",
+   "role": "Sr Azure Cloud Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Progressive",
+   "id": "Progressive_DataAnalystLead",
+   "role": "Data Analyst Lead",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Progressive",
+   "id": "Progressive_ITDevOpsLead",
+   "role": "IT Dev Ops Lead",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-22",
+   "company": "Prolific",
+   "id": "Prolific_HumanDataQualityEngineerFoundingTeam",
+   "role": "Human Data Quality Engineer Founding Team",
+   "status": "applied",
+   "statusDate": "2026-07-22",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Prosum",
+   "id": "Prosum_PrincipalOpenShiftEng",
+   "role": "Principal Open Shift Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "Prove",
+   "id": "Prove_SiteReliabilityEngineer",
+   "role": "Site Reliability Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "REE Medical",
+   "id": "REEMedical_SupportSysEng",
+   "role": "Support Sys Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-22",
+   "company": "Rackner",
+   "id": "Rackner_SeniorBusinessAnalyst",
+   "role": "Senior Business Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-22",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-22",
+   "company": "Rackner",
+   "id": "Rackner_SeniorBusinessAnalystDataQualityAssuranceEngineerFederalHealthcare",
+   "role": "Senior Business Analyst Data Quality Assurance Engineer Federal Healthcare",
+   "status": "applied",
+   "statusDate": "2026-07-22",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Ramp",
+   "id": "Ramp_ProductionEngineering",
+   "role": "Production Engineering",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Ramp",
+   "id": "Ramp_SecurityEngineerCloud",
+   "role": "Security Engineer Cloud",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Re Work Group",
+   "id": "ReWorkGroup_SrDevOpsEngineer",
+   "role": "Sr Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Redis",
+   "id": "Redis_TechnicalSupportEngineer",
+   "role": "Technical Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Revecore",
+   "id": "Revecore_SrCloudDevOps",
+   "role": "Sr Cloud Dev Ops",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Rockwell",
+   "id": "Rockwell_SrCloudServicesEng",
+   "role": "Sr Cloud Services Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Runlayer",
+   "id": "Runlayer_SupportEngineer",
+   "role": "Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "SAP Business Applications",
+   "id": "SAPBusinessApplications_SAPNS2SrDevOpsEngineer",
+   "role": "SAPNS2 Sr Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Sanity",
+   "id": "Sanity_SrSRE",
+   "role": "Sr SRE",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Scrunch",
+   "id": "Scrunch_SrInfrastructureEng",
+   "role": "Sr Infrastructure Eng",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Sedgwick",
+   "id": "Sedgwick_DataAnalyst",
+   "role": "Data Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "Sentinel One",
+   "id": "SentinelOne_SrPreSaleSupportEngineer",
+   "role": "Sr Pre Sale Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Sentinel One",
+   "id": "SentinelOne_SrTechSupportEng",
+   "role": "Sr Tech Support Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Single Store",
+   "id": "SingleStore_SupportEng",
+   "role": "Support Eng",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "Skilled Wound Care",
+   "id": "SkilledWoundCare_DevOpsEngineer",
+   "role": "Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Sky Bridge Resources",
+   "id": "SkyBridgeResources_CloudSupportEng",
+   "role": "Cloud Support Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "Skygrid",
+   "id": "Skygrid_SeniorSoftwareEngineerCloudArchitect",
+   "role": "Senior Software Engineer Cloud Architect",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Solugenix",
+   "id": "Solugenix_ProductionSupportEng",
+   "role": "Production Support Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-10",
+   "company": "Sonatype",
+   "id": "Sonatype_AzureDevOpsEngineer",
+   "role": "Azure Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Southland Industries",
+   "id": "SouthlandIndustries_SrBusinessAnalystHR",
+   "role": "Sr Business Analyst HR",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Sprezzatura",
+   "id": "Sprezzatura_PlatformEng",
+   "role": "Platform Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Stack Blitz",
+   "id": "StackBlitz_StaffSRE",
+   "role": "Staff SRE",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "Stallion Infrastructure Services",
+   "id": "StallionInfrastructureServices_BusinessAnalystIT",
+   "role": "Business Analyst IT",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Starbucks",
+   "id": "Starbucks_DataAnalyst",
+   "role": "Data Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Strategic Staffing",
+   "id": "StrategicStaffing_AppSupportEng",
+   "role": "App Support Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "Strategic Talent Sourcing",
+   "id": "StrategicTalentSourcing_SeniorAtlassianPlatformAndRequirementsTraceabilityEngine",
+   "role": "Senior Atlassian Platform And Requirements Traceability Engine",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "Swa",
+   "id": "Swa_CloudDevOpsEngineer",
+   "role": "Cloud Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "TD Industries",
+   "id": "TDIndustries_ITAppSupportAnalyst",
+   "role": "IT App Support Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Tailored Brands",
+   "id": "TailoredBrands_DataAnalystII",
+   "role": "Data Analyst II",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "Tailored Brands Inc",
+   "id": "TailoredBrandsInc_ManagedServiceDeliveryAnalyst",
+   "role": "Managed Service Delivery Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Tailscale",
+   "id": "Tailscale_SupportEngineer",
+   "role": "Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Tangible",
+   "id": "Tangible_SupportEngineer",
+   "role": "Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "Tata Consultancy",
+   "id": "TataConsultancy_AutomationPlatformEngineer",
+   "role": "Automation Platform Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Teamworks",
+   "id": "Teamworks_PlatformEngineer",
+   "role": "Platform Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "Tekmetric",
+   "id": "Tekmetric_SiteReliabilityEngineer",
+   "role": "Site Reliability Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Tekniforce",
+   "id": "Tekniforce_PrincipalCloudEng",
+   "role": "Principal Cloud Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Transform9",
+   "id": "Transform9_InfraDevOpsEng",
+   "role": "Infra Dev Ops Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Truelogic",
+   "id": "Truelogic_SeniorCloudEngineerDevOpsGCPMarketing",
+   "role": "Senior Cloud Engineer Dev Ops GCP Marketing",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Truelogic",
+   "id": "Truelogic_SrCloudDevOpsGCP",
+   "role": "Sr Cloud Dev Ops GCP",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Truelogic",
+   "id": "Truelogic_SrDataPlatformEng",
+   "role": "Sr Data Platform Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Trulieve",
+   "id": "Trulieve_PlatformEngineer",
+   "role": "Platform Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "United Health",
+   "id": "UnitedHealth_SeniorDevOpsEngineer",
+   "role": "Senior Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "United Health Group",
+   "id": "UnitedHealthGroup_ClinicalOperationsAnalyst",
+   "role": "Clinical Operations Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Upstream Rehabilitation",
+   "id": "UpstreamRehabilitation_SrBusinessAnalyst",
+   "role": "Sr Business Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "Utila",
+   "id": "Utila_ProductSupportEngineer",
+   "role": "Product Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "VAST Data",
+   "id": "VASTData_CustomerSupportEngineer",
+   "role": "Customer Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "Vantagebank",
+   "id": "Vantagebank_DataQualityEngineer",
+   "role": "Data Quality Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-15",
+   "company": "Veriff",
+   "id": "Veriff_SeniorTechnicalSupportEngineer",
+   "role": "Senior Technical Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-15",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Versant",
+   "id": "Versant_DataEngineerII",
+   "role": "Data Engineer II",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Versant",
+   "id": "Versant_SrPlatformOps",
+   "role": "Sr Platform Ops",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Vibe IQ",
+   "id": "VibeIQ_SupportEngineer",
+   "role": "Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Virtasant",
+   "id": "Virtasant_SrDevOpsEngineer",
+   "role": "Sr Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Voleon Group",
+   "id": "VoleonGroup_SrClusterSRE",
+   "role": "Sr Cluster SRE",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "Voxel",
+   "id": "Voxel_Tier2SupportEngineer",
+   "role": "Tier2 Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-09",
+   "company": "Voxel",
+   "id": "Voxel_Tier3SupportEngineer",
+   "role": "Tier3 Support Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-09",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "World Wide Tech",
+   "id": "WorldWideTech_CloudEngineer",
+   "role": "Cloud Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "World Wide Tech",
+   "id": "WorldWideTech_InfraEngCloud",
+   "role": "Infra Eng Cloud",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "World Wide Tech",
+   "id": "WorldWideTech_PlatformEngineer",
+   "role": "Platform Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "World Wide Technology",
+   "id": "WorldWideTechnology_SrEngineerSiteReliability",
+   "role": "Sr Engineer Site Reliability",
+   "status": "applied",
+   "statusDate": "2026-07-10",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "World Wide Technology",
+   "id": "WorldWideTechnology_SrSiteReliabilityEngineer",
+   "role": "Sr Site Reliability Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-08",
+   "company": "York Solutions",
+   "id": "YorkSolutions_CloudSecurityEng",
+   "role": "Cloud Security Eng",
+   "status": "applied",
+   "statusDate": "2026-07-08",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "Zedcor Security Solutions",
+   "id": "ZedcorSecuritySolutions_CloudAzureServerEngineerHoustonTX",
+   "role": "Cloud Azure Server Engineer Houston TX",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "Mthree",
+   "id": "Mthree_ProductionSupportAnalyst",
+   "role": "Production Support Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-20",
+   "company": "Zerohash",
+   "id": "Zerohash_TechnicalSupportEngineerAMER",
+   "role": "Technical Support Engineer AMER",
+   "status": "applied",
+   "statusDate": "2026-07-20",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "BRG",
+   "id": "BRG_SiteReliabilityEngineer",
+   "role": "Site Reliability Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "Harvey",
+   "id": "Harvey_SupportOperationsEngineer",
+   "role": "Support Operations Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-16",
+   "company": "Ketjen",
+   "id": "Ketjen_SalesAndOperationsExecutionAnalyst",
+   "role": "Sales And Operations Execution Analyst",
+   "status": "applied",
+   "statusDate": "2026-07-16",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "Dream Works Animation",
+   "id": "DreamWorksAnimation_SeniorDevOpsEngineer",
+   "role": "Senior Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "JP Morgan Chase",
+   "id": "JPMorganChase_LeadSiteReliabilityEngineer",
+   "role": "Lead Site Reliability Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "Deloitte",
+   "id": "Deloitte_InfrastructureEngineer",
+   "role": "Infrastructure Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "Southwest Airlines",
+   "id": "SouthwestAirlines_CloudDevOpsEngineer",
+   "role": "Cloud Dev Ops Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "Greenberg Traurig",
+   "id": "GreenbergTraurig_AIPlatformEngineer",
+   "role": "AI Platform Engineer",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  },
+  {
+   "appliedMatch": "2026-07-24",
+   "company": "Brain",
+   "id": "Brain_TechnicalSupportEngineerIV",
+   "role": "Technical Support Engineer IV",
+   "status": "applied",
+   "statusDate": "2026-07-24",
+   "statusSource": "tracked"
+  }
+ ],
+ "skipSet": [
+  "AdHocLLC_SeniorDevOpsEngineer",
+  "AdHoc_DevOpsEngineerIIIRemote",
+  "Alkami_PlatformSolutionEngineerMANTL",
+  "Allstate_PlatformConsultant",
+  "Availity_CloudNetworkEngineerIII",
+  "Availity_DevOpsEngineerV",
+  "Availity_SeniorDevOpsEngineerIV",
+  "AyrinDigital_DevOpsITSupportEngineer",
+  "BCCSoftware_DevOpsEngineer",
+  "Bambulab_DataAnalyst",
+  "BinanceUS_SeniorDataAnalystRisk",
+  "BlinkRx_StrategyAndOperationsAnalystProviderOperations",
+  "BuckeyePartners_AnalystII",
+  "BureauVeritasUK_BusinessAnalyst",
+  "CMGFinancial_ITSecurityEngineerCloud",
+  "Carrier_Level2SupportEngineerRemote",
+  "CascadesTechnologiesInc_DevOpsEngineerIIIRemote",
+  "CascadesTechnologiesInc_SeniorDevOpsEngineer",
+  "Chevron_SolutionArchitect",
+  "Cisive_SeniorBusinessAnalyst",
+  "ClickHouse_CloudEngineerProductMetrics",
+  "Colby_SeniorInvestmentDataAnalyst",
+  "ConceptPlusCareers_DigitalExperienceBusinessAnalyst",
+  "CytoraAppliedSystems_ProductSupportEngineer",
+  "Danaher_TechnicalSupportEngineerEnterpriseSolutionsREMOTE",
+  "DelanAssociatesInc_RegulatoryReportingDataAnalyst",
+  "Dow_ITAnalyst",
+  "DynatraceLLC_TechnicalSupportEngineerII",
+  "ECISoftwareSolutions_SiteReliabilityEngineer",
+  "EMPLOYERS_SeniorDevOpsEngineer",
+  "ENcloud_SrDevOpsEngineer",
+  "EPAMSystemsInc_DevOpsPlatformEngineerAWSTerraformPythonHPC",
+  "EPAMSystemsInc_SeniorCloudEngineerAWS",
+  "ElmStreet_SeniorDevOpsEngineer",
+  "Endava_SeniorDevOpsEngineer",
+  "EnergyTransferFamily_LeadSpecialist",
+  "EnergyTransfer_LeadSpecialist",
+  "Ensono_SiteReliabilityEngineer",
+  "EntegraLLP_DataAnalystIII",
+  "EquipmentShare_SeniorDataAnalyst",
+  "Eurofins_CloudInfrastructureEngineer",
+  "ExpandEnergy_DevOpsEngineerII",
+  "ExpandEnergy_DevOpsEngineerIIApplications",
+  "FLix_DataAnalystChatProduct",
+  "FLix_SiteReliabilityEngineer",
+  "FarmersEducationalCooperativeUnionOfAmericaNDDivision_ITBusinessSupportAnalyst",
+  "FirstCitizensBank_EnterpriseDataAnalystII",
+  "G2_LeadDataAnalyst00008",
+  "GulfStatesToyota_PlatformEngineer",
+  "HP_DataAnalyticsAndCloudEngineer",
+  "HoustonMethodist_SurgeryDataAnalyst",
+  "Hp_DataAnalyticsAndCloudEngineer",
+  "Humana_LeadCloudArchitect",
+  "Huron_HEDISDataAnalystBusinessAnalyst",
+  "Inspira_DevOpsEngineerRemote",
+  "JackHenryAssociates_SeniorCloudSecurityEngineerDevSecOpsMultiCloud",
+  "JackHenry_CloudInfrastructureEngineerIIIDeployments",
+  "JackHenry_SeniorCloudInfrastructureEngineerDeployments",
+  "Koch_BusinessSystemsAnalyst",
+  "LayerCakeTechnologies_ClientSupportAnalystIII",
+  "Lumen_SeniorLeadDevOpsEngineer",
+  "MNTN_SeniorDataAnalystCustomerAnalytics",
+  "MagpieHealthAnalytics_TestEngineer",
+  "Mojio_DevOpsEngineer",
+  "Moniepoint_SiteReliabilityEngineer",
+  "Moog_CloudOperationsAnalyst",
+  "NOV_BusinessAnalyst",
+  "NOV_SiteReliabilityEngineer",
+  "NovantHealth_BusinessAnalystApplicationProgrammingInterface",
+  "NovantHealth_BusinessAnalystSrHL7",
+  "OceansCodeExperts_SeniorAzureCloudEngineer",
+  "Orthoclinical_SeniorDevOpsEngineer",
+  "OxleyEnterprisesInc_CICDPlatformEngineerRemote",
+  "OxleyEnterprisesInc_KubernetesPlatformEngineerRemote",
+  "Progressive_AzureDevOpsEngineerLead",
+  "Redhat_SpecialistSolutionArchitect",
+  "Regions_CloudDevSecOpsEngineer",
+  "Regions_CloudSecurityPlatformEngineer",
+  "Revecore_DataOperationsAnalyst",
+  "Runlayer_SeniorSiteReliabilityEngineer",
+  "Sardine_DataAnalystFraudIntelligence",
+  "SeniorTraceabilityEngineer",
+  "SingleStore_SiteReliabilityEngineer",
+  "SmithRx_SeniorCloudEngineer",
+  "StellusRX_SeniorDataAnalyst",
+  "StellusRX_SeniorIntegrationEngineer",
+  "TataConsultancyServices_AutomationPlatformEngineer",
+  "Themis_DevOpsEngineer",
+  "Transform9_ProductionSupportEngineer",
+  "VenterraRealty_ITSupportAnalyst",
+  "Veriff_SeniorSoftwareEngineerVerificationPlatform",
+  "Versant_SrSiteReliabilityEngineer",
+  "Virtasant_FutureOpeningsSRESupportEngineerObservability",
+  "VoltaGrid_DevOpsSiteReliabilityEngineer",
+  "Webtrends_TechnicalBusinessAnalyst",
+  "Zafran_TechnicalSupportEngineer"
+ ]
+}

@@ -1,0 +1,7 @@
+{
+  "_readme": "OPTIONAL. Resume tailoring runs through the Claude Code CLI in non-interactive mode (claude -p), which draws from your Claude subscription's usage limits. There is nothing metered to buy and no API key anywhere in this app. Copy this file to config/claude_cli.json ONLY if you need to override a default. Leave 'binary' empty to auto-detect (PATH first, then the usual per-installer locations). Leave 'model' empty to use whatever your plan defaults to. With Claude Code absent or logged out, the pipeline still runs end to end: 'customize' jobs fall back to the deterministic template copy, exactly as before. Install Claude Code from https://docs.claude.com/en/docs/claude-code, then run 'claude login' and sign in with your Claude plan -- NOT with a Console API key, which would bill you per use.",
+  "binary": "",
+  "model": "",
+  "timeout": 240,
+  "extra_args": []
+}

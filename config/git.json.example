@@ -1,0 +1,8 @@
+{
+  "_comment": "Copy to config/git.json (git-ignored) to set the CODE repo's remote and commit identity. This file lives BESIDE THE CODE and must name the code repository. The separate <data_root>/config/git.json describes the DATA repo and is a different remote - do not mix them up.",
+  "remote": "git@github.com:YOUR_USER/YOUR_REPO.git",
+  "name": "Your Name",
+  "email": "you@example.com",
+
+  "_key_names": "setup.py writes name/email; older files used user_name/user_email. git_daily.py accepts either."
+}

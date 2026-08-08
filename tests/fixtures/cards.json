@@ -1,0 +1,374 @@
+[
+ {
+  "parsed": {
+   "company": "Reco",
+   "location": "Boston, Massachusetts, United States (Remote)",
+   "requiredSkills": [
+    "GitHub Actions",
+    "ArgoCD",
+    "Terraform",
+    "Pulumi",
+    "Kubernetes",
+    "EKS",
+    "GKE",
+    "Docker",
+    "Vault",
+    "AWS Secrets Manager",
+    "Datadog",
+    "Prometheus",
+    "Grafana",
+    "OpenTelemetry",
+    "Python",
+    "Go",
+    "Bash",
+    "Helm",
+    "AWS",
+    "Azure",
+    "CloudWatch",
+    "ELK",
+    "Cursor",
+    "Claude",
+    "OAuth 2.0"
+   ],
+   "salary": "",
+   "title": "DevOps Engineer"
+  },
+  "text": "DevOps Engineer | Reco | Boston, Massachusetts, United States (Remote) | GitHub Actions, ArgoCD, Terraform, Pulumi, Kubernetes, EKS, GKE, Docker, Vault, AWS Secrets Manager, Datadog, Prometheus, Grafana, OpenTelemetry, Python, Go, Bash, Helm, AWS, Azure, CloudWatch, ELK, Cursor, Claude, OAuth 2.0"
+ },
+ {
+  "parsed": {
+   "company": "Medvidi",
+   "location": "United States (Remote)",
+   "requiredSkills": [],
+   "salary": "",
+   "title": "Refunds & Accounting Support Specialist"
+  },
+  "text": "Refunds & Accounting Support Specialist | Medvidi | United States (Remote) | QuickBooks Online, Microsoft Excel, Google Sheets, XLOOKUP, VLOOKUP, SUMIFS, COUNTIFS, Pivot Tables, Stripe, CRM"
+ },
+ {
+  "parsed": {
+   "company": "Intuitive Machines",
+   "location": "Houston, Texas, United States",
+   "requiredSkills": [],
+   "salary": "",
+   "title": "Test Engineer"
+  },
+  "text": "Test Engineer | Intuitive Machines | Houston, Texas, United States | Microsoft Office, Creo, SolidWorks, AutoCAD"
+ },
+ {
+  "parsed": {
+   "company": "Machinify",
+   "location": "United States (Remote)",
+   "requiredSkills": [],
+   "salary": "$140,000 - $170,000",
+   "title": "Senior Data Analyst"
+  },
+  "text": "Senior Data Analyst  | Machinify | United States (Remote) | $140,000 - $170,000 | LLMs, SQL, Spark SQL, Databricks, Delta Lake, Snowflake, BigQuery"
+ },
+ {
+  "parsed": {
+   "company": "Truelogic",
+   "location": "New York City or Panama (Remote)",
+   "requiredSkills": [
+    "AWS CloudWatch",
+    "New Relic",
+    "Nagios",
+    "SumoLogic",
+    "Jenkins",
+    "GitLab",
+    "CommVault",
+    "AWS Backup",
+    "PowerShell",
+    "Python"
+   ],
+   "salary": "",
+   "title": "Senior Site Reliability Operations Engineer - Finance"
+  },
+  "text": "Senior Site Reliability Operations Engineer - Finance | Truelogic | New York City or Panama (Remote) | AWS CloudWatch, New Relic, Nagios, SumoLogic, Jenkins, GitLab, CommVault, AWS Backup, PowerShell, Python"
+ },
+ {
+  "parsed": {
+   "company": "West Virginia University",
+   "location": "(Remote) Business Analyst - Information Technology Services",
+   "requiredSkills": [],
+   "salary": "",
+   "title": "(Remote) Business Analyst - Information Technology Services"
+  },
+  "text": "(Remote) Business Analyst - Information Technology Services | West Virginia University | Morgantown, West Virginia, United States (Remote) | Microsoft Word, Microsoft Excel, Microsoft Visio, Jira"
+ },
+ {
+  "parsed": {
+   "company": "Vanco Payment Solutions, Inc.",
+   "location": "United States (Remote)",
+   "requiredSkills": [],
+   "salary": "",
+   "title": "Senior GTM Operations Analyst"
+  },
+  "text": "Senior GTM Operations Analyst | Vanco Payment Solutions, Inc. | United States (Remote) | Salesforce, Account Engagement (Pardot), LeanData, Salesloft"
+ },
+ {
+  "parsed": {
+   "company": "CellPoint Digital",
+   "location": "",
+   "requiredSkills": [
+    "GCP",
+    "Kubernetes (GKE)",
+    "CloudSQL",
+    "Spanner",
+    "Terraform",
+    "IAM"
+   ],
+   "salary": "",
+   "title": "Senior Site Reliability Engineer"
+  },
+  "text": "Senior Site Reliability Engineer | CellPoint Digital | Copenhagen or Dallas or Dubai or London or Miami or Pune or Buenos Aires or Bogota or Mexico or Singapore (Remote) | GCP, Kubernetes (GKE), CloudSQL, Spanner, Terraform, IAM"
+ },
+ {
+  "parsed": {
+   "company": "Multi Media LLC",
+   "location": "United States or North America (Remote)",
+   "requiredSkills": [
+    "Python",
+    "Golang",
+    "C",
+    "C#",
+    "C++",
+    "Java",
+    "Rust",
+    "Django",
+    "Flask",
+    "Laravel",
+    "Linux",
+    "Bash",
+    "Terraform",
+    "Ansible",
+    "Docker",
+    "Kubernetes",
+    "ArgoCD",
+    "Helm",
+    "APM"
+   ],
+   "salary": "$169,000 - $215,000",
+   "title": "Senior Site Reliability Engineer"
+  },
+  "text": "Senior Site Reliability Engineer | Multi Media LLC | United States or North America (Remote) | $169,000 - $215,000 | Python, Golang, C, C#, C++, Java, Rust, Django, Flask, Laravel, Linux, Bash, Terraform, Ansible, Docker, Kubernetes, ArgoCD, Helm, APM"
+ },
+ {
+  "parsed": {
+   "company": "Firefighters First Federal Credit Union",
+   "location": "United States (Remote)",
+   "requiredSkills": [],
+   "salary": "",
+   "title": "Contact Center Platform Manager (Omnichannel)"
+  },
+  "text": "Contact Center Platform Manager (Omnichannel) | Firefighters First Federal Credit Union | United States (Remote) | RingCentral EX/CX, Calabrio WFM/QM, Eltropy"
+ },
+ {
+  "parsed": {
+   "company": "Haier",
+   "location": "Technical Support Specialist \u2013 HVAC - REMOTE",
+   "requiredSkills": [],
+   "salary": "",
+   "title": "Technical Support Specialist \u2013 HVAC - REMOTE"
+  },
+  "text": "Technical Support Specialist \u2013 HVAC - REMOTE | Haier | Louisville, Kentucky, United States (Remote) | Salesforce, Microsoft Excel, Microsoft Word, Microsoft Outlook, TD-03, SmartHQ"
+ },
+ {
+  "parsed": {
+   "company": "Gdit",
+   "location": "United States (Remote)",
+   "requiredSkills": [
+    "T-MSIS",
+    "SQL",
+    "Python",
+    "Tableau",
+    "Databricks",
+    "Snowflake"
+   ],
+   "salary": "$110,500 - $149,500",
+   "title": "Sr. Healthcare Data Analyst (Medicaid)"
+  },
+  "text": "Sr. Healthcare Data Analyst (Medicaid) | Gdit | United States (Remote) | $110,500 - $149,500 | T-MSIS, SQL, Python, Tableau, Databricks, Snowflake"
+ },
+ {
+  "parsed": {
+   "company": "Infinity Constellation",
+   "location": "United States (Remote)",
+   "requiredSkills": [
+    "Node.js 22",
+    "TypeScript",
+    "Fastify",
+    "JSON Schema",
+    "OpenAPI 3.1",
+    "PostgreSQL 18",
+    "pgvector",
+    "Amazon Cognito",
+    "SQS",
+    "S3",
+    "Python 3.14",
+    "uv",
+    "pydantic-ai",
+    "OpenTelemetry",
+    "Terraform",
+    "Claude Code",
+    "Cursor",
+    "Neo4j",
+    "Stripe"
+   ],
+   "salary": "",
+   "title": "Backend Platform Engineer - Labrynth"
+  },
+  "text": "Backend Platform Engineer - Labrynth | Infinity Constellation | United States (Remote) | Node.js 22, TypeScript, Fastify, JSON Schema, OpenAPI 3.1, PostgreSQL 18, pgvector, Amazon Cognito, SQS, S3, Python 3.14, uv, pydantic-ai, OpenTelemetry, Terraform, Claude Code, Cursor, Neo4j, Stripe"
+ },
+ {
+  "parsed": {
+   "company": "Virtuous",
+   "location": "United States or Phoenix (Remote)",
+   "requiredSkills": [
+    "C#",
+    ".NET",
+    "Vue",
+    "React",
+    "Angular",
+    "Azure",
+    "SQL Server",
+    "Claude Code",
+    "Datadog",
+    "Playwright"
+   ],
+   "salary": "",
+   "title": "Senior Software Engineer- CRM+ Platform"
+  },
+  "text": "Senior Software Engineer- CRM+ Platform | Virtuous | United States or Phoenix (Remote) | C#, .NET, Vue, React, Angular, Azure, SQL Server, Claude Code, Datadog, Playwright"
+ },
+ {
+  "parsed": {
+   "company": "Flock Safety",
+   "location": "",
+   "requiredSkills": [],
+   "salary": "$165,000 - $195,000",
+   "title": "Senior Product Manager, Cloud Video"
+  },
+  "text": "Senior Product Manager, Cloud Video | Flock Safety | Atlanta or Boston or Chicago or Denver or Los Angeles or New York City or San Francisco or Austin (Remote) | $165,000 - $195,000 | REST APIs"
+ },
+ {
+  "parsed": {
+   "company": "Endava",
+   "location": "United States (Remote)",
+   "requiredSkills": [
+    "Terraform",
+    "AWS",
+    "Azure",
+    "GCP",
+    "Docker",
+    "Kubernetes",
+    "Python",
+    "Bash",
+    "Jenkins",
+    "GitLab CI",
+    "CircleCI",
+    "Ansible",
+    "Puppet",
+    "Chef",
+    "Large Language Models (LLMs)"
+   ],
+   "salary": "",
+   "title": "Senior DevOps Engineer (Terraform)"
+  },
+  "text": "Senior DevOps Engineer (Terraform)  | Endava | United States (Remote) | Terraform, AWS, Azure, GCP, Docker, Kubernetes, Python, Bash, Jenkins, GitLab CI, CircleCI, Ansible, Puppet, Chef, Large Language Models (LLMs)"
+ },
+ {
+  "parsed": {
+   "company": "Magpie Health Analytics",
+   "location": "Baltimore, Maryland, United States (Remote)",
+   "requiredSkills": [
+    "Pytest",
+    "Selenium",
+    "Postman",
+    "Python",
+    "Git",
+    "Jira",
+    "Confluence",
+    "AWS",
+    "CI/CD"
+   ],
+   "salary": "",
+   "title": "Test Engineer"
+  },
+  "text": "Test Engineer | Magpie Health Analytics | Baltimore, Maryland, United States (Remote) | Pytest, Selenium, Postman, Python, Git, Jira, Confluence, AWS, CI/CD"
+ },
+ {
+  "parsed": {
+   "company": "Agile Six Applications",
+   "location": "United States (Remote)",
+   "requiredSkills": [
+    "Adobe Analytics",
+    "Adobe Launch",
+    "Google Tag Manager",
+    "Qualtrics",
+    "Datadog",
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "SQL",
+    "R",
+    "Python",
+    "SAS",
+    "Microsoft Excel",
+    "Jira",
+    "Confluence",
+    "ServiceNow"
+   ],
+   "salary": "$132,464 - $132,464",
+   "title": "Data Analyst"
+  },
+  "text": "Data Analyst  | Agile Six Applications | United States (Remote) | $132,464 - $132,464 | Adobe Analytics, Adobe Launch, Google Tag Manager, Qualtrics, Datadog, JavaScript, HTML, CSS, SQL, R, Python, SAS, Microsoft Excel, Jira, Confluence, ServiceNow"
+ },
+ {
+  "parsed": {
+   "company": "Trystar",
+   "location": "",
+   "requiredSkills": [
+    "Azure",
+    "PowerShell",
+    "Azure CLI",
+    "ARM",
+    "Bicep",
+    "SD-WAN",
+    "ExpressRoute",
+    "TCP/IP"
+   ],
+   "salary": "$130,000 - $140,000",
+   "title": "Cloud and Network Engineer"
+  },
+  "text": "Cloud and Network Engineer | Trystar | Faribault or Troy or Houston or Merrimack or Burnsville or Murfreesboro or Waukesha or Charlotte or Mayfield or Loveland or Montreal | $130,000 - $140,000 | Azure, PowerShell, Azure CLI, ARM, Bicep, SD-WAN, ExpressRoute, TCP/IP"
+ },
+ {
+  "parsed": {
+   "company": "Elevate Patient Financial Solutions",
+   "location": "United States (Remote)",
+   "requiredSkills": [
+    "Bicep",
+    "Pulumi",
+    "Terraform",
+    "ARM",
+    "Azure",
+    "Azure DevOps",
+    "ASP.NET Core",
+    "Entity Framework Core",
+    "PostgreSQL",
+    "NUnit",
+    "Moq",
+    "Shouldly",
+    "AKS",
+    "Azure Container Apps",
+    "Azure Databricks",
+    "Python",
+    "TypeScript"
+   ],
+   "salary": "",
+   "title": "DevOps Engineer"
+  },
+  "text": "DevOps Engineer | Elevate Patient Financial Solutions | United States (Remote) | Bicep, Pulumi, Terraform, ARM, Azure, Azure DevOps, ASP.NET Core, Entity Framework Core, PostgreSQL, NUnit, Moq, Shouldly, AKS, Azure Container Apps, Azure Databricks, Python, TypeScript"
+ }
+]

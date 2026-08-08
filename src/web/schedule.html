@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Rat — Scheduled tasks</title>
+<link rel="stylesheet" href="/ui.css">
+<style>
+  /* Retired the dark-navy theme this page used to carry on its own — it was the only dark page
+     in the app and sat under a light nav bar. Colors now come from ui.css; the class names and
+     markup are unchanged, so schedule.js needs no edits. */
+  :root { --card:var(--surface,#fbfcfd); --fg:var(--ink,#2b3440); --mut:var(--muted,#5f6b7a);
+          --ok:var(--green,#2f9e6f); --warn:var(--amber,#c07f18); --err:var(--red,#c94a41); }
+  body { font-size:15px; }
+  header { display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+           padding:16px 22px; border-bottom:1px solid var(--line); background:var(--surface); }
+  header h1 { font-size:18px; margin:0; }
+  header .sub { color:var(--mut); font-size:13px; }
+  a { color:var(--accent); text-decoration:none; }
+  .spacer { flex:1; }
+  button { font:600 14px var(--font); cursor:pointer; border-radius:var(--r-sm);
+           border:1px solid var(--line-strong); background:var(--surface); color:var(--fg);
+           padding:8px 14px; transition:background .12s,border-color .12s; }
+  button:hover { background:var(--surface-2); }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  button.primary:hover { background:var(--accent-hover); border-color:var(--accent-hover); }
+  button:disabled { opacity:.55; cursor:default; }
+  main { max-width:820px; margin:0 auto; padding:22px 22px 80px; }
+  .banner { background:var(--amber-soft); border:1px solid var(--amber-line); color:var(--amber-ink);
+            padding:11px 14px; border-radius:var(--r-md); margin-bottom:16px; display:none; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:var(--r-lg);
+          padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow-sm); }
+  .card.disabled { opacity:.62; }
+  .top { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .top .name { font-weight:700; font-size:15px; color:var(--ink-strong); }
+  .switch { display:inline-flex; align-items:center; gap:8px; }
+  .badge { font-size:11px; padding:3px 9px; border-radius:20px; font-weight:700; }
+  .badge.run { background:var(--green-soft); color:var(--green-ink); border:1px solid var(--green-line); }
+  .badge.miss { background:var(--amber-soft); color:var(--amber-ink); border:1px solid var(--amber-line); }
+  .badge.err { background:var(--red-soft); color:var(--red-ink); border:1px solid var(--red-line); }
+  /* A missed run is a nudge; a failed or stuck run is a problem. They shared the red badge,
+     so the two read as equally alarming. Missed is amber now, red is kept for real failures. */
+  .banner.bad { background:var(--red-soft); border-color:var(--red-line); color:var(--red-ink); }
+  .banner code { background:rgba(0,0,0,.06); padding:1px 5px; border-radius:4px; }
+  /* The card the nav chip pointed at. Without this the user arrives at a page of six
+     near-identical cards and has to work out which one the banner is about. */
+  .card.spotlight { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  /* Plain-language summary of the task, from the "description" field of the schedule config.
+     The label alone does not tell a new user what the task changes on their computer. */
+  .desc { color:var(--mut); font-size:13px; line-height:1.5; margin:7px 0 0; max-width:70ch; }
+  .controls { display:flex; flex-wrap:wrap; gap:14px 22px; margin:14px 0 6px; }
+  .fld { display:flex; flex-direction:column; gap:4px; }
+  /* Forced row break inside .controls — puts the next field on a new line. */
+  .brk { flex:0 0 100%; height:0; margin:0; }
+  .fld label { font-size:12px; color:var(--mut); }
+  input[type=time], input[type=number], select { font:inherit; background:var(--surface); color:var(--fg);
+    border:1px solid var(--line-strong); border-radius:7px; padding:7px 9px; }
+  input:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  input[type=number] { width:88px; }
+  .days { display:flex; gap:4px; flex-wrap:wrap; }
+  .days .d { width:32px; height:32px; border-radius:7px; border:1px solid var(--line-strong);
+    background:var(--surface); display:flex; align-items:center; justify-content:center;
+    font-size:12px; cursor:pointer; user-select:none; }
+  .days .d:hover { background:var(--surface-2); }
+  .days .d.on { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
+  .meta { display:flex; flex-wrap:wrap; gap:6px 18px; color:var(--mut); font-size:13px; margin-top:8px; }
+  .meta b { color:var(--fg); font-weight:600; }
+  .res-ok { color:var(--green-ink); } .res-fail { color:var(--red-ink); }
+  .cardfoot { display:flex; align-items:center; gap:10px; margin-top:12px; flex-wrap:wrap; }
+  .toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%);
+    background:var(--ink-strong); color:#fff; border:none; padding:10px 16px;
+    border-radius:var(--r-md); box-shadow:var(--shadow-lg);
+    opacity:0; transition:opacity .2s; pointer-events:none; max-width:90vw; }
+  .toast.show { opacity:1; }
+  code { background:var(--surface-2); border:1px solid var(--line); padding:1px 5px; border-radius:4px; }
+
+  /* ---- collapsible group (native <details>, so keyboard + screen readers work free) ----
+     Six near-identical cards down one page gave no shape to the list. The jobs are now
+     grouped by what they DO, and each group collapses. Same markup and class names as the
+     .sec block on /setup, so the two pages read as one app. Closed is the default state:
+     the summary line carries the job count and how many are on, which is what the user
+     checks most often; a group is force-opened only when a job inside it needs attention
+     or the nav chip pointed at it. */
+  .sec { border:1px solid var(--line); border-radius:var(--r-lg); background:var(--card);
+         box-shadow:var(--shadow-sm); overflow:hidden; margin:0 0 12px; }
+  .sec > summary { list-style:none; cursor:pointer; padding:13px 16px; display:flex; gap:10px;
+         align-items:center; flex-wrap:wrap; }
+  .sec > summary::-webkit-details-marker { display:none; }
+  .sec > summary::before { content:'\25B8'; color:var(--mut); font-size:12px; line-height:1;
+         transition:transform .15s ease; }
+  .sec[open] > summary::before { transform:rotate(90deg); }
+  .sec > summary:hover { background:var(--surface-2); }
+  .sec > summary:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
+  .sec .st { font-weight:700; font-size:15px; color:var(--ink-strong); }
+  .sec .sv { flex:1; min-width:170px; font-size:12.5px; color:var(--mut); }
+  .sec .pill { font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+         border-radius:999px; padding:2px 8px; white-space:nowrap;
+         background:var(--surface-2); color:var(--mut); border:1px solid var(--line); }
+  .sec .pill.on { background:var(--green-soft); color:var(--green-ink); border-color:var(--green-line); }
+  /* .pill.warn / .pill.err are gone with the section run-status pills — run status is reported
+     once, by the nav chip. Per-task badges (.badge.miss / .badge.err) still carry the colors. */
+  /* Cards sit INSIDE a group now, so the outer border of the group already frames them.
+     Drop the card shadow and the bottom margin of the last one to avoid a double frame. */
+  .sec .body { padding:14px 16px 4px; border-top:1px solid var(--line); background:var(--surface-2); }
+  .sec .body .card { box-shadow:none; }
+
+  /* Phone layout. The Save button of the header moves to its own row. If not, it squeezes
+     the title. The control row of each job becomes one column. If not, it goes off the edge. */
+  @media (max-width:760px){
+    header { padding:13px 14px; gap:10px; }
+    header h1 { font-size:17px; }
+    .spacer { flex-basis:100%; height:0; }
+    header button { width:100%; }
+    main { padding:16px 14px 72px; }
+    .card { padding:14px 15px; }
+    .controls { gap:12px; }
+    .fld { flex:1 1 100%; }
+    input[type=time], input[type=number], select { font-size:16px; width:100%; }
+    .cardfoot button { flex:1 1 auto; }
+    .sec > summary { padding:12px 13px; gap:8px; }
+    .sec .sv { flex:1 1 100%; min-width:0; }
+    .sec .body { padding:13px 13px 3px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <!-- "Jobs" in this app means job POSTINGS. The scheduler's units are called scheduled
+       TASKS everywhere the user can read them, so the two never have to be told apart from
+       context. Only the internal field names (config "jobs", /api/run {job:…}) still say job. -->
+  <h1>⏱ Scheduled tasks</h1>
+  <span class="sub" id="clock"></span>
+  <div class="spacer"></div>
+  <button class="primary" id="save">Save changes</button>
+</header>
+<main>
+  <div class="banner" id="whyBanner"></div>
+  <div class="banner" id="missBanner"></div>
+  <!-- The autostart sentence that used to end this paragraph moved into the card below,
+       where the switch is. Saying it twice on one screen only made the page longer. -->
+  <p class="sub">These tasks run by themselves while this dashboard is open. If the app was closed at a
+    scheduled time, the app skips that run. It then shows the run as <b>Missed</b>, with a
+    <b>Run now</b> button. The switch below is what keeps the app open for you.</p>
+  <!-- Why the searches are not running. Shown ONLY while the cap is actually holding them
+       back, so it is never a standing piece of furniture. It lives above the watchdog card
+       because "the searches are paused" outranks "keep the app open" — a user who comes here
+       asking why nothing was found needs the answer before the settings. -->
+  <div class="banner" id="blBanner"></div>
+  <div class="card" id="blCard">
+    <div class="top">
+      <span class="name">Pause the searches when the board fills up</span>
+      <span class="badges" id="blBadge"></span>
+    </div>
+    <p class="desc">The searches run whether or not you are reading the board, so a week away
+      turns into hundreds of postings you never decided on. Set a limit, and the searching tasks
+      in <b>Finding jobs</b> below hold off once that many postings are waiting on a decision.
+      They start again by themselves as soon as you get back under the limit — nothing is
+      switched off, and this switch never touches the on/off state of a task. Applied and
+      skipped postings do not count; they are already decided. Set it to <b>0</b> for no
+      limit.</p>
+    <div class="controls">
+      <div class="fld">
+        <label for="blCap">Pause at</label>
+        <input id="blCap" type="number" min="0" max="1000" step="10" style="width:110px">
+      </div>
+    </div>
+    <div class="meta" id="blMsg"></div>
+  </div>
+  <div class="banner" id="wdWarn"></div>
+  <div class="card" id="wdCard">
+    <div class="top">
+      <label class="switch"><input type="checkbox" id="wdToggle"> </label>
+      <span class="name">Restart the dashboard by itself if it stops</span>
+      <span class="badges" id="wdBadge"></span>
+    </div>
+    <!-- Replaces the old "start at login" switch. That one used a script in the Startup folder,
+         so it fired at login and never again: close the dashboard, or let it crash, and nothing
+         ran until the next login. This uses the Windows Task Scheduler, which re-checks. -->
+    <p class="desc">The tasks below run only while this dashboard runs. Turn this on, and Windows
+      checks every few minutes whether the dashboard is running. If it is not, Windows starts it
+      again and puts the window straight into your taskbar, <b>minimized</b> — so signing in does
+      not fill your screen with the dashboard. This covers logging in, closing the window by
+      accident, and the app stopping on its own. Turn it off, and the tasks run only while this
+      window stays open.</p>
+    <div class="controls">
+      <div class="fld">
+        <label for="wdEvery">Check every</label>
+        <select id="wdEvery">
+          <option value="1">1 minute</option>
+          <option value="5">5 minutes</option>
+          <option value="15">15 minutes</option>
+          <option value="30">30 minutes</option>
+        </select>
+      </div>
+      <!-- Without a pause, an enabled watchdog reopens the dashboard minutes after every quit,
+           and the user has no way to close the app and have it stay closed. -->
+      <div class="fld">
+        <label for="wdPause">Let me close it for</label>
+        <select id="wdPause">
+          <option value="0">no pause</option>
+          <option value="30">30 minutes</option>
+          <option value="120">2 hours</option>
+          <option value="480">8 hours</option>
+        </select>
+      </div>
+    </div>
+    <div class="meta" id="wdMsg"></div>
+  </div>
+  <!-- The auto-tailor caps used to sit here. They cap AI resumes only, so they moved to the
+       one place that describes the AI integration: Setup → Add-ons → AI resume tailoring. -->
+  <div id="jobs"></div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+const DAYS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+// Age units the archive job accepts. Must match UNITS in archive.py.
+const AGE_UNITS = ["days","weeks","months"];
+// Collapsible groups, in the order they appear. A job says which one it belongs to with the
+// "group" field of config/schedule.default.json, so the page is never keyed to job names —
+// a renamed or newly added job lands in the right section on its own. Anything with no
+// group, or a group not listed here, falls into "other" so it can never go missing.
+const GROUPS = [
+  { key:'search',  title:'Finding jobs',
+    blurb:'Search the job boards, score each posting against your skills, and alert you.' },
+  { key:'resumes', title:'Resumes',
+    blurb:'Build the resume file for a posting you queued from the board.' },
+  { key:'upkeep',  title:'Upkeep',
+    blurb:'Back up your data and clear the old postings off the board.' },
+  { key:'other',   title:'Other', blurb:'Tasks with no group set.' }
+];
+// Which groups are open. Every group starts CLOSED; this remembers what the user opened so
+// a Save (which re-renders the whole list) does not fold the page back up under them.
+const OPEN = new Set();
+let STATUS = null, CONFIG = null, DIRTY = false;
+
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200); }
+
+// The description comes from a config file, so it goes through the HTML escape first.
+function esc(s){ const d=document.createElement('div'); d.textContent=s==null?'':String(s); return d.innerHTML; }
+
+async function load(){
+  const r = await fetch('/api/schedule'); const d = await r.json();
+  CONFIG = d.config; STATUS = d.status; render(); DIRTY = false;
+}
+
+function fmtWhen(iso){ if(!iso) return "never"; const dt=new Date(iso);
+  return dt.toLocaleString([], {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); }
+
+function render(){
+  document.getElementById('clock').textContent = 'Server time: ' + fmtWhen(STATUS.now);
+  const jobs = CONFIG.jobs || {}, st = STATUS.jobs || {};
+  const banner = document.getElementById('missBanner');
+  showMissed(st, banner);
+  setTimeout(()=>{ showWhy(st);
+    const c = document.querySelector('#jobs .card.spotlight');
+    if(c) c.scrollIntoView({block:'center', behavior:'smooth'}); }, 0);
+
+  const host = document.getElementById('jobs'); host.innerHTML='';
+  // One <details> per group, built up front so a card can be appended straight into its body.
+  const bodies = {};
+  for(const g of GROUPS){
+    const mine = Object.entries(jobs).filter(([n,j]) => groupOf(j) === g.key);
+    if(!mine.length) continue;                       // never show an empty section
+    const names = mine.map(([n]) => n);
+    // Open if: the user opened it earlier in this session, a job inside needs attention, or
+    // the nav chip sent us here. A collapsed problem is a problem the user cannot see.
+    const alert = names.some(n => st[n] && (st[n].missed || st[n].failed || st[n].stuck));
+    const open = OPEN.has(g.key) || alert || names.includes(WHY_JOB);
+    const d = document.createElement('details');
+    d.className = 'sec'; d.dataset.group = g.key; d.open = open;
+    d.innerHTML = `<summary>
+        <span class="st">${g.title}</span>
+        <span class="sv">${g.blurb}</span>
+        <span class="pills">${groupPills(names, st, jobs)}</span>
+      </summary><div class="body"></div>`;
+    d.addEventListener('toggle', () => { d.open ? OPEN.add(g.key) : OPEN.delete(g.key); });
+    host.appendChild(d);
+    bodies[g.key] = d.querySelector('.body');
+  }
+
+  for(const [name, job] of Object.entries(jobs)){
+    const s = st[name] || {};
+    const card = document.createElement('div');
+    card.className = 'card' + (job.enabled ? '' : ' disabled');
+    card.dataset.name = name;
+
+    let ctrl = '';
+    if(job.type === 'interval_window'){
+      // Days stays in the SECOND slot of the first row, the same place it sits on the daily
+      // card, so the day strip lines up when the cards are read down the page. The From/To
+      // pair is pushed to its own row by the .brk spacer instead of shoving Days to the end.
+      ctrl = `
+        <div class="fld"><label>Every (minutes)</label><input type="number" min="5" step="5" data-f="interval_minutes" value="${job.interval_minutes||60}"></div>
+        <div class="fld"><label>Days</label>${daysHtml(job.days)}</div>
+        <div class="brk"></div>
+        <div class="fld"><label>From</label><input type="time" data-f="window_start" value="${job.window_start||'09:00'}"></div>
+        <div class="fld"><label>To</label><input type="time" data-f="window_end" value="${job.window_end||'15:00'}"></div>`;
+    } else if(job.type === 'daily'){
+      ctrl = `
+        <div class="fld"><label>At</label><input type="time" data-f="at" value="${job.at||'05:20'}"></div>
+        <div class="fld"><label>Days</label>${daysHtml(job.days)}</div>`;
+    } else if(job.type === 'weekly'){
+      ctrl = `
+        <div class="fld"><label>At</label><input type="time" data-f="at" value="${job.at||'22:45'}"></div>
+        <div class="fld"><label>Day</label><select data-f="weekday">${
+          DAYS.map((d,i)=>`<option value="${i}" ${i===(job.weekday??6)?'selected':''}>${d}</option>`).join('')}</select></div>`;
+    } else if(job.type === 'monthly'){
+      ctrl = `
+        <div class="fld"><label>Day of month</label><input type="number" min="1" max="28" data-f="day" value="${job.day||1}"></div>
+        <div class="fld"><label>At</label><input type="time" data-f="at" value="${job.at||'04:00'}"></div>`;
+    }
+
+    // Job PARAMETER, not a time: how old an applied job must be before the archive job moves
+    // it. Shown for any job whose definition carries archive_age, so the field follows the job
+    // if the archive is ever renamed or re-typed — it is not keyed to the job name.
+    if(job.archive_age !== undefined){
+      const unit = job.archive_age_unit || 'months';
+      ctrl += `
+        <div class="fld"><label>Archive applied jobs older than</label>
+          <input type="number" min="0" max="60" data-f="archive_age" value="${job.archive_age}"></div>
+        <div class="fld"><label>&nbsp;</label><select data-f="archive_age_unit">${
+          AGE_UNITS.map(u=>`<option value="${u}" ${u===unit?'selected':''}>${u}</option>`).join('')}</select></div>`;
+    }
+
+    card.innerHTML = `
+      <div class="top">
+        <label class="switch"><input type="checkbox" data-f="enabled" ${job.enabled?'checked':''}> </label>
+        <span class="name">${job.label||name}</span> <span class="badges">${badgesHtml(s)}</span>
+      </div>
+      ${job.description ? `<p class="desc">${esc(job.description)}</p>` : ''}
+      <div class="controls">${ctrl}</div>
+      <div class="meta">${metaHtml(s)}</div>
+      <div class="cardfoot">
+        <button data-run="${name}" ${s.running?'disabled':''}>${s.missed?'Run now (catch up)':'Run now'}</button>
+      </div>`;
+    (bodies[groupOf(job)] || host).appendChild(card);
+  }
+  host.querySelectorAll('[data-run]').forEach(b=> b.onclick = ()=>runNow(b.dataset.run));
+  host.querySelectorAll('.days .d').forEach(d=> d.onclick = ()=>{ d.classList.toggle('on'); DIRTY=true; });
+  host.querySelectorAll('[data-f]').forEach(el=> el.addEventListener('change', ()=>DIRTY=true));
+  // An on/off toggle changes the "N of N on" count of its group. Repaint that at once rather
+  // than waiting for the next status poll — the summary is the whole point of collapsing.
+  host.querySelectorAll('[data-f="enabled"]').forEach(el=> el.addEventListener('change', ()=>{
+    const sec = el.closest('.sec'); if(!sec) return;
+    const names = [], live = {};
+    sec.querySelectorAll('.card').forEach(c=>{ names.push(c.dataset.name);
+      live[c.dataset.name] = { enabled: c.querySelector('[data-f="enabled"]').checked }; });
+    sec.querySelector('.pills').innerHTML = groupPills(names, STATUS.jobs || {}, live);
+  }));
+}
+
+// The app was closed at these run times, so the app did not run them. One function, because
+// the full render and the 4-second status refresh both show this banner.
+function showMissed(st, banner){
+  const missed = Object.entries(st).filter(([k,v])=>v.missed).map(([k,v])=>v.label||k);
+  if(!missed.length){ banner.style.display='none'; return; }
+  banner.style.display='block';
+  banner.innerHTML = '⚠ The app was closed at these run times. The app did not run them: <b>'
+    + missed.join(', ') + '</b>. Click “Run now” on each one.';
+}
+
+// A job with no group, or one naming a group this page does not know, still has to appear.
+function groupOf(job){ const g = job.group || 'other';
+  return GROUPS.some(x => x.key === g) ? g : 'other'; }
+
+// The summary line of a closed group answers ONE question: how much of it is even switched on.
+// It used to carry run-status pills too ("2 need attention", "1 missed"), but run status is the
+// nav chip's job — top right, on every page, one readout. Repeating it per section meant the
+// same fact in three places on this page alone, and two of them could disagree with the third
+// for up to a poll interval. A section that has something wrong still OPENS itself (see
+// render/refreshStatus), so a problem is never hidden — its card carries the badge and the
+// banner explains it.
+function groupPills(names, st, jobs){
+  const on = names.filter(n => jobs[n] && jobs[n].enabled).length;
+  return on ? `<span class="pill on">${on} of ${names.length} on</span>`
+            : `<span class="pill">all off</span>`;
+}
+
+function badgesHtml(s){
+  if(s.stuck) return '<span class="badge err">may be stuck</span>';
+  return (s.running?'<span class="badge run">in progress</span>':'')
+  + (s.failed?'<span class="badge err">last run failed</span>':'')
+  // Held back by the pending-job cap, not by this task's own switch — which is why the card is
+  // NOT drawn as disabled. Without this badge the card reads "on, next run 09:00" while the
+  // scheduler quietly skips it, and the page would be stating something untrue.
+  + (s.pausedByBacklog?'<span class="badge miss" title="The board is full. This task starts again by itself once you clear some postings.">paused — board full</span>':'')
+  + (s.missed?'<span class="badge miss">missed</span>':''); }
+
+// ---- "what happened, and what to do about it" ----
+// The nav chip links here with ?job=&why=, because a red chip that drops the user on a list
+// of six identical cards has only told them something is wrong, not which thing or what to do.
+// Each case names the job, says in plain words what the state means, and ends with the one
+// action that helps. Kept here (not in the chip's tooltip) because it needs the Run button.
+const WHY = {
+  stuck: s => ({ head: 'This run may be stuck.',
+    body: '<b>' + s.label + '</b> has been running for ' + Math.round((s.elapsedSec||0)/60)
+        + ' minutes. It normally finishes in about ' + Math.round(s.lastDurationSec||0)
+        + ' seconds. Nothing was cancelled — a slow network can look the same — but it has run '
+        + 'far longer than usual. A step gives up on its own after 30 minutes. If it is still '
+        + 'here after that, close the dashboard and open it again, then run the task.' }),
+  failed: s => ({ head: 'The last run did not finish.',
+    body: '<b>' + s.label + '</b> stopped with: <code>' + esc(s.lastResult) + '</code>. '
+        + (String(s.lastResult||'').indexOf('interrupted') === 0
+           ? 'The dashboard was closed while the task was still working, so it never finished. '
+           : 'The step that failed is named in the message. The full output is in '
+             + '<code>schedule_log.txt</code>. ')
+        + 'Nothing is broken permanently — run it again below.' }),
+  missed: s => ({ head: 'This run was skipped.',
+    body: '<b>' + s.label + '</b> was due while the dashboard was closed, and the app never '
+        + 'runs a missed task on its own — it would fire the moment you opened the app, which '
+        + 'is rarely what you want. Run it now, or leave it and let the next scheduled run '
+        + 'pick it up.' }),
+  running: s => ({ head: 'This task is running now.',
+    body: '<b>' + s.label + '</b> started ' + Math.round((s.elapsedSec||0)) + ' seconds ago. '
+        + 'Only one task runs at a time, so the others wait until it finishes.' })
+};
+
+// Read ?job=&why= once on arrival, explain that state, and mark the card so the eye lands on
+// the right one. Cleared as soon as the state no longer holds, so the banner cannot go stale.
+let WHY_JOB = null, WHY_KIND = null;
+(function(){ const q = new URLSearchParams(location.search);
+  WHY_JOB = q.get('job'); WHY_KIND = q.get('why'); })();
+
+function showWhy(st){
+  const el = document.getElementById('whyBanner');
+  const s = WHY_JOB && st[WHY_JOB];
+  const still = s && ((WHY_KIND === 'stuck' && s.stuck) || (WHY_KIND === 'failed' && s.failed)
+                   || (WHY_KIND === 'missed' && s.missed) || (WHY_KIND === 'running' && s.running));
+  if(!still || !WHY[WHY_KIND]){ el.style.display = 'none'; return; }
+  const w = WHY[WHY_KIND](Object.assign({label: s.label || WHY_JOB}, s));
+  el.className = 'banner ' + ((WHY_KIND === 'stuck' || WHY_KIND === 'failed') ? 'bad' : '');
+  el.style.display = 'block';
+  el.innerHTML = '<b>' + w.head + '</b><br>' + w.body
+    + (WHY_KIND === 'running' ? ''
+       : '<div style="margin-top:10px"><button class="primary" id="whyRun">Run it now</button></div>');
+  const b = document.getElementById('whyRun');
+  if(b) b.onclick = () => runNow(WHY_JOB);
+  document.querySelectorAll('#jobs .card').forEach(c =>
+    c.classList.toggle('spotlight', c.dataset.name === WHY_JOB));
+}
+// A task that is off still has a next trigger time, but the scheduler skips it. Show "off"
+// instead of that time. If not, the card reads as if the task runs.
+function metaHtml(s){ const rc=(s.lastResult==='ok')?'res-ok':(s.lastResult?'res-fail':'');
+  return `<span>Last run: <b>${fmtWhen(s.lastRunAt)}</b></span>`
+       + `<span>Result: <b class="${rc}">${s.lastResult||'—'}</b></span>`
+       // A paused task HAS a next trigger time, but it will not run at it. Printing the time
+       // anyway is the one thing this line must not do — it is the sentence the user checks to
+       // find out when the next search happens.
+       + `<span>Next: <b>${!s.enabled ? 'off'
+              : s.pausedByBacklog ? 'held — board full' : fmtWhen(s.nextRun)}</b></span>`; }
+
+// Refresh only the status fields: badges, last run, and running. Unsaved edits stay intact.
+async function refreshStatus(){
+  try{
+    const r = await fetch('/api/schedule'); const d = await r.json();
+    STATUS = d.status;
+    document.getElementById('clock').textContent = 'Server time: ' + fmtWhen(STATUS.now);
+    const st = STATUS.jobs || {};
+    showMissed(st, document.getElementById('missBanner'));
+    showWhy(st);        // clears itself once the problem it describes is resolved
+    document.querySelectorAll('#jobs .card').forEach(card=>{
+      const s = st[card.dataset.name]; if(!s) return;
+      card.querySelector('.badges').innerHTML = badgesHtml(s);
+      card.querySelector('.meta').innerHTML = metaHtml(s);
+      const b = card.querySelector('[data-run]');
+      b.disabled = !!s.running; b.textContent = s.missed?'Run now (catch up)':'Run now';
+    });
+    // Group summaries too — otherwise a run that fails while the page sits open leaves a
+    // closed section reporting "3 of 3 on" and nothing else. A section that turns bad opens
+    // itself; one the user closed on purpose stays closed while it is merely healthy.
+    document.querySelectorAll('#jobs .sec').forEach(sec=>{
+      const names = [], live = {};   // read on/off off the CHECKBOX, so an unsaved toggle counts
+      sec.querySelectorAll('.card').forEach(c=>{ names.push(c.dataset.name);
+        live[c.dataset.name] = { enabled: c.querySelector('[data-f="enabled"]').checked }; });
+      sec.querySelector('.pills').innerHTML = groupPills(names, st, live);
+      if(names.some(n => st[n] && (st[n].failed || st[n].stuck || st[n].missed))) sec.open = true;
+    });
+  }catch(e){}
+}
+
+function daysHtml(days){ days = days || [];
+  return '<div class="days">' + DAYS.map((d,i)=>
+    `<div class="d ${days.includes(i)?'on':''}" data-day="${i}">${d[0]}</div>`).join('') + '</div>'; }
+
+function collect(){
+  const jobs = {};
+  document.querySelectorAll('#jobs .card').forEach(card=>{
+    const name = card.dataset.name; const patch = {};
+    card.querySelectorAll('[data-f]').forEach(el=>{
+      const f = el.dataset.f;
+      if(el.type==='checkbox') patch[f] = el.checked;
+      else if(el.type==='number') patch[f] = parseInt(el.value)||0;
+      else patch[f] = (f==='weekday') ? parseInt(el.value) : el.value;
+    });
+    const dnodes = card.querySelectorAll('.days .d');
+    if(dnodes.length){ patch.days = [...dnodes].filter(d=>d.classList.contains('on')).map(d=>+d.dataset.day); }
+    jobs[name] = patch;
+  });
+  return { jobs };
+}
+
+async function save(){
+  const btn = document.getElementById('save'); btn.disabled=true; btn.textContent='Please wait…';
+  try{
+    const r = await fetch('/api/schedule', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({config: collect()})});
+    const d = await r.json();
+    if(d.ok){ CONFIG=d.config; STATUS=d.status; render(); DIRTY=false; toast('The app saved the schedule.'); }
+    else toast('The app did not save the schedule: '+(d.error||'?'));
+  }catch(e){ toast('The app did not save the schedule.'); }
+  btn.disabled=false; btn.textContent='Save changes';
+}
+
+async function runNow(name){
+  toast(name+' starts now…');
+  // Parity with the board and the nav popover: running a SEARCH by hand re-raises the "the
+  // searches are paused" message. This page never hides its own banner and its bubble is not
+  // dismissable, so pointing at it is the whole job. (The board needs nothing from here — a
+  // dismiss there lasts one page load, and coming back is a new one.)
+  const grp = ((((CONFIG||{}).jobs)||{})[name]||{}).group;
+  if(grp === 'search'){
+    const ban = document.getElementById('blBanner');
+    if(ban && ban.style.display === 'block') ban.scrollIntoView({block:'start', behavior:'smooth'});
+  }
+  try{
+    const r = await fetch('/api/run', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({job:name})});
+    const d = await r.json();
+    if(!d.ok) toast('The run did not start: '+(d.error||'?'));
+    setTimeout(refreshStatus, 800); setTimeout(refreshStatus, 2500);
+  }catch(e){ toast('The run did not start.'); }
+}
+
+// ---- the pending-job cap ----
+// One number (gui_settings.backlogCap), read through /api/backlog and written through
+// /api/threshold — the same gui_settings writer every other board number uses. No new file.
+// The COUNT is never edited here: it is derived from the board by backlog.py, and this page
+// only reports it, so the schedule page and the board can never state different totals.
+let BL = {count:0, cap:0, enabled:false, paused:false};
+async function loadBacklog(){
+  try{ BL = await (await fetch('/api/backlog')).json(); }catch(e){ return; }
+  const cap = document.getElementById('blCap');
+  // Never overwrite a number the user is part way through typing.
+  if(cap && document.activeElement !== cap) cap.value = String(BL.cap ?? 50);
+  renderBacklog();
+}
+function renderBacklog(){
+  const b = BL || {}, ban = document.getElementById('blBanner');
+  document.getElementById('blBadge').innerHTML = !b.enabled
+    ? '<span class="badge miss">no limit</span>'
+    : (b.paused ? '<span class="badge miss">paused</span>'
+                : '<span class="badge run">' + b.count + ' of ' + b.cap + '</span>');
+  document.getElementById('blMsg').textContent = b.enabled
+    ? (b.count + (b.count===1 ? ' posting is' : ' postings are') + ' waiting on a decision.')
+    : 'No limit is set. The searches run however full the board gets.';
+  if(b.paused){
+    ban.style.display = 'block';
+    // Says WHICH tasks stopped and WHERE to fix it. A banner that only announced a pause would
+    // send the user hunting through the cards below for a task that looks switched off — and
+    // none of them is: the pause is computed, not stored.
+    ban.innerHTML = '⏸ <b>The searching tasks are paused.</b> ' + b.count + ' postings are waiting '
+      + 'on a decision and the limit is ' + b.cap + '. The tasks under <b>Finding jobs</b> stay '
+      + 'switched on and start again by themselves once the count drops below ' + b.cap + '. '
+      + '<a href="/">Open the board</a> to skip or delete them, or raise the limit here.';
+  } else {
+    ban.style.display = 'none';
+  }
+}
+document.getElementById('blCap').addEventListener('change', async function(){
+  const v = Math.max(0, parseInt(this.value, 10) || 0);
+  this.value = String(v);
+  try{
+    const d = await (await fetch('/api/threshold', {method:'POST',
+      headers:{'Content-Type':'application/json'}, body: JSON.stringify({backlogCap: v})})).json();
+    toast(d.ok ? (v ? 'The searches now pause at ' + v + ' waiting postings.'
+                    : 'The limit is off. The searches never pause for a full board.')
+               : 'The app did not save the limit.');
+  }catch(e){ toast('The app did not save the limit.'); }
+  loadBacklog();
+});
+
+// ---- watchdog. A Windows scheduled task restarts the dashboard, minimized, when it stops. ----
+// This replaced the old autostart switch (a .vbs in the Startup folder). /api/autostart still
+// exists for older installs, but the dashboard no longer offers it: two mechanisms starting the
+// same server would race for one port, so turning the watchdog on retires the .vbs.
+async function loadWatchdog(){
+  try{ const r = await fetch('/api/watchdog'); renderWatchdog(await r.json()); }catch(e){}
+}
+function renderWatchdog(s){
+  s = s || {};
+  const t = document.getElementById('wdToggle');
+  const on = !!s.desired && !!s.enabled;
+  t.checked = !!s.desired; t.disabled = !s.supported;
+  const ev = document.getElementById('wdEvery'), pz = document.getElementById('wdPause');
+  if(s.everyMin) ev.value = String(s.everyMin);
+  ev.disabled = pz.disabled = !s.supported || !s.desired;
+  let badge='', warn='';
+  if(!s.supported){ badge='<span class="badge miss">unsupported OS</span>';
+    warn='The watchdog needs the Windows Task Scheduler. On this operating system, the schedule runs only while the dashboard is open.'; }
+  else if(s.pauseMin){ badge='<span class="badge miss">paused '+s.pauseMin+' min</span>'; }
+  else if(on){ badge='<span class="badge run">on</span>'; }
+  else if(s.desired && !s.enabled){ badge='<span class="badge miss">not enabled</span>';
+    warn='⚠ The watchdog did not turn on'+(s.error?': '+s.error:'')+'. Nothing restarts the dashboard if it stops.'; }
+  else { badge='<span class="badge miss">off</span>';
+    warn='⚠ The watchdog is OFF. The schedule runs only while this dashboard window is open. Turn it on, and Windows starts the dashboard again — minimized — whenever it is not running.'; }
+  document.getElementById('wdBadge').innerHTML = badge;
+  let msg = '';
+  if(s.supported && on){
+    msg = 'Windows task "'+(s.task||'JobDashboardWatchdog')+'" checks every '+(s.everyMin||5)
+        + (s.everyMin===1?' minute':' minutes')+'. It runs while you are logged on.';
+    if(s.pauseMin) msg += ' Paused for '+s.pauseMin+' more minutes — the dashboard stays closed if you close it.';
+  }
+  document.getElementById('wdMsg').textContent = msg;
+  const w = document.getElementById('wdWarn');
+  w.style.display = warn ? 'block' : 'none'; w.innerHTML = warn;
+}
+async function postWatchdog(payload, okMsg){
+  const t = document.getElementById('wdToggle'); t.disabled = true;
+  try{
+    const r = await fetch('/api/watchdog', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)});
+    const d = await r.json(); renderWatchdog(d.state);
+    toast(d.ok ? okMsg : ('The app did not change the watchdog: '+(d.message||'unknown cause')));
+  }catch(e){ toast('The app did not change the watchdog.'); t.disabled = false; }
+}
+document.getElementById('wdToggle').addEventListener('change', function(){
+  const enable = this.checked;
+  postWatchdog({enable, everyMin: parseInt(document.getElementById('wdEvery').value,10)||5},
+    enable ? 'The watchdog is on. Windows restarts the dashboard minimized if it stops.'
+           : 'The watchdog is off. The tasks run only while this window is open.');
+});
+document.getElementById('wdEvery').addEventListener('change', function(){
+  postWatchdog({enable:true, everyMin: parseInt(this.value,10)||5},
+    'The watchdog now checks every '+this.value+' minutes.');
+});
+document.getElementById('wdPause').addEventListener('change', function(){
+  const mins = parseInt(this.value,10)||0;
+  postWatchdog({enable:true, pauseMin:mins}, mins
+    ? 'Paused. You can close the dashboard for the next '+mins+' minutes.'
+    : 'Pause cleared. The watchdog restarts the dashboard again.');
+  this.value = '0';
+});
+
+// The auto-tailor caps (dailyAutoTailorCap / hourlyAutoTailorCap) are edited in
+// Setup → Add-ons → AI resume tailoring. They bound AI resumes only, so they belong with the
+// AI integration rather than with the run times.
+
+document.getElementById('save').onclick = save;
+load();
+loadWatchdog();
+loadBacklog();
+setInterval(refreshStatus, 4000);   // status only — never clobbers unsaved edits
+setInterval(loadWatchdog, 15000);   // keep watchdog status fresh (changes rarely)
+// The count moves when the user clears the board in another tab, so the pause can lift while
+// this page sits open. Slower than the run-status poll: it reads three files, and a number
+// that is a few seconds stale changes nothing the user can act on.
+setInterval(loadBacklog, 15000);
+</script>
+</body>
+</html>

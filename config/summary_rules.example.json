@@ -1,0 +1,24 @@
+{
+  "_readme": "Template for the resume-summary guardrails. Placeholders {{FULL_NAME}}, {{REAL_TITLES}}, {{PAST_COMPANIES}} are filled from config/profile.json (identity.full_name / identity.real_titles / identity.past_companies) by profile_lib.regenerate_all — but ONLY if config/summary_rules.json does not already exist, so a hand-tuned file is never overwritten. Delete summary_rules.json and regenerate to rebuild from this template.",
+
+  "rule": "The summary opening phrase is {{FULL_NAME}}'s professional identity and must be TRUE to their real employment history ({{REAL_TITLES}}). Never restate, adopt, or blend the target job title into it. Never promote the candidate into a title they did not hold, and never mirror the job posting's domain in the opener. Tailor only the sentences AFTER the opening identity; convey fit for the target role in the body.",
+
+  "allowedOpeners": {
+    "CORE": ["{{REAL_TITLES}}"],
+    "_note": "Add one entry per resume variant (e.g. CORE, ANALYST, TECH_SUPPORT). Each value is a list of acceptable opening identities drawn ONLY from titles the candidate actually held."
+  },
+
+  "realTitlesHeld": ["{{REAL_TITLES}}"],
+  "pastCompanies": ["{{PAST_COMPANIES}}"],
+
+  "badExamples": [
+    "any title the candidate never held",
+    "any opener that copies the target job's title or domain",
+    "invented hybrid titles that blend real experience with the JD"
+  ],
+  "badExamples_note": "Replace with concrete wrong openers you keep seeing for this candidate (fastest way to stop them recurring).",
+
+  "guidance": "When unsure, copy the base resume opening clause word-for-word up to ' with N years' and change nothing before it.",
+
+  "resumeOutputRule": "The resume .docx/.pdf must contain ZERO meta-notes, annotations, Word comments, or flagged-skills lines. Skills the candidate lacks go ONLY into job_details.flaggedSkills + the questionnaire — NEVER into the resume document. Do not add reviewer notes, TODOs, or any internal footprint to the resume."
+}

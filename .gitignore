@@ -1,0 +1,138 @@
+# --- Job Agent repo: commit CODE only; keep tracker data + resume binaries per-worktree ---
+
+# Tailored resume files (binaries; referenced by tracking.csv / archive_index.csv instead)
+New/
+Applied/
+Skipped/
+*.pdf
+*.docx
+*.doc
+
+# Backups & archives
+Backups/
+*.zip
+*.bak
+*.corrupt*
+
+# LibreOffice / office lock + temp junk
+.~lock*
+~$*
+lu*.tmp
+*.tmp
+.gui_save.csv
+
+# Per-run transient pipeline files (regenerated every run)
+listings.json
+scheduler_state.json
+schedule_log.txt
+commit_now.bat
+tofetch.json
+details.json
+processed.json
+run.json
+manual.json
+to_process.json
+job_alert_digest_*.txt
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Logs (execution log + diagnostic output) — everything under logs/ is disposable
+logs/
+
+# Scratch / diagnostic churn (regenerated on demand; noise in every diff)
+err.txt
+tofetch.err
+listings.fixed.json
+scrape_raw_sample.json
+_mount_probe.txt
+_rmtest/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/
+
+config/notify.json
+notified.json
+config/git.json
+
+# Per-instance overrides (staging port / disable notify+scheduler). Git-ignored so a
+# staging worktree's neutralized settings NEVER leak to the live copy on a merge.
+config/instance.json
+
+# Static desktop shortcut — hardcodes a port (can't read instance.json), so it's per-copy.
+# The .bat/.vbs launchers resolve the port dynamically; only this static file is ignored.
+Open Dashboard.url
+
+# Adzuna API key (template committed as config/adzuna.json.example)
+config/adzuna.json
+
+# Claude Code CLI overrides (template committed as config/claude_cli.json.example).
+# Holds no secret — tailoring authenticates through the user's own `claude login`, never
+# an API key — but it is per-machine (binary path), so it stays out of the repo.
+config/claude_cli.json
+# Legacy: the removed metered API-key path. Kept ignored so an old checkout never commits one.
+config/anthropic.json
+salary_cache.json
+salary_quota.json
+
+# Regenerable caches (on-demand job-description fetches, etc.) — safe to delete any time
+cache/
+
+# --- PERSONAL DATA — lives in the user's data folder, never here ---
+# Default ./user_data_<INITIALS> (inside this folder — self-contained install);
+# override via config/instance.json "data_root" or $JOB_AGENT_DATA — see
+# pipelib.resolve_data_root(). With no data folder present the code falls back to
+# reading in-repo, so a legacy single-folder install still works.
+# This also gives staging worktrees their own tracker state (each copy resolves its
+# own data), so staging test entries can never merge into live's real tracker.
+# One-shot cleanup of leftover copies: python cleanup_user_data.py --apply
+#
+# The user_data_* line is what makes the self-contained layout safe to commit next to:
+# the data folder now lives INSIDE the repo, so without it every tracker file, profile
+# and resume binary would be staged by the `git add -A` in git_daily.py.
+user_data_*/
+job_agent_profile_KP/
+
+# tracker state
+tracking.csv
+job_tracker.json
+job_tracker.html
+candidates.csv
+archive_index.csv
+archived.csv
+raw_applied.json
+geo_cache.json
+scrape_meta.json
+details_manual.json
+
+# profile + everything generated from it
+config/profile.json
+config/profile.json.bak*
+config/profiles/
+config/active_profile.json
+config/search_urls.json
+config/skills.json
+config/skill_aliases.json
+config/summary_rules.json
+
+# runtime settings
+config/gui_settings.json
+config/schedule.json
+config/employer_blocklist.json
+config/ghost_flags.json
+
+# resume source content (base resumes, STAR stories, bullet bank)
+resume_template/
+
+# STAYS with the code (negated so the lines above don't catch them):
+#   config/strategy.json, config/salary_bands.json, config/*.example.json
+#   config/instance.json is the bootstrap that LOCATES the data root
+
+# Sanitized export staged for the TopRat repo (built by src/ops/release.py, not tracked here)
+/TopRat/

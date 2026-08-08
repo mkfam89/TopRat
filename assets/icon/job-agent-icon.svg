@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="t d">
+  <title id="t">Job Agent</title>
+  <desc id="d">A cyborg rat with a visor eye and a lightning-bolt tail.</desc>
+  <rect width="512" height="512" rx="112" fill="#0E1726"/>
+  <g transform="translate(-61,-14) scale(1.2)">
+    <path d="M22,-86 L-34,8 L2,8 L-20,86 L36,-8 L0,-8 Z" fill="#FF6B35"
+          transform="translate(128,212) rotate(140) scale(1.3)"/>
+    <circle cx="348" cy="192" r="42" fill="#C2CBD8"/>
+    <circle cx="352" cy="196" r="23" fill="#FF6B35" fill-opacity="0.6"/>
+    <path d="M452,258 C430,232 410,216 385,210 C362,204 344,206 330,212 C300,192 258,182 218,193 C174,205 146,240 146,278 C146,314 172,338 206,340 C250,344 302,334 342,316 C374,302 402,288 426,278 C441,272 449,265 452,258 Z" fill="#EDF1F7"/>
+    <path d="M196,252 L232,252 L246,266 L286,266" stroke="#FF6B35" stroke-width="9" fill="none"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="194" cy="252" r="9" fill="#FF6B35"/>
+    <circle cx="288" cy="266" r="9" fill="#FF6B35"/>
+    <g transform="rotate(-14 406 240)"><rect x="382" y="228" width="52" height="24" rx="12" fill="#FF6B35"/></g>
+    <circle cx="446" cy="256" r="9" fill="#FF6B35"/>
+  </g>
+</svg>

@@ -11,6 +11,54 @@ import os, re, json
 
 from pipelib import CONFIG, cfg, load_json, data_path, template_files
 
+# The CORE/general base used to be resolved by a keyword pass carrying the first user's
+# SURNAME, compiled into the router. Another user whose base was named after themselves
+# matched neither keyword, fell through to the "any .docx" catch-all, and could be handed
+# their ANALYST or SUPPORT variant as the general base.
+#
+# Deriving the keyword from identity.full_name instead does NOT work, and the obvious-looking
+# version of this is wrong: resume_prefix puts the user's name in the filename of EVERY
+# variant, so a name keyword matches the "<name>_Resume_data_analyst.docx" variant first and
+# CORE silently resolves to the analyst resume. Verified — that is what the first attempt did.
+#
+# So CORE is defined by what it is NOT: the base that carries no specialization keyword.
+_SPECIALIZED_KEYWORDS = ('analyst', 'data', 'support', 'tangible', 'techsupport')
+# Generic names people actually give a general resume, tried first. No personal alias is
+# needed here: a base named after its owner carries no specialization keyword, so the
+# no-keyword rule below already resolves it. 'base' is deliberately absent — it is a
+# substring of 'database'.
+_CORE_KEYWORDS = ('core', 'master', 'general')
+
+def _pick_core_base():
+    """Resolve the CORE/general base resume.
+
+    Order: an explicit generic name ('core'/'master'/'general'…), then the first resume
+    whose filename carries NO specialization keyword, then `_pick_base()`'s catch-all so
+    an empty folder still returns ('', '') rather than a made-up name.
+
+    Note this does NOT call `_pick_base(*_CORE_KEYWORDS)` for the first step, which is the
+    natural-looking way to write it and is wrong: `_pick_base` falls through to "any .docx"
+    when no keyword matches, so it always returns something for a non-empty folder and the
+    no-keyword rule below would be unreachable. A folder listing the analyst variant first
+    then handed that back as CORE. Caught by test_core_base_is_the_unspecialized_resume."""
+    resumes = [f for f in template_files() if 'star' not in f.lower()]
+
+    def rel(f):
+        return os.path.join('resume_template', f), ('pdf' if f.lower().endswith('.pdf') else 'docx')
+
+    def prefer_docx(cands):
+        # Same .docx-over-its-.pdf-twin preference _pick_base makes, same reason.
+        return next((f for f in cands if f.lower().endswith('.docx')), cands[0])
+
+    for kw in _CORE_KEYWORDS:
+        hits = [f for f in resumes if kw in f.lower()]
+        if hits:
+            return rel(prefer_docx(hits))
+    plain = [f for f in resumes if not any(k in f.lower() for k in _SPECIALIZED_KEYWORDS)]
+    if plain:
+        return rel(prefer_docx(plain))
+    return _pick_base()
+
 def _pick_base(*keywords):
     """Resolve a base resume from resume_template/ by keyword match on the
     filename, so the pipeline follows whatever files live there rather than a
@@ -19,7 +67,7 @@ def _pick_base(*keywords):
 
     Returns ('', '') when the folder holds no base resume at all. It must NOT
     name a file here: an earlier version returned a legacy default
-    ('PHAM_KHOA_RESUME.docx') whenever template_files() came back empty, which
+    (a specific owner's filename) whenever template_files() came back empty, which
     made every downstream message report a specific missing FILE for a folder
     that was empty (or unresolvable — a data_root that does not exist reads the
     same as an empty one). The caller sees no base and says so."""
@@ -30,7 +78,7 @@ def _pick_base(*keywords):
         hits = [f for f in resumes if kw in f.lower()]
         if hits:
             # A base usually exists as BOTH a .docx and its .pdf twin (e.g.
-            # PHAM_KHOA_RESUME.docx + .pdf). Prefer the .docx: it is the editable
+            # <base>.docx + <base>.pdf). Prefer the .docx: it is the editable
             # source the render path needs, and the template path copies whatever it
             # is handed to a `.docx` filename — a .pdf winning here only because
             # os.listdir happened to return it first produced a PDF wearing a .docx
@@ -62,7 +110,7 @@ def classify(title, skills=None):
         sk = re.split(r'[;,]', skills) if isinstance(skills, str) else list(skills)
         norm_set = {s.strip().lower() for s in sk if s and s.strip()}
         if len(norm_set & INFRA_SIGNAL) >= INFRA_MIN:
-            base = _pick_base('pham_khoa', 'core')
+            base = _pick_core_base()
             return {'category': 'CORE', 'baseResume': base[0], 'baseType': base[1]}
     if 'analyst' in t and 'support' not in t: cat = 'ANALYST'
     elif 'support' in t: cat = 'TECH_SUPPORT'
@@ -72,7 +120,7 @@ def classify(title, skills=None):
     elif cat == 'TECH_SUPPORT':
         base = _pick_base('support', 'tangible', 'techsupport')
     else:
-        base = _pick_base('pham_khoa', 'core')
+        base = _pick_core_base()
     return {'category': cat, 'baseResume': base[0], 'baseType': base[1]}
 
 # ---------- skills ----------

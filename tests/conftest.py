@@ -30,3 +30,41 @@ def load_fixture(name):
 def jp():
     import jobpipe
     return jobpipe
+
+
+# --- the data root must come back ------------------------------------------------
+#
+# pipelib.DATA is resolved once, at import, and blocklist / backlog / scheduler latch
+# onto it the same way. A test that points them at a scratch root (test_backlog does,
+# on purpose) has to point them back, and for a long time one did not: the tmp_path
+# stayed in effect for the rest of the session, every later test read its config out of
+# a directory pytest had already deleted, and 8 config-derived goldens failed in a full
+# run while passing alone. Nothing pointed at the culprit, because the failures were all
+# in other files.
+#
+# The check runs at SETUP, so the blame lands on the test that runs right after the leak
+# rather than on whichever golden noticed first, and it is ordering-proof: it cannot race
+# another fixture's teardown.
+import pipelib as _pipelib  # noqa: E402
+
+_ORIGINAL_DATA = _pipelib.DATA
+
+_LEAK_MSG = (
+    'the data root leaked out of an earlier test: pipelib.DATA is\n'
+    '  %s\nbut this session started on\n  %s\n'
+    'A test that reloads pipelib (or blocklist / backlog / scheduler) under a scratch\n'
+    'root must reload it back — see the teardown in tests/test_backlog.py::board.'
+)
+
+
+@pytest.fixture(autouse=True)
+def _data_root_restored():
+    if _pipelib.DATA != _ORIGINAL_DATA:
+        raise AssertionError(_LEAK_MSG % (_pipelib.DATA, _ORIGINAL_DATA))
+    yield
+
+
+def pytest_sessionfinish(session, exitstatus):
+    """Catch a leak from the very LAST test, which no setup check would see."""
+    if _pipelib.DATA != _ORIGINAL_DATA:
+        print('\n' + _LEAK_MSG % (_pipelib.DATA, _ORIGINAL_DATA))

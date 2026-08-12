@@ -29,9 +29,9 @@ SETUP_HTML = os.path.join(ROOT, 'src', 'web', 'setup.html')
 # normalisation, runs of whitespace, punctuation inside a token, single tokens,
 # empty/blank, and a middle name (which must NOT reach the initials).
 NAMES = [
-    'Khoa Pham', 'khoa', '', '   ', 'Khoa Anh Bao Pham', '  Khoa   Pham  ',
-    'Mary-Jane Watson', 'Khoa\tPham', "O'Brien Smith", 'José Álvarez',
-    'X', 'Jean-Luc Picard Jr', '123 456', 'Khoa Pham ', 'Ægir Østergaard',
+    'Jane Doe', 'jane', '', '   ', 'Jane Anh Bao Doe', '  Jane   Doe  ',
+    'Mary-Jane Watson', 'Jane\tDoe', "O'Brien Smith", 'José Álvarez',
+    'X', 'Jean-Luc Picard Jr', '123 456', 'Jane Doe ', 'Ægir Østergaard',
     'van der Berg', 'ANNA MARIA ROSSI',
 ]
 
@@ -65,9 +65,9 @@ def test_initials_match_between_python_and_setup_page():
 
 def test_initials_rules():
     import profile_lib as pl
-    assert pl.initials('Khoa Pham') == 'KP'
-    assert pl.initials('Khoa Anh Bao Pham') == 'KP', 'middle names must not appear'
-    assert pl.initials('khoa') == 'K'
+    assert pl.initials('Jane Doe') == 'JD'
+    assert pl.initials('Jane Anh Bao Doe') == 'JD', 'middle names must not appear'
+    assert pl.initials('jane') == 'J'
     assert pl.initials('') == ''
     assert pl.initials(None) == ''
     # Accents FOLD to their base letter. Stripping them instead would promote the

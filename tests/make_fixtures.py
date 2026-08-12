@@ -34,6 +34,25 @@ def _dump(name, obj):
     print('wrote', name)
 
 
+def depersonalize_classify(cls):
+    """Strip the owner's base-resume FILENAME out of a classify() snapshot.
+
+    tests/fixtures/ ships in the public export, and the base resume is named
+    after the person ('First_Last_Resume_data_analyst.docx'). A golden exists to
+    pin behaviour, and the behaviour here is "CORE picks the CORE base", not
+    "the file is called X" — which file fills a slot is this user's private
+    data. tests/test_scoring.py::test_golden_classify applies the SAME mapping to
+    the live output before comparing, so the assertion still bites.
+
+    Keep this in sync with that test, and never remove it: the resume filenames
+    are exactly what release.py's PII gate blocks a ship on.
+    """
+    cls = dict(cls)
+    if cls.get('baseResume'):
+        cls['baseResume'] = '<%s base>' % (cls.get('category') or 'UNKNOWN')
+    return cls
+
+
 listings = jp.load_json(os.path.join(ROOT, 'listings.json'), []) or []
 tracker = jp.load_json(os.path.join(ROOT, 'job_tracker.json'), {}) or {}
 tracking = _load_csv('tracking.csv')
@@ -47,7 +66,7 @@ for L in listings:
     scoring.append({
         'id': L.get('id', ''), 'title': L.get('title', ''),
         'requiredSkills': req,
-        'classify': jp.classify(L.get('title', ''), req),
+        'classify': depersonalize_classify(jp.classify(L.get('title', ''), req)),
         'skillMatch': match, 'flagged': flagged,
     })
 _dump('scoring.json', scoring)

@@ -11,8 +11,13 @@ If you can read a Python script, you can read this whole project.
 
 ## Start here
 
-Double-click **`Start Here.bat`**. It checks Python, starts the dashboard, and opens
-your browser at `http://localhost:8765`.
+Double-click **`Start Here.bat`** (macOS/Linux: **`Start Here.command`**). It checks
+Python, starts the dashboard, and opens the board in its own window.
+
+If the optional `pywebview` package is missing, the board opens in your normal browser
+at `http://localhost:8765` instead — same app, same features, just a tab. The shipped
+bundle from `tools\Make Portable Python.bat` already includes it; if you are running
+your own Python the launcher offers to set it up the first time.
 
 Everything else is optional: the dashboard has a **Settings** page for your profile and
 API keys, and a **Schedule** page for the automatic searches.

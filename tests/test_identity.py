@@ -75,12 +75,70 @@ def test_clean_company(jp, raw, expected):
 
 
 @pytest.mark.parametrize('fname, expected', [
-    ('Khoa_Pham_Resume_Acme_DevOpsEngineer.docx', 'Acme_DevOpsEngineer'),
-    ('Khoa_Pham_Resume_Acme_DevOpsEngineer.pdf', 'Acme_DevOpsEngineer'),
+    ('Jane_Doe_Resume_Acme_DevOpsEngineer.docx', 'Acme_DevOpsEngineer'),
+    ('Jane_Doe_Resume_Acme_DevOpsEngineer.pdf', 'Acme_DevOpsEngineer'),
     ('Acme_Role.docx', 'Acme_Role'),   # already stripped
 ])
 def test_stem(jp, fname, expected):
     assert jp.stem(fname) == expected
+
+
+# ---------------------------------------------------------------- resume prefix
+# The filename prefix now comes from profile.json identity.resume_prefix instead of a
+# hardcoded literal. The tests that matter are the BACKWARD-COMPATIBILITY ones: files
+# already on disk were written under whatever prefix was current when they were tailored,
+# and they must keep resolving to their tracker id after the user edits the field.
+
+def test_stem_strips_a_foreign_prefix(jp):
+    """A resume tailored under a DIFFERENT prefix still resolves to its id.
+
+    Regression guard for the obvious wrong implementation — stripping only the
+    currently-configured prefix, which would orphan every file already in New/."""
+    assert jp.stem('Jane_Doe_Resume_Globex_SRE.docx') == 'Globex_SRE'
+    assert jp.stem('J_Q_Public_Resume_Globex_SRE.pdf') == 'Globex_SRE'
+
+
+def test_resume_prefix_falls_back_without_a_profile(jp, monkeypatch, tmp_path):
+    """No profile.json at all -> a generic anonymous prefix, so the zero-token path still
+    runs. Deliberately NOT the original owner's literal prefix: that would ship a real
+    person's name in the code, which release.py's PII gate rejects."""
+    monkeypatch.setattr(jp, 'cfg', lambda name: str(tmp_path / name), raising=False)
+    import pipelib
+    monkeypatch.setattr(pipelib, 'cfg', lambda name: str(tmp_path / name))
+    pipelib.reset_resume_prefix()
+    try:
+        assert pipelib.resume_prefix() == pipelib._DEFAULT_RESUME_PREFIX
+    finally:
+        pipelib.reset_resume_prefix()
+
+
+def test_resume_prefix_derives_from_full_name(jp, monkeypatch, tmp_path):
+    """resume_prefix unset but full_name present -> derived, not the first user's name."""
+    import json as _json, pipelib
+    (tmp_path / 'profile.json').write_text(
+        _json.dumps({'identity': {'full_name': 'Jane Q. Doe'}}), encoding='utf-8')
+    monkeypatch.setattr(pipelib, 'cfg', lambda name: str(tmp_path / name))
+    pipelib.reset_resume_prefix()
+    try:
+        assert pipelib.resume_prefix() == 'Jane_Q_Doe_Resume_'
+    finally:
+        pipelib.reset_resume_prefix()
+
+
+@pytest.mark.parametrize('fname, expected', [
+    ('Jane_Doe_Resume_Acme_SRE.docx', True),
+    ('Jane_Doe_Resume_Acme_SRE.pdf', True),
+    ('J_Q_Public_Resume_Acme_SRE.docx', True),   # another user's / an older prefix
+    ('~$Jane_Doe_Resume_Acme_SRE.docx', False),  # Word lock file — see below
+    ('PREVIEW_Jane_Doe_Resume_Acme_SRE.docx', False),
+    ('Jane_Doe_Resume_Acme_SRE.txt', False),
+    ('notes.docx', False),                        # no prefix at all
+])
+def test_is_resume_file(jp, fname, expected):
+    """The lock-file cases are the point: the old literal-prefix test excluded '~$...'
+    for free, and dashboard_build._id_in_dir has no separate guard — a stale lock file
+    reading as 'already filed here' would delete the real resume out of New/."""
+    assert jp.is_resume_file(fname) is expected
 
 
 @pytest.mark.parametrize('raw, expected', [
@@ -114,8 +172,8 @@ def _job(jid, resume):
 
 
 def test_prefer_pdf_picks_pdf_twin(jp):
-    jobs = [_job('A', 'New/Acme/Khoa_Pham_Resume_A.docx'),
-            _job('A', 'New/Acme/Khoa_Pham_Resume_A.pdf')]
+    jobs = [_job('A', 'New/Acme/Jane_Doe_Resume_A.docx'),
+            _job('A', 'New/Acme/Jane_Doe_Resume_A.pdf')]
     out = jp._prefer_pdf(jobs)
     assert len(out) == 1 and out[0]['resume'].endswith('.pdf')
     # order must not matter

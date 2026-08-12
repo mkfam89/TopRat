@@ -1,7 +1,7 @@
 [
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -47,7 +47,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseResume": "<TECH_SUPPORT base>",
    "baseType": "docx",
    "category": "TECH_SUPPORT"
   },
@@ -81,7 +81,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -103,7 +103,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -130,7 +130,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -160,7 +160,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -181,7 +181,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -203,7 +203,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -227,7 +227,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -270,7 +270,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -290,7 +290,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseResume": "<TECH_SUPPORT base>",
    "baseType": "docx",
    "category": "TECH_SUPPORT"
   },
@@ -316,7 +316,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -340,7 +340,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -389,7 +389,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -420,7 +420,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -434,7 +434,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -468,7 +468,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -494,7 +494,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -535,7 +535,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -562,7 +562,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -601,7 +601,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -644,7 +644,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -697,7 +697,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -722,7 +722,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -746,7 +746,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseResume": "<TECH_SUPPORT base>",
    "baseType": "docx",
    "category": "TECH_SUPPORT"
   },
@@ -768,7 +768,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -822,7 +822,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -855,7 +855,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -873,7 +873,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -930,7 +930,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -966,7 +966,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -996,7 +996,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1019,7 +1019,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1056,7 +1056,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1081,7 +1081,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -1116,7 +1116,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -1128,7 +1128,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -1146,7 +1146,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -1158,7 +1158,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -1170,7 +1170,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -1202,7 +1202,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -1236,7 +1236,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1273,7 +1273,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseResume": "<TECH_SUPPORT base>",
    "baseType": "docx",
    "category": "TECH_SUPPORT"
   },
@@ -1299,7 +1299,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1336,7 +1336,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1348,7 +1348,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1401,7 +1401,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -1433,7 +1433,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseResume": "<TECH_SUPPORT base>",
    "baseType": "docx",
    "category": "TECH_SUPPORT"
   },
@@ -1451,7 +1451,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1479,7 +1479,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1504,7 +1504,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseResume": "<TECH_SUPPORT base>",
    "baseType": "docx",
    "category": "TECH_SUPPORT"
   },
@@ -1567,7 +1567,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1595,7 +1595,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1642,7 +1642,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseResume": "<TECH_SUPPORT base>",
    "baseType": "docx",
    "category": "TECH_SUPPORT"
   },
@@ -1680,7 +1680,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1716,7 +1716,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseResume": "<TECH_SUPPORT base>",
    "baseType": "docx",
    "category": "TECH_SUPPORT"
   },
@@ -1728,7 +1728,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseResume": "<TECH_SUPPORT base>",
    "baseType": "docx",
    "category": "TECH_SUPPORT"
   },
@@ -1752,7 +1752,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1764,7 +1764,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1776,7 +1776,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -1796,7 +1796,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1842,7 +1842,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1880,7 +1880,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -1930,7 +1930,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -1944,7 +1944,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -1964,7 +1964,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseResume": "<TECH_SUPPORT base>",
    "baseType": "docx",
    "category": "TECH_SUPPORT"
   },
@@ -1982,7 +1982,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -2012,7 +2012,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -2037,7 +2037,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -2066,7 +2066,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -2081,7 +2081,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -2093,7 +2093,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/PHAM_KHOA_RESUME.docx",
+   "baseResume": "<CORE base>",
    "baseType": "docx",
    "category": "CORE"
   },
@@ -2123,7 +2123,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_data_analyst.docx",
+   "baseResume": "<ANALYST base>",
    "baseType": "docx",
    "category": "ANALYST"
   },
@@ -2138,7 +2138,7 @@
  },
  {
   "classify": {
-   "baseResume": "resume_template/Khoa_Pham_Resume_Technical_support.docx",
+   "baseResume": "<TECH_SUPPORT base>",
    "baseType": "docx",
    "category": "TECH_SUPPORT"
   },

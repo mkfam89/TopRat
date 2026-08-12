@@ -15,7 +15,8 @@ from datetime import datetime, timedelta
 
 from pipelib import (BASE, JSON_PATH, HTML_PATH, TRACKING_CSV, ARCHIVE_CSV,
                      CANDIDATES_CSV, TO_PROCESS, TEMPLATES, load_json, data_path,
-                     load_listings, _safe_write_text, stem, camel_to_words, tracker_id)
+                     load_listings, _safe_write_text, stem, camel_to_words, tracker_id,
+                     is_resume_file)
 from scoring import norm, skill_match, score_job, strategy
 from blocklist import is_blocked
 import reposts  # advisory repost annotation (never excludes)
@@ -149,7 +150,7 @@ def scan_active_jobs(tracker):
             if not os.path.isdir(cp): continue
             for fname in sorted(os.listdir(cp)):
                 if fname.startswith('~$') or fname.startswith('PREVIEW') or fname in EXCLUDE: continue
-                if not fname.startswith('Khoa_Pham_Resume_') or not (fname.endswith('.pdf') or fname.endswith('.docx')): continue
+                if not is_resume_file(fname): continue
                 s = stem(fname)
                 if s in archived_ids: continue
                 seen.add(s)
@@ -343,7 +344,7 @@ def cmd_candidates(a):
     # Advisory repost annotation: recognize a fresh listing whose posting we've seen
     # before (by applyUrl or company+role) and attach a short note (last seen + prior
     # applied/skipped status + prior note). NEVER excludes — reposts stay in the feed
-    # so Khoa can reuse the tailored resume or ban a suspected ghost employer.
+    # so the user can reuse the tailored resume or ban a suspected ghost employer.
     try:
         rp = reposts.annotate(rows, tracker.get('job_details', {}), applied_map,
                               skipped, tracker.get('notes', {}))

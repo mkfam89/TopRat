@@ -144,7 +144,11 @@ hr{border:none;border-top:1px solid var(--line);margin:20px 0;}
 .ui-nav-sched .slbl{font-weight:600;opacity:.7;margin-right:2px;}
 .ui-nav-sched .seta{font-weight:500;opacity:.85;}
 .ui-nav-sched .smiss{font-weight:700;opacity:.9;}
-.ui-nav-sched .smiss::after{content:" ·";opacity:.5;}
+/* The chip counts MISSED RUNS and nothing else. Everything else that needs attention — a
+   failed task, the paused searches, a watchdog that is off — is one quiet mark, and the words
+   are in the bubble. A second sentence in the chip is what made the old four-banner page
+   unreadable, one nav bar higher up. */
+.ui-nav-sched .swarn{font-weight:700;opacity:.9;}
 .ui-nav-sched .sdot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:none;}
 .ui-nav-sched.is-idle{color:var(--muted);}
 .ui-nav-sched.is-idle .sdot{background:var(--green,#2f9e6f);}
@@ -168,7 +172,10 @@ hr{border:none;border-top:1px solid var(--line);margin:20px 0;}
    should not do: edit a time, switch a job off. */
 .ui-sched-pop{
   position:absolute;top:calc(100% + 9px);right:0;z-index:100000;
-  width:min(340px,calc(100vw - 24px));
+  width:min(360px,calc(100vw - 24px));
+  /* It carries four banners' worth of message now, so it has to be able to run out of room
+     without pushing itself off the bottom of the window. */
+  max-height:min(76vh,620px);overflow-y:auto;overscroll-behavior:contain;
   padding:12px 13px;
   background:var(--surface,#fff);border:1px solid var(--line);border-radius:var(--r-md,12px);
   box-shadow:0 14px 34px rgba(24,32,43,.17);
@@ -200,6 +207,32 @@ hr{border:none;border-top:1px solid var(--line);margin:20px 0;}
 .ui-sched-pop .srun:disabled{opacity:.55;cursor:default;}
 .ui-sched-pop .snote{margin-top:9px;color:var(--muted);font-size:12px;}
 .ui-sched-pop .sempty{color:var(--muted);}
+/* ---- the folded-in warnings ----
+   The paused searches and the watchdog used to be their own banners on /schedule; a failure
+   used to be a third. They are blocks in one list now, under a divider that says plainly that
+   the missed count above is not the whole story. Tinted by severity so the eye can sort them
+   without reading: red is broken, amber is a nudge, plain grey is context. */
+.ui-sched-pop .ssec{margin:12px 0 7px;padding-top:10px;border-top:1px solid var(--line);
+  font:700 11px var(--font);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);}
+.ui-sched-pop .sprob{border:1px solid var(--line);border-radius:9px;padding:9px 10px;margin-bottom:8px;
+  background:var(--surface-2);}
+.ui-sched-pop .sprob.bad{background:var(--red-soft);border-color:var(--red-line);}
+.ui-sched-pop .sprob.warn{background:var(--amber-soft);border-color:var(--amber-line);}
+.ui-sched-pop .sprob .spname{font-weight:700;color:var(--ink-strong);}
+.ui-sched-pop .sprob.bad .spname{color:var(--red-ink);}
+.ui-sched-pop .sprob.warn .spname{color:var(--amber-ink);}
+.ui-sched-pop .sprob .spbody{margin-top:3px;font-size:12px;line-height:1.5;color:var(--ink);}
+.ui-sched-pop .sprob .spbody code{background:rgba(0,0,0,.07);padding:1px 5px;border-radius:4px;
+  font-size:11.5px;word-break:break-word;}
+.ui-sched-pop .sprob .spacts{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;}
+/* A warning that only STATES a problem makes the reader hunt for the control that fixes it,
+   so every block that names a fixable state carries its button right here. */
+.ui-sched-pop .sact{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);
+  border-radius:7px;padding:4px 10px;font:600 11.5px var(--font);cursor:pointer;white-space:nowrap;}
+.ui-sched-pop .sact:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);}
+.ui-sched-pop .sact.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.ui-sched-pop .sact.primary:hover:not(:disabled){filter:brightness(1.06);background:var(--accent);}
+.ui-sched-pop .sact:disabled{opacity:.55;cursor:default;}
 .ui-sched-pop .sfoot{margin-top:10px;padding-top:9px;border-top:1px solid var(--line);}
 .ui-sched-pop .sfoot a{color:var(--accent);text-decoration:none;font-weight:600;}
 .ui-sched-pop .sfoot a:hover{text-decoration:underline;}

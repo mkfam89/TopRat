@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-jobpipe.py — deterministic engine for Khoa's job-alert pipeline.
+jobpipe.py — deterministic engine for the job-alert pipeline.
 
 The LLM drives the browser scrape and writes the tailored resume prose (and the
 per-job questionnaire); everything below is pure logic run as a script.
@@ -55,7 +55,8 @@ from pipelib import (HERE, BASE, DATA, SPLIT, JSON_PATH, HTML_PATH, CONFIG, cfg,
                      SALARY_BANDS, SALARY_CACHE, template_files, TEMPLATES,
                      load_json, data_path, load_listings,
                      _safe_write_text, stem, camel_to_words, slug,
-                     tracker_id, clean_company, clean_role)
+                     tracker_id, clean_company, clean_role,
+                     resume_prefix, reset_resume_prefix, is_resume_file)
 from scoring import (norm, known_norms, _matchable, _skill_hit, flag_skills,
                      skill_match, _shrinkage, _SHRINK_K, _SHRINK_PRIOR,
                      title_fit, score_job, _title_norm, _title_terms,

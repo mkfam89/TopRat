@@ -65,6 +65,15 @@ config/git.json
 # staging worktree's neutralized settings NEVER leak to the live copy on a merge.
 config/instance.json
 
+# Written by the RUNNING dashboard: the port it actually bound, so watchdog.py and
+# stop_board.py probe the real socket when a busy port pushed it to the next one.
+# Live process state, not configuration — it means nothing in another checkout.
+config/runtime.json
+
+# "Have we offered the app window yet?" marker, written by the Start Here launchers.
+# Per-install, not a setting — a fresh copy should get the offer once.
+config/app_window.answered
+
 # Static desktop shortcut — hardcodes a port (can't read instance.json), so it's per-copy.
 # The .bat/.vbs launchers resolve the port dynamically; only this static file is ignored.
 Open Dashboard.url
@@ -136,3 +145,13 @@ resume_template/
 
 # Sanitized export staged for the TopRat repo (built by src/ops/release.py, not tracked here)
 /TopRat/
+
+# The portable interpreter built by tools\Make Portable Python.bat — 800+ files, ~51 MB,
+# and every rebuild rewrites all of them. It is a downloaded artifact, not source: git
+# would carry the churn forever and gain nothing recoverable.
+#
+# It STILL SHIPS. release.py copies python/ into the export folder after the export
+# verifies clean, so the handed-over folder (and its zip) is complete and a user needs
+# no Python installed. Only the *git repos* skip it — this file ships too, so the same
+# rule applies in TopRat.
+python/

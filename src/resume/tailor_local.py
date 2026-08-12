@@ -29,6 +29,7 @@ rr = None
 HERE = _paths.ROOT
 def P(*p): return os.path.join(HERE, *p)
 from pipelib import TO_PROCESS, TAILOR_ERRORS   # DATA root, not the code dir
+from pipelib import resume_prefix                # profile.json identity.resume_prefix
 
 
 # ---------------------------------------------------------------- tailoring errors
@@ -149,7 +150,7 @@ def main():
         cid = p.get('trackerId') or p.get('id')
         company = p.get('company') or p.get('companyDisplay') or 'Company'
         # Folder = the id's short company slug so it matches the shortened filename
-        # (Khoa_Pham_Resume_<cid>), not the full raw company name.
+        # (<resume_prefix><cid>), not the full raw company name.
         safe_co = (cid.split('_', 1)[0] if cid else '') or ''.join(ch for ch in company if ch.isalnum()) or 'Company'
         content = _resolve_content(p, cid, safe_co, errs) if rr is not None else None
         # OPTIONAL Claude-API enhancement: a customize job with no pre-supplied content.json
@@ -182,7 +183,7 @@ def main():
     details, processed = {}, []
     for it, cid, safe_co, content in buildable:
         outdir = P('New', safe_co); os.makedirs(outdir, exist_ok=True)
-        docx = os.path.join(outdir, 'Khoa_Pham_Resume_%s.docx' % cid)
+        docx = os.path.join(outdir, '%s%s.docx' % (resume_prefix(), cid))
         customized = False
         if content is not None and rr is not None:
             # RENDER path: formatting locked in code + lint gate. A lint/validation

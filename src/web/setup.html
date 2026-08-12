@@ -139,6 +139,27 @@
   .sec .body { padding:14px 16px 16px; border-top:1px solid var(--line); }
   .sec .body > *:first-child { margin-top:0; }
   .sec .body label:first-of-type { margin-top:0; }
+  /* ---- agent prompt cards (Settings -> Run it automatically) ----
+     One card per scheduled task. The prompt itself is NOT shown by default: it is 120 lines
+     of instructions the user is not meant to read or edit, and putting it on screen makes a
+     one-button job look like a config file. Copy is the action; "see the text" is a link. */
+  .agent { border:1px solid var(--line); border-radius:9px; padding:12px 13px; margin:0 0 10px;
+         background:#fcfdff; }
+  .agent .ah { display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; }
+  .agent .an { font-weight:600; font-size:13.5px; color:var(--ink); }
+  .agent .aw { font-size:11.5px; color:var(--mut); background:#f3f4f6; border-radius:999px;
+         padding:1px 8px; white-space:nowrap; }
+  .agent .ab { font-size:12.5px; color:var(--mut); margin:5px 0 9px; }
+  .agent .arow { display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
+  .agent .ok { font-size:12px; color:#065f46; font-weight:600; }
+  .agent details { margin-top:9px; }
+  .agent details summary { cursor:pointer; font-size:12px; color:var(--mut); }
+  .agent pre { max-height:230px; overflow:auto; background:#f8fafc; border:1px solid var(--line);
+         border-radius:7px; padding:9px 10px; font-size:11px; line-height:1.45; white-space:pre-wrap;
+         word-break:break-word; margin:8px 0 0; }
+  .steps3 { margin:0 0 14px; padding-left:20px; font-size:13px; color:var(--ink); }
+  .steps3 li { margin:0 0 5px; }
+  .steps3 .q { color:var(--mut); }
   .grouphead { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--mut);
          font-weight:600; margin:24px 0 4px; }
   .grouphead .n { text-transform:none; letter-spacing:0; font-weight:400; }
@@ -530,6 +551,33 @@
     </div>
   </details>
 
+  <!-- Runs the whole thing hands-off. Sits directly after AI tailoring because it is the
+       thing that USES it: the prompts below are what actually calls the pipeline on a
+       schedule. Two tasks only — the evening and weekly variants are duplicates of these at
+       other hours, and a menu of four is a menu a new user closes. -->
+  <details class="sec" id="sec_agents">
+    <summary>
+      <span class="st">Run it automatically</span>
+      <span class="sv">Searches and tailors on a schedule, so your board is filled in when you open it.</span>
+      <span class="pill">optional</span>
+    </summary>
+    <div class="body">
+      <p class="why">Everything here works by hand without this — press <b>Search</b> and
+        <b>Tailor</b> yourself and nothing changes. This just does it for you on a schedule.
+        You set it up by <b>pasting a message into Claude</b>; there is no file to edit.</p>
+      <ol class="steps3">
+        <li>Press <b>Copy</b> on one of the cards below.</li>
+        <li>Open <b>Claude</b> and paste it into a new chat.</li>
+        <li>Send it. Claude sets up the scheduled task and tells you when it will run.
+          <span class="q">Repeat for the second card.</span></li>
+      </ol>
+      <div id="agent_cards"></div>
+      <p class="why" style="margin-bottom:0;">Your computer has to be on and Claude running at
+        the scheduled time. Nothing is lost if it isn't — the next run picks up everything that
+        was posted in the meantime.</p>
+    </div>
+  </details>
+
   <!-- 3 · free but a real signup, and only sharpens a number you already get -->
   <details class="sec" id="sec_adzuna">
     <summary>
@@ -830,6 +878,9 @@ window.addEventListener('beforeunload', e => { if(DIRTY.size){ e.preventDefault(
 // the timeout backstop below.
 // 'uptime' leads: it is one checkbox, and nothing else on this page does anything if the app
 // is not running. Advanced sections never auto-open.
+// 'agents' is NOT in AUTO_KEYS: there is no probe that can tell whether the user set the
+// scheduled tasks up (they live in Claude's storage, not ours), so it can never report
+// "configured" and would win the auto-open race forever.
 const AUTO_KEYS = ['uptime','ntfy','claudecli','adzuna'];
 const SEC_STATE = {};
 let AUTO_DONE = false;
@@ -1066,7 +1117,7 @@ async function importProfile(file){
     const j=await r.json();
     if(j.ok){ await load();
       try{ localStorage.removeItem('setupSkippedAt'); localStorage.removeItem('setupRemindAt'); }catch(e){}
-      status('Loaded '+file.name+'. The app backed up the previous profile as .bak1 and .bak2. Generated: '+(j.written||[]).join(', '),'ok'); }
+      status('Profile loaded.','ok'); }
     else status('Import failed: '+(j.error||'unknown'),'err');
   }catch(e){ status('Import failed: '+e.message,'err'); }
 }
@@ -1209,6 +1260,62 @@ function applyTopApplicantGate(){
     'LinkedIn Premium session — LinkedIn exposes no API for this feed, so the app cannot '+
     'authenticate to it.';
 }
+// --- scheduled-agent prompts (Settings -> Run it automatically) ---
+// One Copy button per task. The prompt text is fetched already personalized by
+// /api/agent-prompts — the page never builds it, so the browser and the scheduled task can
+// never disagree about which folder or which name to use.
+let AGENTS = [];
+function loadAgents(){
+  fetch('/api/agent-prompts').then(r=>r.json()).then(d=>{
+    AGENTS = (d && d.prompts) || [];
+    renderAgents();
+  }).catch(()=>{ AGENTS = []; renderAgents(); });
+}
+function renderAgents(){
+  const box = document.getElementById('agent_cards');
+  if(!box) return;
+  if(!AGENTS.length){
+    box.innerHTML = '<p class="why">The prompt files could not be read from '+
+      '<code>agent_prompts/</code>. Reinstalling or re-downloading the app restores them.</p>';
+    return;
+  }
+  box.innerHTML = AGENTS.map((a,i)=>{
+    // A missing file yields an empty prompt: disable that one card and say so, rather than
+    // handing the user a Copy button that silently copies nothing.
+    const dead = !a.prompt;
+    return '<div class="agent">'+
+      '<div class="ah"><span class="an">'+escH(a.title)+'</span>'+
+        '<span class="aw">'+escH(a.when)+'</span></div>'+
+      '<div class="ab">'+escH(a.blurb)+'</div>'+
+      '<div class="arow">'+
+        '<button type="button" onclick="copyAgent('+i+')"'+(dead?' disabled':'')+'>'+
+          (dead?'Unavailable':'Copy')+'</button>'+
+        '<span class="ok" id="agent_ok_'+i+'"></span>'+
+      '</div>'+
+      (dead?'':'<details><summary>See what this says</summary><pre>'+escH(a.prompt)+'</pre></details>')+
+    '</div>';
+  }).join('');
+}
+function copyAgent(i){
+  const a = AGENTS[i]; if(!a || !a.prompt) return;
+  const say = t => { const el=document.getElementById('agent_ok_'+i); if(el) el.textContent=t; };
+  const ask = 'Please set this up as a scheduled task:\n\n' + a.prompt;
+  // clipboard.writeText needs a secure context; the board is served over plain http on
+  // localhost, which browsers DO treat as secure — but a user reaching it by LAN IP is not
+  // in one, hence the textarea fallback rather than a silent no-op.
+  const fallback = () => {
+    const ta=document.createElement('textarea'); ta.value=ask;
+    ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta);
+    ta.select();
+    let ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+    say(ok ? 'Copied ✓ now paste it into Claude' : 'Could not copy — open "See what this says" and copy it by hand.');
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(ask).then(()=>say('Copied ✓ now paste it into Claude'), fallback);
+  } else { fallback(); }
+}
+
 // Send the user to the add-ons step and open the one Claude row.
 function gotoClaudeSetup(){
   show(3);
@@ -1481,7 +1588,7 @@ if(WELCOME){ document.getElementById('welcome_box').classList.add('show');
 document.getElementById('uptime_watchdog').addEventListener('change', saveUptime);
 document.getElementById('uptime_every').addEventListener('change', saveUptime);
 
-buildChips(); buildSteps(); show(0); load(); loadBlocklist(); loadAdzuna(); loadClaudeCli(); loadPrio(); loadDataRoot(); loadUptime();
+buildChips(); buildSteps(); show(0); load(); loadBlocklist(); loadAdzuna(); loadClaudeCli(); loadPrio(); loadDataRoot(); loadUptime(); loadAgents();
 </script>
 </body>
 </html>

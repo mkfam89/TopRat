@@ -10,7 +10,7 @@ Two different things wear the ghost hat in this pipeline, and they must not be m
     employer, and used to offer a ban once a second posting from the same employer is
     flagged (the blocklist is the deterministic half of fake-job handling).
 
-Flagging deliberately does NOT change a job's status, queue state or filtering — Khoa
+Flagging deliberately does NOT change a job's status, queue state or filtering — the user
 decides what to do with a flagged job himself. The only behaviour it drives is the
 count and the ban offer.
 

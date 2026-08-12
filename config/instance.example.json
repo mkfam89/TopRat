@@ -1,6 +1,8 @@
 {
-  "_readme": "Per-instance overrides for THIS working copy only. Copy to config/instance.json (git-ignored) to neutralize a staging/test worktree without touching committed config. Live has no instance.json, so it keeps all defaults (notifications on, scheduler on, port 8765). Env vars override these keys: JOB_AGENT_DISABLE_NOTIFY, JOB_AGENT_DISABLE_SCHEDULER, JOB_AGENT_PORT.",
-  "label": "STAGING",
+  "_readme": "Per-instance overrides for THIS working copy only. Copy to config/instance.json (git-ignored) to neutralize a staging/dev worktree without touching committed config. Live has no instance.json, so it keeps all defaults (notifications on, scheduler on, port 8765). Env vars override these keys: JOB_AGENT_DISABLE_NOTIFY, JOB_AGENT_DISABLE_SCHEDULER, JOB_AGENT_PORT.",
+  "_label": "Free text. Shows as an amber chip next to the Top Rat logo on every page, and tints the whole nav bar amber, so you can tell at a glance which copy you are looking at. Use \"BETA\" or \"DEV\" on a development copy. Because this file is git-ignored AND excluded from release.py's allowlist, the chip cannot reach the live copy on a merge or the TopRat export on a release — there is nothing to strip.",
+  "_port": "The port this copy binds. 8765 is live; give a dev copy 8766 so both run side by side. If the port is busy the server takes the next free one and records it in config/runtime.json (do not edit that file).",
+  "label": "BETA",
   "disable_notifications": true,
   "disable_scheduler": true,
   "port": 8766

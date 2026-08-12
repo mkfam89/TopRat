@@ -13,7 +13,7 @@
 | Scheduling | `src/web/scheduler.py` runs jobs **in-process**, uses `sys.executable`, no `.bat`, no `schtasks`. Already cross-platform. |
 | Code/data split | `pipelib.resolve_data_root()` — 3-rung resolution (`$JOB_AGENT_DATA` → `config/instance.json` → fallback). App folder can be read-only. |
 | Platform guards | `os.name != 'nt'` branches already present in `watchdog.py`, `make_watchdog.py`, `pipelib.py`. Nothing crashes off Windows; it degrades. |
-| Server | `ThreadingHTTPServer` bound to `127.0.0.1`, `resolve_port()` already handles a busy port. |
+| Server | `ThreadingHTTPServer` bound to `127.0.0.1`. `resolve_port()` picks the wanted port; `bind_port()` takes the next free one if a foreign process holds it, and records the result in `config/runtime.json` so the watchdog follows. |
 | Icons | `assets/icon/` has `.svg`, `.ico`, and PNG 16→512. |
 | Tests | 20 test modules under `tests/`. |
 

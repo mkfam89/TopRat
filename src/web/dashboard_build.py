@@ -12,7 +12,7 @@ import _paths  # noqa: F401  -- src/_paths.py: puts every src/ folder on sys.pat
 import sys, os, re, json, shutil
 from datetime import datetime
 
-from pipelib import BASE, TEMPLATES, load_json, data_path, stem, camel_to_words
+from pipelib import BASE, TEMPLATES, load_json, data_path, stem, camel_to_words, is_resume_file
 from tracker import (read_tracker, write_tracker, read_html, write_html,
                      simplify_applied_set, seed_applied, _prefer_pdf,
                      refresh_html_status, write_tracking_csv, write_archive_index)
@@ -59,7 +59,7 @@ def cmd_rebuild(a):
     EXCLUDE = set(TEMPLATES)
     def _id_in_dir(sid, dpath, ext):
         return os.path.isdir(dpath) and any(
-            f.startswith('Khoa_Pham_Resume_') and stem(f) == sid and f.endswith(ext) for f in os.listdir(dpath))
+            is_resume_file(f) and stem(f) == sid and f.endswith(ext) for f in os.listdir(dpath))
     newdir = os.path.join(BASE, 'New')
     if os.path.isdir(newdir):
         for company in os.listdir(newdir):
@@ -93,8 +93,7 @@ def cmd_rebuild(a):
             if not os.path.isdir(cp): continue
             for fname in sorted(os.listdir(cp)):
                 if fname.startswith('~$') or fname.startswith('PREVIEW') or fname in EXCLUDE: continue
-                if not fname.startswith('Khoa_Pham_Resume_'): continue
-                if not (fname.endswith('.pdf') or fname.endswith('.docx')): continue
+                if not is_resume_file(fname): continue
                 s = stem(fname)
                 if s in archived_ids: continue
                 parts = s.split('_', 1); d = job_details.get(s, {})

@@ -195,10 +195,26 @@ def test_golden_skill_match(jp):
 # Golden values were snapshotted against the owner's live config (skills.json,
 # skill_aliases.json, strategy.json, blocklist). A clone with no data root reads an
 # empty config and scores everything differently, so this fails for want of data.
+def _slot(cls):
+    """classify() output with the base-resume FILENAME reduced to its slot.
+
+    The golden cannot carry 'First_Last_Resume_data_analyst.docx' — tests/fixtures
+    ships publicly and release.py's PII gate blocks on exactly that string. What
+    the golden is actually pinning is that a title lands on the right base, so
+    compare the slot. Mirrors make_fixtures.depersonalize_classify(); change one
+    and change the other. Which real file fills the slot is covered by
+    test_pick_base_prefers_docx_over_its_pdf_twin.
+    """
+    cls = dict(cls)
+    if cls.get('baseResume'):
+        cls['baseResume'] = '<%s base>' % (cls.get('category') or 'UNKNOWN')
+    return cls
+
+
 @pytest.mark.needs_userdata
 def test_golden_classify(jp):
     for row in GOLDEN:
-        assert jp.classify(row['title'], row['requiredSkills']) == row['classify'], row['id']
+        assert _slot(jp.classify(row['title'], row['requiredSkills'])) == row['classify'], row['id']
 
 
 # ---- classify invariants ---------------------------------------------------
@@ -254,20 +270,20 @@ def test_pick_base_prefers_docx_over_its_pdf_twin(jp, monkeypatch):
     """
     import scoring
     monkeypatch.setattr(scoring, 'template_files',
-                        lambda: ['PHAM_KHOA_RESUME.pdf', 'PHAM_KHOA_RESUME.docx'])
+                        lambda: ['CORE_RESUME.pdf', 'CORE_RESUME.docx'])
     cls = scoring.classify('Site Reliability Engineer')
-    assert cls['baseResume'].endswith('PHAM_KHOA_RESUME.docx'), cls
+    assert cls['baseResume'].endswith('CORE_RESUME.docx'), cls
     assert cls['baseType'] == 'docx'
     # a keyword with only a .pdf on disk still resolves — preference, not a filter
-    monkeypatch.setattr(scoring, 'template_files', lambda: ['PHAM_KHOA_RESUME.pdf'])
+    monkeypatch.setattr(scoring, 'template_files', lambda: ['CORE_RESUME.pdf'])
     cls = scoring.classify('Site Reliability Engineer')
-    assert cls['baseResume'].endswith('PHAM_KHOA_RESUME.pdf') and cls['baseType'] == 'pdf', cls
+    assert cls['baseResume'].endswith('CORE_RESUME.pdf') and cls['baseType'] == 'pdf', cls
 
 
 def test_classify_names_no_file_when_template_dir_is_empty(jp, monkeypatch):
     """An empty resume_template/ must yield NO base resume name.
 
-    Regression: _pick_base used to fall back to a hardcoded 'PHAM_KHOA_RESUME.docx'
+    Regression: _pick_base used to fall back to a hardcoded owner-specific filename
     when the folder was empty or unresolvable, so the board and the queue both
     reported a specific missing FILE for a folder that simply had nothing in it.
     """
@@ -280,3 +296,49 @@ def test_classify_names_no_file_when_template_dir_is_empty(jp, monkeypatch):
     # the skill-driven infra override takes the same path
     cls = scoring.classify('Application Support Analyst', ['Kubernetes', 'Terraform', 'Docker'])
     assert cls['category'] == 'CORE' and cls['baseResume'] == ''
+
+
+# ---------------------------------------------------------------- CORE base resolution
+# The CORE base used to be keyed on the first user's own surname, hardcoded in the router.
+# It is now "the base with no specialization keyword", which works for any name.
+
+def test_core_base_is_the_unspecialized_resume(jp, monkeypatch):
+    """CORE picks the plain base, not a specialized variant, for a user with any name.
+
+    Regression guard for the tempting-but-wrong fix — deriving the keyword from
+    identity.full_name. resume_prefix puts the user's name in EVERY variant's filename,
+    so a name keyword matches 'Jane_Doe_Resume_data_analyst.docx' first and CORE silently
+    resolves to the ANALYST resume."""
+    import scoring
+    monkeypatch.setattr(scoring, 'template_files',
+                        lambda: ['Jane_Doe_Resume_data_analyst.docx',
+                                 'Jane_Doe_Resume.docx',
+                                 'Jane_Doe_Resume_support.docx'])
+    assert scoring.classify('Site Reliability Engineer')['baseResume'].endswith('Jane_Doe_Resume.docx')
+    # the specialized categories still route to their own variants
+    assert scoring.classify('Data Analyst')['baseResume'].endswith('Jane_Doe_Resume_data_analyst.docx')
+    assert scoring.classify('Support Engineer')['baseResume'].endswith('Jane_Doe_Resume_support.docx')
+
+
+def test_core_base_honours_an_explicit_generic_name(jp, monkeypatch):
+    """An explicitly-named general resume wins over the no-keyword rule."""
+    import scoring
+    monkeypatch.setattr(scoring, 'template_files',
+                        lambda: ['Something_Else.docx', 'Master_Resume.docx'])
+    assert scoring.classify('SRE')['baseResume'].endswith('Master_Resume.docx')
+
+
+def test_core_base_when_the_base_is_named_after_its_owner(jp, monkeypatch):
+    """The layout that shipped first: a base named after the person, plus two variants.
+
+    No personal alias is needed for this — a base named after its owner carries no
+    specialization keyword, so the no-keyword rule resolves it. That is why the alias
+    could be deleted rather than kept as backward compatibility (it was a real name in
+    shipped code, which release.py's PII gate rejects). Prefers the .docx over its twin."""
+    import scoring
+    monkeypatch.setattr(scoring, 'template_files',
+                        lambda: ['A_Person_Resume_data_analyst.docx',
+                                 'A_Person_Resume_Technical_support.docx',
+                                 'A_PERSON_RESUME.docx', 'A_PERSON_RESUME.pdf'])
+    cls = scoring.classify('Site Reliability Engineer')
+    assert cls['baseResume'].endswith('A_PERSON_RESUME.docx'), cls

@@ -63,7 +63,7 @@ BANNED_HEADERS = {
 }
 REQUIRED_SECTIONS = {"TECHNICAL SKILLS", "SUMMARY"}
 
-# Openers that are Khoa's real professional identity — never flagged by R09.
+# Openers that are the owner's real professional identity — never flagged by R09.
 ALLOWED_IDENTITIES = [
     "site reliability engineer",
     "operations and data professional",
@@ -253,7 +253,7 @@ class Report:
 # --------------------------------------------------------------------------- #
 
 def role_tokens_from_filename(path):
-    """Words of the role slug in Khoa_Pham_Resume_<Company>_<Role>.docx."""
+    """Words of the role slug in <prefix><Company>_<Role>.docx."""
     stem = os.path.splitext(os.path.basename(path))[0]
     parts = stem.split("_")
     if len(parts) < 5:

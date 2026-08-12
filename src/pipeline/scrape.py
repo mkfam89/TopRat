@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """scrape.py — standalone hiringcafe.com scraper. NO browser, NO LLM, stdlib only.
 
-Runs on Khoa's machine via Windows Task Scheduler BEFORE the Claude scheduled runs.
+Runs on the user's machine via Windows Task Scheduler BEFORE the Claude scheduled runs.
 Writes listings.json + scrape_meta.json in the project folder. The scheduled Claude
 run checks scrape_meta.json: if fresh, it skips the Chrome scrape entirely.
 
@@ -175,6 +175,27 @@ def _ensure_jobspy():
     except Exception as e:
         return None, f'jobspy not installed and auto-install failed ({e}); run: pip install python-jobspy'
 
+def _profile_location():
+    """Location string for jobspy when the configured LinkedIn URL carries none.
+
+    This used to be the literal 'Houston, Texas, United States' — the first user's city
+    baked into the code, so a second user's LinkedIn pass silently searched Houston.
+    It now comes from config/profile.json search.location (formatted_address, else the
+    user-entered `query`, else city+state). Falls back to '' — jobspy then runs an
+    unlocated nationwide search, which returns too much rather than the wrong city."""
+    try:
+        import profile_lib as pl
+        loc = ((pl.load_profile(clean=True) or {}).get('search') or {}).get('location') or {}
+        for k in ('formatted_address', 'query'):
+            v = str(loc.get(k) or '').strip()
+            if v:
+                return v
+        city, state = str(loc.get('city') or '').strip(), str(loc.get('state') or '').strip()
+        return ', '.join(p for p in (city, state) if p)
+    except Exception:
+        return ''
+
+
 def linkedin_via_jobspy(url_key, urls, extract):
     """Optional LinkedIn scrape via python-jobspy (auto-installed if missing).
     Reads search params from config linkedin_24h URL. Fail-soft: returns ([], reason)."""
@@ -185,7 +206,7 @@ def linkedin_via_jobspy(url_key, urls, extract):
     if not li: return [], 'linkedin_24h not in config/search_urls.json'
     q = urllib.parse.parse_qs(urllib.parse.urlparse(li).query)
     kw = (q.get('keywords') or [''])[0]
-    loc = (q.get('location') or ['Houston, Texas, United States'])[0]
+    loc = (q.get('location') or [_profile_location()])[0]
     try: dist = int((q.get('distance') or ['50'])[0])
     except Exception: dist = 50
     hours = 24 if url_key.endswith('24h') else 168

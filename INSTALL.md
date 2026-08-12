@@ -10,42 +10,32 @@ Installing takes about five minutes.
 
 ---
 
-## Before you start
-
-You need **Python 3.8 or newer**. That is the only requirement.
-
-**Check whether you already have it.**
-
-- **Windows** — press `Win + R`, type `cmd`, press Enter, then type:
-
-  ```
-  python --version
-  ```
-
-- **macOS** — open Terminal (press `Cmd + Space`, type "Terminal", press Enter), then type:
-
-  ```
-  python3 --version
-  ```
-
-If you see something like `Python 3.11.4`, you are ready. Skip to Step 1.
-
-If you see an error, or a version starting with `2.`, install Python from
-<https://www.python.org/downloads/>.
-
-> **Windows users — this part matters.** On the first screen of the Python installer,
-> tick the box that says **"Add python.exe to PATH"** before clicking Install. It is easy
-> to miss, and without it Top Rat cannot find Python.
-
----
-
 ## Step 1 — Download
 
-Download the project as a ZIP file and unzip it somewhere you will find again, such as
-your Documents folder.
+Go to the **Releases** page and download the file for your computer:
 
-Top Rat keeps all your data inside its own folder, so put it somewhere permanent — not
-in Downloads, where you might clear it out later.
+| Your computer | Download |
+|---|---|
+| Windows | `TopRat-<version>-windows-x64.zip` |
+| Mac (Apple silicon — M1 and later) | `TopRat-<version>-macos-arm64.zip` |
+| Mac (Intel) | `TopRat-<version>-macos-x64.zip` |
+
+Not sure which Mac you have? Click the Apple menu → **About This Mac**. If the Chip line
+says "Apple M-something", take the arm64 file.
+
+**These downloads include their own copy of Python, so you do not need to install
+anything else.** It is a private copy that lives inside the Top Rat folder, changes
+nothing on the rest of your computer, and is deleted with the folder.
+
+Unzip it somewhere permanent, such as your Documents folder. Top Rat keeps all your data
+inside its own folder, so avoid Downloads, where you might clear it out later.
+
+> **Only if you were given a source copy instead** (a `.zip` named `Source code`, or a
+> git clone): that version has no Python inside it, so you need **Python 3.8 or newer**
+> installed. Check with `python --version` (Windows) or `python3 --version` (macOS). If
+> it is missing, get it from <https://www.python.org/downloads/> — and on Windows, tick
+> **"Add python.exe to PATH"** on the installer's first screen. It is easy to miss, and
+> without it Top Rat cannot find Python.
 
 ---
 
@@ -56,7 +46,12 @@ in Downloads, where you might clear it out later.
 **macOS and Linux:** double-click **`Start Here.command`**
 
 A small black window opens and reports what it is doing. After a few seconds your board
-appears. That black window can be closed once the board is up.
+appears in its own window. That black window can be closed once the board is up.
+
+If you are using your own Python rather than the bundled copy, the launcher asks you once
+whether to set up the app window (a small download). Say no and the board opens in your
+normal browser instead — the same app, just a tab. You are not asked again; to change your
+mind, delete `config/app_window.answered` and start it again.
 
 That is the whole install. Everything below is optional.
 
@@ -104,6 +99,9 @@ sections you skip simply stay switched off.
 
 ## Optional extras
 
+**If you downloaded a Release zip, skip this section** — the app window and resume
+writing are already included. This is for source copies.
+
 Top Rat works without every one of these. Each unlocks one more feature, and the app
 tells you when something is missing rather than failing.
 
@@ -140,8 +138,10 @@ you never need the Start Here file again.
 ## If something goes wrong
 
 **Nothing happens when I double-click.**
-Python is probably not installed, or not on your PATH. Re-read "Before you start". On
-Windows, re-run the Python installer and tick "Add python.exe to PATH".
+If you downloaded a Release zip, check there is a `python` folder next to `Start Here.bat`
+— if it is missing, the unzip did not finish, so unzip it again. If you are running from a
+source copy, Python is probably not installed or not on your PATH; on Windows, re-run the
+Python installer and tick "Add python.exe to PATH".
 
 **The window flashes and disappears.**
 It should never do this — every error path is supposed to stop and tell you why. If it

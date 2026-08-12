@@ -43,7 +43,7 @@ def skeleton(summary_opener='Site reliability engineer',
              skills_line='Cloud - Azure, Kubernetes, Docker, Terraform tooling',
              n_bullets=2):
     d = docx.Document()
-    d.add_paragraph('Khoa Pham')
+    d.add_paragraph('Jane Doe')
     header(d, 'SUMMARY')
     d.add_paragraph(f'{summary_opener} with eight years of experience running '
                     'production platforms and cutting operational toil at scale.')
@@ -94,7 +94,7 @@ def main():
 
     # R07 required section missing (no TECHNICAL SKILLS)
     d = docx.Document()
-    d.add_paragraph('Khoa Pham')
+    d.add_paragraph('Jane Doe')
     header(d, 'SUMMARY')
     d.add_paragraph('Site reliability engineer with eight years of experience '
                     'running production platforms and cutting operational toil.')
@@ -110,7 +110,7 @@ def main():
 
     # R09 summary adopts the target job title (filename carries the role slug)
     save(skeleton(summary_opener='Data engineer'),
-         'Khoa_Pham_Resume_Acme_DataEngineer.docx')
+         'Jane_Doe_Resume_Acme_DataEngineer.docx')
 
     # R10 missing pdf twin — clean content, tested with check_pdf=True
     save(skeleton(), 'r10_missing_pdf.docx')

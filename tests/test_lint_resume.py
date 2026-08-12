@@ -40,7 +40,7 @@ def test_clean_passes():
     ('r06_banned_header.docx', 'R06'),
     ('r07_required_section.docx', 'R07'),
     ('r08_notes_leakage.docx', 'R08'),
-    ('Khoa_Pham_Resume_Acme_DataEngineer.docx', 'R09'),
+    ('Jane_Doe_Resume_Acme_DataEngineer.docx', 'R09'),
     ('r11_skills_format.docx', 'R11'),
     ('r12_trailing_group.docx', 'R12'),
 ])

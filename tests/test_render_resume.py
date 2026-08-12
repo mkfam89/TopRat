@@ -10,6 +10,7 @@ import re
 
 import pytest
 
+import pipelib
 import render_resume as rr
 
 # Every test here renders from resume_template/bullets.json — the user's own
@@ -18,9 +19,14 @@ import render_resume as rr
 # instead of 19 errors that look like a broken build but are missing data.
 pytestmark = pytest.mark.needs_userdata
 
+# Built from pipelib.resume_prefix() rather than spelled out: the prefix is the
+# owner's name, tests/ ships publicly, and release.py's PII gate blocks on it.
+# Reading it from the profile is also just more correct — this file only exists
+# on a machine whose profile produced that prefix in the first place.
 ALKAMI_DOCX = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "New", "Alkami", "Khoa_Pham_Resume_Alkami_PlatformSolutionEngineerMANTL.docx")
+    "New", "Alkami",
+    pipelib.resume_prefix() + "Alkami_PlatformSolutionEngineerMANTL.docx")
 
 
 @pytest.fixture(scope="module")
@@ -176,7 +182,8 @@ def test_render_passes_real_linter(bank, tmp_path):
     docx_path, pdf_path = rr.render(make_content(), bank,
                                     outdir=str(tmp_path), no_pdf=True)
     assert os.path.exists(docx_path) and pdf_path is None
-    assert os.path.basename(docx_path) == "Khoa_Pham_Resume_Globex_PlatformEngineer.docx"
+    assert os.path.basename(docx_path) == \
+        pipelib.resume_prefix() + "Globex_PlatformEngineer.docx"
 
 
 def test_pdf_step_monkeypatched(bank, tmp_path, monkeypatch):
@@ -256,3 +263,41 @@ def test_fidelity_against_alkami(bank, tmp_path):
     content = load_fixture("content_alkami.json")
     docx_path, _ = rr.render(content, bank, outdir=str(tmp_path), no_pdf=True)
     assert _body_stream(docx_path) == _body_stream(ALKAMI_DOCX)
+
+
+# --------------------------------------------------------------- header from template
+# The name + contact line used to be module constants holding the first user's real name,
+# home address and phone, so every other user's rendered resume carried his details. They
+# now come from the base resume in resume_template/ — the user owns the header; the app
+# only customizes what is already in their template.
+
+def test_header_falls_back_to_no_contact_not_someone_elses(bank, monkeypatch):
+    """No readable template = empty contact, and NO contact paragraph is emitted.
+
+    The point is the absence. A stale constant would print the previous owner's phone
+    number and home address onto a stranger's resume, and an empty centered paragraph
+    would just burn a line of vertical space."""
+    monkeypatch.setattr(rr, '_header_cache', ('Jane Doe', ''))
+    xml = build_xml(make_content(), bank)
+    assert 'Jane Doe' in xml
+    # Derived, not spelled out: naming the previous owner here would put the exact
+    # string release.py's PII gate blocks on into a shipped file. resume_prefix()
+    # is 'First_Last_Resume_', so token[0] is whoever this install belongs to.
+    owner = pipelib.resume_prefix().split('_')[0].lower()
+    assert owner not in xml.lower()
+    assert not re.search(r'\(\d{3}\)\s*\d{3}', xml), 'a phone number leaked into the header'
+
+
+def test_header_name_and_contact_come_from_the_template(bank, monkeypatch):
+    monkeypatch.setattr(rr, '_header_cache', ('Jane Doe', 'Austin, TX | jane@example.com'))
+    xml = build_xml(make_content(), bank)
+    assert 'Jane Doe' in xml and 'jane@example.com' in xml
+    # dc:creator is embedded metadata a recruiter can read in File > Properties
+    assert '<dc:creator>Jane Doe</dc:creator>' in rr._core_xml()
+
+
+def test_explicit_content_name_still_wins_over_the_template(bank, monkeypatch):
+    monkeypatch.setattr(rr, '_header_cache', ('Jane Doe', 'Austin, TX'))
+    xml = build_xml(make_content(name='Explicit Name', contact='explicit@example.com'), bank)
+    assert 'Explicit Name' in xml and 'explicit@example.com' in xml
+    assert 'Jane Doe' not in xml

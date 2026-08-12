@@ -26,7 +26,7 @@ from pipelib import CODE_CONFIG, USER_CONFIG, cfg, cfg_write
 def C(*p): return os.path.join(USER_CONFIG, *p)   # this user's config dir
 PROFILE = cfg_write('profile.json')              # ACTIVE profile — the single source the whole pipeline reads
 EXAMPLE = os.path.join(CODE_CONFIG, 'profile.example.json')   # template — ships WITH the code
-PROFILES_DIR = C('profiles')                     # per-user named copies (khoa_pham_profile.json, ...)
+PROFILES_DIR = C('profiles')                     # per-user named copies (jane_doe_profile.json, ...)
 
 # ---------------------------------------------------------------- profile I/O
 def _strip_notes(obj):
@@ -71,7 +71,7 @@ def _rotate_backups(path, keep=2):
 #   collision       -> the caller (wizard) prompts the user for a name
 #   final fallback  = "<first>_<last>_profile<####>.json" (random 4-digit, guaranteed free)
 def name_slug(full_name):
-    """'Khoa Pham' -> 'khoa_pham'. Uses first + last alnum tokens; 'user' if empty."""
+    """'Jane Doe' -> 'jane_doe'. Uses first + last alnum tokens; 'user' if empty."""
     toks = [re.sub(r'[^a-z0-9]', '', t.lower()) for t in (full_name or '').split()]
     toks = [t for t in toks if t]
     if not toks:
@@ -83,7 +83,7 @@ def profile_filename(full_name):
     return f'{name_slug(full_name)}_profile.json'
 
 def initials(full_name):
-    """'Khoa Pham' -> 'KP'; 'khoa' -> 'K'; '' -> ''. First + last token only, so a
+    """'Jane Doe' -> 'JD'; 'jane' -> 'J'; '' -> ''. First + last token only, so a
     middle name does not turn the data folder into user_data_KABP. Names the
     self-contained data folder (pipelib.suggest_user_data_dirname) and the folder
     suggestion the setup wizard shows once the user types their name.

@@ -61,7 +61,49 @@ if [ -z "$PY" ]; then
     fail
 fi
 
-# ---- 2. start the dashboard and show it ------------------------------------
+# ---- 2. offer the app window, once ----------------------------------------
+# Only for someone running their OWN Python; a bundled python/ already has
+# pywebview. We ask instead of installing silently, and ask at most once - the
+# marker is written whatever the answer, so "no" stays no. Nothing in this block
+# may prevent the app from starting: a failed install is reported and ignored,
+# never propagated, because app.py opens the browser instead and loses nothing.
+if [ ! -x "./python/bin/python3" ] &&
+   [ ! -f "./config/app_window.answered" ] &&
+   ! "$PY" -c 'import webview' >/dev/null 2>&1; then
+    echo
+    echo "  One-time question: this app can open in its own window instead of a"
+    echo "  browser tab. That needs an extra download from the Python package"
+    echo "  index (a few MB on Linux; more on macOS, which pulls in pyobjc)."
+    echo "  Everything works either way - the browser is not a lesser version"
+    echo "  of the app, it is just a tab."
+    echo
+    printf "  Set up the app window? [y/N] "
+    read -r ans
+    mkdir -p ./config 2>/dev/null
+    echo asked > ./config/app_window.answered
+    case "$ans" in
+        [Yy]*)
+            echo
+            echo "  Installing... (this happens only once)"
+            if "$PY" -m pip install --quiet --disable-pip-version-check pywebview &&
+               "$PY" -c 'import webview' >/dev/null 2>&1; then
+                echo "  Done - the app will open in its own window."
+            else
+                echo
+                echo "  That did not work - no harm done, the app opens in your browser."
+                echo "  Usual causes: no internet right now, or a system Python that"
+                echo "  refuses installs (macOS/Homebrew). The app is unaffected."
+            fi
+            ;;
+        *)
+            echo "  Fine - opening in your browser. To change your mind later, delete"
+            echo "  config/app_window.answered and run this file again."
+            ;;
+    esac
+    echo
+fi
+
+# ---- 3. start the dashboard and show it ------------------------------------
 echo "  Starting the dashboard..."
 if ! "$PY" app.py; then
     echo

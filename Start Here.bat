@@ -37,7 +37,16 @@ REM Verify whatever we found actually runs (Store stub / broken install guard).
 "%PY%" -c "import sys; sys.exit(0 if sys.version_info >= (3,8) else 1)" >nul 2>&1
 if errorlevel 1 goto nopython
 
-REM ---- 2. start the dashboard and show it ------------------------------------
+REM ---- 2. offer the app window, once ----------------------------------------
+REM Only relevant for someone running their OWN Python: the shipped bundle
+REM already has pywebview (see tools\Make Portable Python.bat), so this is
+REM skipped entirely there. We ASK rather than install silently - a first launch
+REM that quietly downloads is what antivirus and corporate proxies punish, and a
+REM silent failure leaves the user with no idea why there is no window. Asked at
+REM most once: the marker is written whatever the answer, so "no" stays no.
+call :offer_window
+
+REM ---- 3. start the dashboard and show it ------------------------------------
 REM app.py does the three steps this file used to do by hand (start if down, find
 REM the port, open the board) and additionally shows a real app window when the
 REM optional pywebview package is present. With pywebview absent it opens the
@@ -58,6 +67,44 @@ exit /b 0
 REM ---------------------------------------------------------------- helpers --
 :try
 where %1 >nul 2>&1 && set "PY=%1"
+exit /b 0
+
+:offer_window
+REM Every path here exits 0. Nothing in this routine may stop the app starting.
+if exist "%~dp0python\python.exe" exit /b 0
+if exist "%~dp0config\app_window.answered" exit /b 0
+"%PY%" -c "import webview" >nul 2>&1 && exit /b 0
+echo(
+echo   One-time question: this app can open in its own window instead of a
+echo   browser tab. That needs a small extra download (about 5 MB, from the
+echo   Python package index). Everything works either way - the browser is
+echo   not a lesser version, it is just a tab.
+echo(
+choice /c YN /m "   Set up the app window"
+REM Capture the answer IMMEDIATELY. Every command below - even a successful
+REM echo - resets errorlevel, so reading it later would read the wrong thing.
+set "ANS=%errorlevel%"
+REM Marker whatever the answer: a "no" that gets asked again every launch is
+REM worse than never having offered.
+if not exist "%~dp0config" mkdir "%~dp0config" 2>nul
+>"%~dp0config\app_window.answered" echo asked
+if "%ANS%"=="2" (
+  echo   Fine - opening in your browser. To change your mind later, delete
+  echo   config\app_window.answered and run this file again.
+  echo(
+  exit /b 0
+)
+echo(
+echo   Installing... (this happens only once)
+"%PY%" -m pip install --quiet --disable-pip-version-check pywebview
+if errorlevel 1 (
+  echo(
+  echo   That did not work - no harm done, the app opens in your browser.
+  echo   Usually it means no internet connection right now.
+) else (
+  "%PY%" -c "import webview" >nul 2>&1 && echo   Done - the app will open in its own window.
+)
+echo(
 exit /b 0
 
 :nopython

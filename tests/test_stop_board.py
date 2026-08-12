@@ -16,7 +16,7 @@ import stop_board as sb
 @pytest.mark.parametrize('cmd', [
     'python src/web/dashboard_server.py',
     'python3 /home/k/app/src/web/dashboard_server.py --no-browser',
-    r'C:\Python312\pythonw.exe C:\Users\k\app\src\web\dashboard_server.py --port 8765',
+    r'C:\Python312\pythonw.exe C:\Users\you\app\src\web\dashboard_server.py --port 8765',
     r'"C:\Program Files\Python312\python.exe" "C:\a b\src\web\dashboard_server.py"',
     'python -u -X dev src/web/dashboard_server.py',
     './dashboard_server.py',
@@ -77,12 +77,53 @@ def test_protected_pids_with_no_process_table():
 
 # ---- port resolution --------------------------------------------------------
 
-def test_resolve_port_prefers_env(monkeypatch):
+def test_resolve_port_prefers_env(monkeypatch, tmp_path):
+    """The env port wins — including while a board is running on a different one.
+
+    `resolve_port` falls back to config/runtime.json when the wanted port is not
+    listening, so with only the env var set this asserted against the real machine:
+    it passed with the dashboard stopped and failed with it up (env 9123 is dead,
+    runtime.json names 8766, 8766 answers). Pin HERE and is_up so no live socket
+    and no real config can reach in — the suite promises no network.
+    """
+    monkeypatch.delenv('TOP_RAT_PORT', raising=False)
     monkeypatch.setenv('JOB_AGENT_PORT', '9123')
+    monkeypatch.setattr(sb, 'HERE', str(tmp_path))          # no runtime.json here
+    monkeypatch.setattr(sb, 'is_up', lambda *a, **k: False)
+    assert sb.resolve_port() == 9123
+
+
+def test_resolve_port_falls_back_to_runtime_record(monkeypatch, tmp_path):
+    """Where the server ACTUALLY went beats where it was told to go — if it answers.
+
+    This is the branch that made the test above machine-dependent, so pin it
+    deliberately instead of leaving it to be rediscovered.
+    """
+    cfg = tmp_path / 'config'
+    cfg.mkdir()
+    (cfg / 'runtime.json').write_text('{"port": 8766}', encoding='utf-8')
+    monkeypatch.delenv('TOP_RAT_PORT', raising=False)
+    monkeypatch.setenv('JOB_AGENT_PORT', '9123')
+    monkeypatch.setattr(sb, 'HERE', str(tmp_path))
+    monkeypatch.setattr(sb, 'is_up', lambda port, **k: port == 8766)
+    assert sb.resolve_port() == 8766
+
+
+def test_resolve_port_ignores_a_stale_runtime_record(monkeypatch, tmp_path):
+    """A crashed run leaves runtime.json behind; it must not aim us at a dead port."""
+    cfg = tmp_path / 'config'
+    cfg.mkdir()
+    (cfg / 'runtime.json').write_text('{"port": 8766}', encoding='utf-8')
+    monkeypatch.delenv('TOP_RAT_PORT', raising=False)
+    monkeypatch.setenv('JOB_AGENT_PORT', '9123')
+    monkeypatch.setattr(sb, 'HERE', str(tmp_path))
+    monkeypatch.setattr(sb, 'is_up', lambda *a, **k: False)
     assert sb.resolve_port() == 9123
 
 
 def test_resolve_port_falls_back_to_default(monkeypatch, tmp_path):
+    monkeypatch.delenv('TOP_RAT_PORT', raising=False)
     monkeypatch.delenv('JOB_AGENT_PORT', raising=False)
     monkeypatch.setattr(sb, 'HERE', str(tmp_path))     # no instance.json here
+    monkeypatch.setattr(sb, 'is_up', lambda *a, **k: False)
     assert sb.resolve_port() == sb.DEFAULT_PORT

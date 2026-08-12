@@ -80,10 +80,10 @@ def _env(suffix, default=''):
     return default
 
 
-def resolve_port():
+def wanted_port():
     """$TOP_RAT_PORT > config/instance.json "port" > 8765.
 
-    Same order as dashboard_server.resolve_port() and watchdog.resolve_port(), minus the
+    Same order as dashboard_server.resolve_port() and watchdog.wanted_port(), minus the
     --port argv form. A mismatch here would have us probing a socket nobody is on and
     reporting a stopped board that is still running.
     """
@@ -97,6 +97,25 @@ def resolve_port():
         return int(inst.get('port'))
     except (TypeError, ValueError):
         return DEFAULT_PORT
+
+
+def resolve_port():
+    """The port to act on: the configured one, or where the server actually went.
+
+    config/runtime.json is written by the running server, which may have moved off the
+    configured port because something foreign held it. Stopping the board means stopping the
+    one that is running. The configured port is still checked first, so an explicit
+    $TOP_RAT_PORT aims this where the operator pointed it; the record is a fallback, and
+    only when the port it names is listening — a stale file from a crashed run must not
+    point us at a port nobody is on.
+    """
+    want = wanted_port()
+    if is_up(want):
+        return want
+    rt = _read_json(os.path.join(HERE, 'config', 'runtime.json')).get('port')
+    if isinstance(rt, int) and rt != want and is_up(rt):
+        return rt
+    return want
 
 
 def is_up(port, timeout=1.0):

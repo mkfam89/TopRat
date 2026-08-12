@@ -70,7 +70,7 @@ def _env(suffix, default=''):
     return default
 
 
-def resolve_port():
+def wanted_port():
     """Same order dashboard_server.resolve_port uses, minus the --port argv form.
 
     $TOP_RAT_PORT  >  config/instance.json "port"  >  8765. Keep this in step with
@@ -85,6 +85,29 @@ def resolve_port():
         return int(p)
     except (TypeError, ValueError):
         return DEFAULT_PORT
+
+
+def resolve_port():
+    """The port to PROBE: the configured one, or where the server actually went.
+
+    The server may bind a different port than the config names — if something foreign holds
+    8765 it moves to 8766 and records that in config/runtime.json. This function is the
+    reason that file exists: probing the configured port alone would find nothing, declare
+    the board down, and start a second server on every single tick.
+
+    Precedence is deliberate. The configured port (env > instance.json > 8765) is checked
+    FIRST and wins whenever something is on it, so an explicit $TOP_RAT_PORT still aims the
+    watchdog where the operator pointed it. Only when that port is silent do we consult the
+    record — and only if the port it names is listening, since a crash leaves the file
+    behind and a stale number must not hide a genuinely stopped board.
+    """
+    want = wanted_port()
+    if is_up(want):
+        return want
+    rt = _read_json(os.path.join(HERE, 'config', 'runtime.json')).get('port')
+    if isinstance(rt, int) and rt != want and is_up(rt):
+        return rt
+    return want
 
 
 def is_up(port, timeout=1.5):

@@ -26,8 +26,11 @@
   button.primary:hover { background:var(--accent-hover); border-color:var(--accent-hover); }
   button:disabled { opacity:.55; cursor:default; }
   main { max-width:820px; margin:0 auto; padding:22px 22px 80px; }
-  .banner { background:var(--amber-soft); border:1px solid var(--amber-line); color:var(--amber-ink);
-            padding:11px 14px; border-radius:var(--r-md); margin-bottom:16px; display:none; }
+  /* .banner is gone. This page carried four of them (missed runs, the chip's why-explainer,
+     the paused searches, the watchdog being off); they are one list in the nav chip's bubble
+     now — see dashboard_server.SCHED_PILL_JS and .ui-sched-pop in ui.css. Do not add a warning
+     banner back here: a warning that only appears on the page you visit BECAUSE something is
+     wrong arrives too late to be a warning. */
   .card { background:var(--card); border:1px solid var(--line); border-radius:var(--r-lg);
           padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow-sm); }
   .card.disabled { opacity:.62; }
@@ -39,11 +42,9 @@
   .badge.miss { background:var(--amber-soft); color:var(--amber-ink); border:1px solid var(--amber-line); }
   .badge.err { background:var(--red-soft); color:var(--red-ink); border:1px solid var(--red-line); }
   /* A missed run is a nudge; a failed or stuck run is a problem. They shared the red badge,
-     so the two read as equally alarming. Missed is amber now, red is kept for real failures. */
-  .banner.bad { background:var(--red-soft); border-color:var(--red-line); color:var(--red-ink); }
-  .banner code { background:rgba(0,0,0,.06); padding:1px 5px; border-radius:4px; }
+     so the two read as equally alarming. Missed is amber, red is kept for real failures. */
   /* The card the nav chip pointed at. Without this the user arrives at a page of six
-     near-identical cards and has to work out which one the banner is about. */
+     near-identical cards and has to work out which one the bubble was about. */
   .card.spotlight { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
   /* Plain-language summary of the task, from the "description" field of the schedule config.
      The label alone does not tell a new user what the task changes on their computer. */
@@ -134,18 +135,19 @@
   <button class="primary" id="save">Save changes</button>
 </header>
 <main>
-  <div class="banner" id="whyBanner"></div>
-  <div class="banner" id="missBanner"></div>
+  <!-- NO BANNERS ON THIS PAGE. It used to open with four of them — missed runs, a "why did the
+       chip send me here" explainer, the paused searches, and the watchdog being off — stacked
+       above the settings the user actually came to change. Every one of those messages now
+       lives in the "Scheduled tasks" bubble in the nav, top right, which is visible from every
+       page instead of only this one. This page is the SETTINGS: times, switches, limits. The
+       per-card badges stay (they label the card they sit on); warnings do not come back here.
+       See dashboard_server.SCHED_PILL_JS. -->
   <!-- The autostart sentence that used to end this paragraph moved into the card below,
        where the switch is. Saying it twice on one screen only made the page longer. -->
   <p class="sub">These tasks run by themselves while this dashboard is open. If the app was closed at a
     scheduled time, the app skips that run. It then shows the run as <b>Missed</b>, with a
-    <b>Run now</b> button. The switch below is what keeps the app open for you.</p>
-  <!-- Why the searches are not running. Shown ONLY while the cap is actually holding them
-       back, so it is never a standing piece of furniture. It lives above the watchdog card
-       because "the searches are paused" outranks "keep the app open" — a user who comes here
-       asking why nothing was found needs the answer before the settings. -->
-  <div class="banner" id="blBanner"></div>
+    <b>Run now</b> button. The switch below is what keeps the app open for you.
+    Anything needing attention is counted in <b>Scheduled tasks</b> at the top right of any page.</p>
   <div class="card" id="blCard">
     <div class="top">
       <span class="name">Pause the searches when the board fills up</span>
@@ -166,7 +168,6 @@
     </div>
     <div class="meta" id="blMsg"></div>
   </div>
-  <div class="banner" id="wdWarn"></div>
   <div class="card" id="wdCard">
     <div class="top">
       <label class="switch"><input type="checkbox" id="wdToggle"> </label>
@@ -250,11 +251,10 @@ function fmtWhen(iso){ if(!iso) return "never"; const dt=new Date(iso);
 function render(){
   document.getElementById('clock').textContent = 'Server time: ' + fmtWhen(STATUS.now);
   const jobs = CONFIG.jobs || {}, st = STATUS.jobs || {};
-  const banner = document.getElementById('missBanner');
-  showMissed(st, banner);
-  setTimeout(()=>{ showWhy(st);
+  setTimeout(()=>{ spotlightWhy(st);
     const c = document.querySelector('#jobs .card.spotlight');
-    if(c) c.scrollIntoView({block:'center', behavior:'smooth'}); }, 0);
+    if(c) c.scrollIntoView({block:'center', behavior:'smooth'});
+    if(location.hash === '#watchdog') showWatchdogCard(); }, 0);
 
   const host = document.getElementById('jobs'); host.innerHTML='';
   // One <details> per group, built up front so a card can be appended straight into its body.
@@ -350,16 +350,6 @@ function render(){
   }));
 }
 
-// The app was closed at these run times, so the app did not run them. One function, because
-// the full render and the 4-second status refresh both show this banner.
-function showMissed(st, banner){
-  const missed = Object.entries(st).filter(([k,v])=>v.missed).map(([k,v])=>v.label||k);
-  if(!missed.length){ banner.style.display='none'; return; }
-  banner.style.display='block';
-  banner.innerHTML = '⚠ The app was closed at these run times. The app did not run them: <b>'
-    + missed.join(', ') + '</b>. Click “Run now” on each one.';
-}
-
 // A job with no group, or one naming a group this page does not know, still has to appear.
 function groupOf(job){ const g = job.group || 'other';
   return GROUPS.some(x => x.key === g) ? g : 'other'; }
@@ -369,8 +359,8 @@ function groupOf(job){ const g = job.group || 'other';
 // nav chip's job — top right, on every page, one readout. Repeating it per section meant the
 // same fact in three places on this page alone, and two of them could disagree with the third
 // for up to a poll interval. A section that has something wrong still OPENS itself (see
-// render/refreshStatus), so a problem is never hidden — its card carries the badge and the
-// banner explains it.
+// render/refreshStatus), so a problem is never hidden — its card carries the badge, and the
+// nav chip's bubble carries the explanation and the button.
 function groupPills(names, st, jobs){
   const on = names.filter(n => jobs[n] && jobs[n].enabled).length;
   return on ? `<span class="pill on">${on} of ${names.length} on</span>`
@@ -387,57 +377,19 @@ function badgesHtml(s){
   + (s.pausedByBacklog?'<span class="badge miss" title="The board is full. This task starts again by itself once you clear some postings.">paused — board full</span>':'')
   + (s.missed?'<span class="badge miss">missed</span>':''); }
 
-// ---- "what happened, and what to do about it" ----
-// The nav chip links here with ?job=&why=, because a red chip that drops the user on a list
-// of six identical cards has only told them something is wrong, not which thing or what to do.
-// Each case names the job, says in plain words what the state means, and ends with the one
-// action that helps. Kept here (not in the chip's tooltip) because it needs the Run button.
-const WHY = {
-  stuck: s => ({ head: 'This run may be stuck.',
-    body: '<b>' + s.label + '</b> has been running for ' + Math.round((s.elapsedSec||0)/60)
-        + ' minutes. It normally finishes in about ' + Math.round(s.lastDurationSec||0)
-        + ' seconds. Nothing was cancelled — a slow network can look the same — but it has run '
-        + 'far longer than usual. A step gives up on its own after 30 minutes. If it is still '
-        + 'here after that, close the dashboard and open it again, then run the task.' }),
-  failed: s => ({ head: 'The last run did not finish.',
-    body: '<b>' + s.label + '</b> stopped with: <code>' + esc(s.lastResult) + '</code>. '
-        + (String(s.lastResult||'').indexOf('interrupted') === 0
-           ? 'The dashboard was closed while the task was still working, so it never finished. '
-           : 'The step that failed is named in the message. The full output is in '
-             + '<code>schedule_log.txt</code>. ')
-        + 'Nothing is broken permanently — run it again below.' }),
-  missed: s => ({ head: 'This run was skipped.',
-    body: '<b>' + s.label + '</b> was due while the dashboard was closed, and the app never '
-        + 'runs a missed task on its own — it would fire the moment you opened the app, which '
-        + 'is rarely what you want. Run it now, or leave it and let the next scheduled run '
-        + 'pick it up.' }),
-  running: s => ({ head: 'This task is running now.',
-    body: '<b>' + s.label + '</b> started ' + Math.round((s.elapsedSec||0)) + ' seconds ago. '
-        + 'Only one task runs at a time, so the others wait until it finishes.' })
-};
+// ---- arriving from the nav chip ----
+// The chip's bubble already SAID what is wrong and offered the Run-now button — that whole
+// explanation used to be a banner here (whyBanner), which meant the user read the problem in
+// the bubble and then read it again on arrival. A modifier-click on the chip still lands here
+// with ?job=, and the only thing left for this page to do is point at the right card: open its
+// group and ring it, so the settings the user came to change are under the cursor.
+let WHY_JOB = null;
+(function(){ const q = new URLSearchParams(location.search); WHY_JOB = q.get('job'); })();
 
-// Read ?job=&why= once on arrival, explain that state, and mark the card so the eye lands on
-// the right one. Cleared as soon as the state no longer holds, so the banner cannot go stale.
-let WHY_JOB = null, WHY_KIND = null;
-(function(){ const q = new URLSearchParams(location.search);
-  WHY_JOB = q.get('job'); WHY_KIND = q.get('why'); })();
-
-function showWhy(st){
-  const el = document.getElementById('whyBanner');
+function spotlightWhy(st){
   const s = WHY_JOB && st[WHY_JOB];
-  const still = s && ((WHY_KIND === 'stuck' && s.stuck) || (WHY_KIND === 'failed' && s.failed)
-                   || (WHY_KIND === 'missed' && s.missed) || (WHY_KIND === 'running' && s.running));
-  if(!still || !WHY[WHY_KIND]){ el.style.display = 'none'; return; }
-  const w = WHY[WHY_KIND](Object.assign({label: s.label || WHY_JOB}, s));
-  el.className = 'banner ' + ((WHY_KIND === 'stuck' || WHY_KIND === 'failed') ? 'bad' : '');
-  el.style.display = 'block';
-  el.innerHTML = '<b>' + w.head + '</b><br>' + w.body
-    + (WHY_KIND === 'running' ? ''
-       : '<div style="margin-top:10px"><button class="primary" id="whyRun">Run it now</button></div>');
-  const b = document.getElementById('whyRun');
-  if(b) b.onclick = () => runNow(WHY_JOB);
   document.querySelectorAll('#jobs .card').forEach(c =>
-    c.classList.toggle('spotlight', c.dataset.name === WHY_JOB));
+    c.classList.toggle('spotlight', !!s && c.dataset.name === WHY_JOB));
 }
 // A task that is off still has a next trigger time, but the scheduler skips it. Show "off"
 // instead of that time. If not, the card reads as if the task runs.
@@ -457,8 +409,6 @@ async function refreshStatus(){
     STATUS = d.status;
     document.getElementById('clock').textContent = 'Server time: ' + fmtWhen(STATUS.now);
     const st = STATUS.jobs || {};
-    showMissed(st, document.getElementById('missBanner'));
-    showWhy(st);        // clears itself once the problem it describes is resolved
     document.querySelectorAll('#jobs .card').forEach(card=>{
       const s = st[card.dataset.name]; if(!s) return;
       card.querySelector('.badges').innerHTML = badgesHtml(s);
@@ -514,15 +464,10 @@ async function save(){
 
 async function runNow(name){
   toast(name+' starts now…');
-  // Parity with the board and the nav popover: running a SEARCH by hand re-raises the "the
-  // searches are paused" message. This page never hides its own banner and its bubble is not
-  // dismissable, so pointing at it is the whole job. (The board needs nothing from here — a
-  // dismiss there lasts one page load, and coming back is a new one.)
-  const grp = ((((CONFIG||{}).jobs)||{})[name]||{}).group;
-  if(grp === 'search'){
-    const ban = document.getElementById('blBanner');
-    if(ban && ban.style.display === 'block') ban.scrollIntoView({block:'start', behavior:'smooth'});
-  }
+  // Running a SEARCH by hand while the cap is holding the searches back used to scroll this
+  // page's paused banner into view. The banner is gone; the pause is reported by the nav chip's
+  // bubble, which is on screen already and needs no scrolling to. The card's own "paused —
+  // board full" badge still says it too, right where the button was pressed.
   try{
     const r = await fetch('/api/run', {method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({job:name})});
@@ -546,26 +491,18 @@ async function loadBacklog(){
   renderBacklog();
 }
 function renderBacklog(){
-  const b = BL || {}, ban = document.getElementById('blBanner');
+  const b = BL || {};
   document.getElementById('blBadge').innerHTML = !b.enabled
     ? '<span class="badge miss">no limit</span>'
     : (b.paused ? '<span class="badge miss">paused</span>'
                 : '<span class="badge run">' + b.count + ' of ' + b.cap + '</span>');
+  // The card states the COUNT, because the number is what the limit above it is set against.
+  // The consequence of that number — "the searching tasks are paused, go clear some" — is a
+  // warning, so it belongs in the nav chip's bubble with the others, not in a banner here.
   document.getElementById('blMsg').textContent = b.enabled
-    ? (b.count + (b.count===1 ? ' posting is' : ' postings are') + ' waiting on a decision.')
+    ? (b.count + (b.count===1 ? ' posting is' : ' postings are') + ' waiting on a decision.'
+       + (b.paused ? ' The searching tasks are holding off until this drops below ' + b.cap + '.' : ''))
     : 'No limit is set. The searches run however full the board gets.';
-  if(b.paused){
-    ban.style.display = 'block';
-    // Says WHICH tasks stopped and WHERE to fix it. A banner that only announced a pause would
-    // send the user hunting through the cards below for a task that looks switched off — and
-    // none of them is: the pause is computed, not stored.
-    ban.innerHTML = '⏸ <b>The searching tasks are paused.</b> ' + b.count + ' postings are waiting '
-      + 'on a decision and the limit is ' + b.cap + '. The tasks under <b>Finding jobs</b> stay '
-      + 'switched on and start again by themselves once the count drops below ' + b.cap + '. '
-      + '<a href="/">Open the board</a> to skip or delete them, or raise the limit here.';
-  } else {
-    ban.style.display = 'none';
-  }
 }
 document.getElementById('blCap').addEventListener('change', async function(){
   const v = Math.max(0, parseInt(this.value, 10) || 0);
@@ -595,15 +532,15 @@ function renderWatchdog(s){
   const ev = document.getElementById('wdEvery'), pz = document.getElementById('wdPause');
   if(s.everyMin) ev.value = String(s.everyMin);
   ev.disabled = pz.disabled = !s.supported || !s.desired;
-  let badge='', warn='';
-  if(!s.supported){ badge='<span class="badge miss">unsupported OS</span>';
-    warn='The watchdog needs the Windows Task Scheduler. On this operating system, the schedule runs only while the dashboard is open.'; }
+  // Badge only. The warning that used to sit above this card — "the watchdog is OFF, nothing
+  // restarts the dashboard" — is in the nav chip's bubble now, next to the missed runs it
+  // causes, with the same Turn-it-on button. The badge still labels the switch it sits beside.
+  let badge='';
+  if(!s.supported){ badge='<span class="badge miss">unsupported OS</span>'; }
   else if(s.pauseMin){ badge='<span class="badge miss">paused '+s.pauseMin+' min</span>'; }
   else if(on){ badge='<span class="badge run">on</span>'; }
-  else if(s.desired && !s.enabled){ badge='<span class="badge miss">not enabled</span>';
-    warn='⚠ The watchdog did not turn on'+(s.error?': '+s.error:'')+'. Nothing restarts the dashboard if it stops.'; }
-  else { badge='<span class="badge miss">off</span>';
-    warn='⚠ The watchdog is OFF. The schedule runs only while this dashboard window is open. Turn it on, and Windows starts the dashboard again — minimized — whenever it is not running.'; }
+  else if(s.desired && !s.enabled){ badge='<span class="badge miss">not enabled</span>'; }
+  else { badge='<span class="badge miss">off</span>'; }
   document.getElementById('wdBadge').innerHTML = badge;
   let msg = '';
   if(s.supported && on){
@@ -612,8 +549,18 @@ function renderWatchdog(s){
     if(s.pauseMin) msg += ' Paused for '+s.pauseMin+' more minutes — the dashboard stays closed if you close it.';
   }
   document.getElementById('wdMsg').textContent = msg;
-  const w = document.getElementById('wdWarn');
-  w.style.display = warn ? 'block' : 'none'; w.innerHTML = warn;
+}
+// The nav bubble's "Show me the setting" sends the user here with #watchdog, for the reader who
+// would rather see the switch than have a bubble flip it: scroll to the card, ring it the same
+// way an arrival from the chip does, and put the keyboard on the switch. The ring is removed
+// afterwards so it does not become permanent furniture.
+function showWatchdogCard(){
+  const c = document.getElementById('wdCard'); if(!c) return;
+  c.scrollIntoView({block:'center', behavior:'smooth'});
+  c.classList.add('spotlight');
+  const t = document.getElementById('wdToggle');
+  if(t && !t.disabled) t.focus({preventScroll:true});
+  setTimeout(()=>c.classList.remove('spotlight'), 3000);
 }
 async function postWatchdog(payload, okMsg){
   const t = document.getElementById('wdToggle'); t.disabled = true;

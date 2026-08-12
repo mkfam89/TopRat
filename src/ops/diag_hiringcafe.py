@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """diag_hiringcafe.py - one-off diagnostic for the hiring.cafe scraper failure.
-Runs on Khoa's PC. Tests BOTH domains (hiring.cafe and hiringcafe.com):
+Runs on the user's PC. Tests BOTH domains (hiring.cafe and hiringcafe.com):
   1) homepage fetch: status, final URL after redirects, buildId found?
   2) the _next/data/<buildId>/index.json route: status + first 300 chars of body
 Prints everything so we can see whether it's a domain move, a Cloudflare/HTML

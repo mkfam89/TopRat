@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """salary_probe.py — per-job salary discovery. NO browser, NO LLM, stdlib only.
 
-Runs on Khoa's machine (Task Scheduler / scheduler.py) AFTER scrape.py and BEFORE the
+Runs on the user's machine (Task Scheduler / scheduler.py) AFTER scrape.py and BEFORE the
 Claude tailoring runs, so a real salary is already on disk by the time a resume is built.
 Costs zero Claude tokens: the resolution happens here, not in the model.
 

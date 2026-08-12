@@ -14,12 +14,40 @@ import os, sys, subprocess, datetime, time, csv
 
 HERE = _paths.ROOT
 # Remote + identity load from git-ignored config/git.json (template committed as
-# config/git.json.example), so a shared or handed-off copy carries no account
-# details. The constants below are only the fallback for a copy that has no
-# git.json yet — they are what this repo used before the file existed.
-DEFAULT_REMOTE = 'git@github.com:mkfam89/job_agent.git'   # or https://github.com/mkfam89/job_agent.git for HTTPS
-DEFAULT_NAME = 'Khoa Pham'
-DEFAULT_EMAIL = 'im.khoalified@gmail.com'
+# config/git.json.example), so a shared or handed-off copy carries no account details.
+#
+# There are deliberately NO hardcoded defaults any more. This file used to fall back to
+# the first user's real name, email and GitHub remote, so a handed-off copy with no
+# git.json committed as him and tried to push to his repository. Everything now resolves
+# git.json -> profile.json `git` block -> EMPTY, and every consumer treats empty as
+# "not configured" and skips that step (see main()):
+#   no remote -> no origin is added and nothing is pushed (profile.example already
+#                documents a blank remote as "leave blank to skip pushing")
+#   no name/email -> git config is left alone, so the user's own global identity is
+#                used, which is what git does for every other repo on their machine
+# The commit itself still happens with no configuration at all — the zero-token script
+# path keeps working, it just stays local.
+
+
+def _profile_git():
+    """NAME + EMAIL only, from the `git` block of config/profile.json.
+
+    Covers the narrow case of a profile that was filled in but never regenerated into
+    config/git.json. It is the same source profile_lib regenerates git.json from, so it
+    is not a competing source of truth.
+
+    **`remote` is deliberately dropped here.** profile.json is resolved through the DATA
+    root, and `<data>/config/profile.json` describes the DATA repo — on this very install
+    its git.remote is `...job_agent_profile_KP.git`. Honouring it would add an origin
+    pointing at the profile repo and push the CODE into it, which is exactly the hazard
+    git_identity()'s docstring exists to prevent. A remote comes from the code-side
+    config/git.json or from nowhere."""
+    try:
+        import profile_lib as pl
+        g = (pl.load_profile(clean=True) or {}).get('git') or {}
+        return {k: v for k, v in g.items() if k in ('name', 'email', 'user_name', 'user_email')}
+    except Exception:
+        return {}
 
 
 def git_identity():
@@ -35,8 +63,8 @@ def git_identity():
     config/git.json.example documented `user_name`/`user_email`. Both are honoured
     so neither an old nor a new file is silently ignored.
 
-    Never raises: a missing or malformed file just means the fallbacks apply, which
-    are the values this repo used before the file existed.
+    Never raises: a missing or malformed file just falls through to the profile block
+    and then to empty strings, which main() reads as "not configured".
     """
     conf = {}
     try:
@@ -44,17 +72,17 @@ def git_identity():
         conf = _read_json_quiet(os.path.join(CODE_CONFIG, 'git.json')) or {}
     except Exception:
         pass
+    prof = _profile_git()
 
     def pick(*keys):
-        for k in keys:
-            v = str(conf.get(k) or '').strip()
-            if v:
-                return v
+        for src in (conf, prof):
+            for k in keys:
+                v = str(src.get(k) or '').strip()
+                if v:
+                    return v
         return ''
 
-    return (pick('remote') or DEFAULT_REMOTE,
-            pick('name', 'user_name') or DEFAULT_NAME,
-            pick('email', 'user_email') or DEFAULT_EMAIL)
+    return pick('remote'), pick('name', 'user_name'), pick('email', 'user_email')
 
 def job_counts():
     """Minimal job-count tag, applied|pending|skipped order, e.g. 'a|p|s 13|44|3'."""
@@ -126,13 +154,17 @@ def main():
         print('Initializing repository...')
         git('init'); git('branch', '-M', 'master')
     remote, name, email = git_identity()
-    # remote
-    if git('remote', 'get-url', 'origin').returncode != 0:
+    # remote — only if one is configured. An unconfigured copy keeps its commits local
+    # rather than being wired to somebody else's repository.
+    has_origin = git('remote', 'get-url', 'origin').returncode == 0
+    if not has_origin and remote:
         git('remote', 'add', 'origin', remote)
-    # identity (only if unset)
-    if not git('config', 'user.email').stdout.strip():
+        has_origin = True
+    # identity (only if unset here AND configured; otherwise the machine's global
+    # git identity applies, which is the right default for an unconfigured copy)
+    if email and not git('config', 'user.email').stdout.strip():
         git('config', 'user.email', email)
-    if not git('config', 'user.name').stdout.strip():
+    if name and not git('config', 'user.name').stdout.strip():
         git('config', 'user.name', name)
     branch = 'work/' + datetime.date.today().isoformat()
     git('checkout', '-B', branch)
@@ -147,13 +179,21 @@ def main():
         msg = commit_message(custom)
         print('Commit:', msg)
         git('commit', '-m', msg)
-    print('Pushing', branch, '(will retry transient failures up to 10 min)...')
-    if push_with_retry(branch):
+    if has_origin:
+        print('Pushing', branch, '(will retry transient failures up to 10 min)...')
+        pushed = push_with_retry(branch)
+    else:
+        # No remote configured. Deliberately falls through to the SAME local-snapshot
+        # path as a failed push rather than returning early: with no remote there is no
+        # offsite copy at all, so the local recovery point matters more here, not less.
+        print('No git remote configured — set one in Settings (or config/git.json) to push.')
+        pushed = False
+    if pushed:
         print('Open a PR / merge into master on GitHub when ready.')
     else:
-        # Push didn't succeed within the window. The commit is safe locally; make a local backup
-        # snapshot as a fallback recovery point, then let the caller proceed with the rest of the run.
-        print('\nPush not completed. The commit IS saved locally on branch ' + branch + '.')
+        # Push didn't happen. The commit is safe locally; make a local backup snapshot as a
+        # fallback recovery point, then let the caller proceed with the rest of the run.
+        print('\nNot pushed. The commit IS saved locally on branch ' + branch + '.')
         print('Making a local backup snapshot instead so there is still a recovery point...')
         bp = _paths.script('backup.py')
         if os.path.exists(bp):

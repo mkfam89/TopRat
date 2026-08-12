@@ -7,7 +7,7 @@ visual structure of the base resumes. ALL formatting lives here, in code — non
 it has to be remembered in prose.
 
 Usage
-    python src/resume/render_resume.py content.json                 # → New/<Company>/Khoa_Pham_Resume_<Company>_<Role>.docx + .pdf
+    python src/resume/render_resume.py content.json                 # → New/<Company>/<prefix><Company>_<Role>.docx + .pdf
     python src/resume/render_resume.py content.json --outdir DIR    # explicit output folder
     python src/resume/render_resume.py content.json --no-pdf        # skip LibreOffice (lint runs with --no-pdf-check)
     python src/resume/render_resume.py --extract some.docx          # reverse: reconstruct content.json from a rendered resume
@@ -17,13 +17,13 @@ content.json schema
     {
       "company": "Alkami",                 # filename slug parts (alnum only is kept)
       "role": "PlatformSolutionEngineer",
-      "name": "Khoa Pham",                 # optional, defaults below
+      "name": "Jane Doe",                  # optional, defaults below
       "contact": "...",                    # optional, defaults below
       "summary": "Site reliability engineer with ...",
       "skills_groups": [{"label": "Cloud and Platform", "items": ["Azure", ...]}, ...],
-      "roles": [{"company": "PROS", "location": "Houston, Texas",
+      "roles": [{"company": "Acme Corp", "location": "Houston, Texas",
                  "title": "Site Reliability Engineer", "dates": "01/2024–02/2026",
-                 "bullet_ids": ["pros-sre-ansible-rundeck-toil", ...],
+                 "bullet_ids": ["acme-sre-ansible-rundeck-toil", ...],
                  "bullet_overrides": {"id": "reworded text"}}, ...],
       "education": {"institution": "UNIVERSITY OF HOUSTON", "location": "Houston, Texas",
                     "degree": "Bachelor of Science, Computer Information Systems",
@@ -70,7 +70,7 @@ import tempfile
 import zipfile
 from xml.sax.saxutils import escape
 
-from pipelib import clean_company, clean_role
+from pipelib import clean_company, clean_role, resume_prefix
 from pipelib import slug as _pl_slug
 from tailor_local import find_soffice
 from lint_resume import (
@@ -85,9 +85,65 @@ HERE = _paths.ROOT
 from pipelib import BULLETS as BANK_PATH   # bullet bank lives with the DATA, not the code
 LINT_PATH = _paths.script('lint_resume.py')
 
-DEFAULT_NAME = "Khoa Pham"
-DEFAULT_CONTACT = ("Houston, Texas 77062  |  (713) 478-0433  |  "
-                   "p.khoa89@yahoo.com  |  linkedin.com/in/khoa-pham-cloud")
+# The resume HEADER (name + contact line) belongs to the user's base resume in
+# resume_template/, not to this file. It used to be two module constants holding the first
+# user's real name, home address, phone and personal email, so ANY other user's rendered
+# resume carried his contact details. This app customizes an existing template; it does not
+# author a header from scratch — so the header is read from the template.
+_header_cache = None
+
+
+def template_header():
+    """(name, contact) — the first two lines of the CORE base resume in resume_template/.
+
+    Cached per process. Everything here is best-effort and never raises: python-docx is an
+    optional dependency, so a copy without it (or with an unreadable/empty template) falls
+    back to profile.json identity.full_name for the name and an EMPTY contact — and an empty
+    contact renders no contact paragraph at all, rather than someone else's details."""
+    global _header_cache
+    if _header_cache is None:
+        name = contact = ""
+        try:
+            import docx as docx_lib
+            from pipelib import TEMPLATE_DIR
+            import scoring
+            base = scoring._pick_core_base()[0]
+            if base:
+                path = os.path.join(TEMPLATE_DIR, os.path.basename(base))
+                if path.lower().endswith(".docx") and os.path.exists(path):
+                    lines = []
+                    for p in docx_lib.Document(path).paragraphs:
+                        t = (p.text or "").strip()
+                        if not t:
+                            continue
+                        # Stop at the first section header — everything before it is the
+                        # header block (name, then the contact line).
+                        if t.upper() == t and len(t.split()) <= 4 and t.isupper():
+                            break
+                        lines.append(t)
+                        if len(lines) >= 2:
+                            break
+                    if lines:
+                        name = lines[0]
+                        if len(lines) > 1:
+                            contact = lines[1]
+        except Exception:
+            pass
+        if not name:
+            try:
+                import profile_lib as pl
+                name = str(((pl.load_profile(clean=True) or {}).get("identity") or {})
+                           .get("full_name") or "").strip()
+            except Exception:
+                name = ""
+        _header_cache = (name, contact)
+    return _header_cache
+
+
+def reset_template_header():
+    """Drop the cache — for tests and after the user changes their template folder."""
+    global _header_cache
+    _header_cache = None
 
 # ---- locked formatting constants (sizes in half-points) --------------------- #
 MIN_BODY_PT = 10.0          # CLAUDE.md hard floor
@@ -227,7 +283,7 @@ def validate_content(content, bank):
     bigram = _summary_title_violation(content["summary"], content["company"], content["role"])
     if bigram:
         problems.append(f'summary opener adopts the target job title "{bigram}" — '
-                        f"open with Khoa's real identity instead")
+                        f"open with the owner's real identity instead")
 
     body_pt, note = _clamp_body_pt(content.get("body_pt", DEFAULT_BODY_PT))
     if note:
@@ -330,10 +386,15 @@ def build_document_xml(content, bank, body_pt, spacers):
     assert sz >= int(MIN_BODY_PT * 2), "font floor breached — refusing to render"
     out = []
 
+    hdr_name, hdr_contact = template_header()
     out.append(_p('<w:spacing w:after="0"/><w:jc w:val="center"/>',
-                  [_run(content.get("name", DEFAULT_NAME), SZ_NAME, bold=True, color=ACCENT)]))
-    out.append(_p('<w:spacing w:after="60"/><w:jc w:val="center"/>',
-                  [_run(content.get("contact", DEFAULT_CONTACT), sz, color=CONTACT_GRAY)]))
+                  [_run(content.get("name") or hdr_name, SZ_NAME, bold=True, color=ACCENT)]))
+    # No contact anywhere = no contact paragraph. An empty centered line would just burn a
+    # line of vertical space, and the wrong-but-present alternative is worse.
+    contact = content.get("contact") or hdr_contact
+    if contact:
+        out.append(_p('<w:spacing w:after="60"/><w:jc w:val="center"/>',
+                      [_run(contact, sz, color=CONTACT_GRAY)]))
 
     out.append(_header_p("Summary"))
     out.append(_p('<w:spacing w:after="60"/><w:jc w:val="both"/>',
@@ -427,10 +488,15 @@ _DOC_RELS = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
              '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering" Target="numbering.xml"/>'
              "</Relationships>")
 
-_CORE_XML = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-             '<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" '
-             'xmlns:dc="http://purl.org/dc/elements/1.1/">'
-             "<dc:title>Resume</dc:title><dc:creator>Khoa Pham</dc:creator></cp:coreProperties>")
+def _core_xml():
+    # dc:creator is embedded document metadata a recruiter can read in File > Properties,
+    # so it followed the header off the hardcoded constant. Built per render, not at import,
+    # because template_header() needs the resolved template folder.
+    return ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+            '<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" '
+            'xmlns:dc="http://purl.org/dc/elements/1.1/">'
+            "<dc:title>Resume</dc:title><dc:creator>" + escape(template_header()[0])
+            + "</dc:creator></cp:coreProperties>")
 
 _APP_XML = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
             '<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties">'
@@ -445,7 +511,7 @@ def write_docx(document_xml, path):
         zf.writestr("word/_rels/document.xml.rels", _DOC_RELS)
         zf.writestr("word/styles.xml", _STYLES_XML)
         zf.writestr("word/numbering.xml", _NUMBERING_XML)
-        zf.writestr("docProps/core.xml", _CORE_XML)
+        zf.writestr("docProps/core.xml", _core_xml())
         zf.writestr("docProps/app.xml", _APP_XML)
 
 
@@ -484,7 +550,7 @@ def _co_slug(content):
 
 def output_name(content):
     role = _pl_slug(clean_role(content["role"])) or "X"
-    return f"Khoa_Pham_Resume_{_co_slug(content)}_{role}.docx"
+    return f"{resume_prefix()}{_co_slug(content)}_{role}.docx"
 
 
 def render(content, bank=None, outdir=None, no_pdf=False):
@@ -570,7 +636,7 @@ def extract_content(docx_path, bank=None):
     content = {
         "company": parts[3] if len(parts) > 3 else "Company",
         "role": parts[4] if len(parts) > 4 else "Role",
-        "name": DEFAULT_NAME, "contact": DEFAULT_CONTACT,
+        "name": template_header()[0], "contact": template_header()[1],
         "summary": "", "skills_groups": [], "roles": [],
         "education": [], "volunteer": None, "spacer_lines": 0,
     }

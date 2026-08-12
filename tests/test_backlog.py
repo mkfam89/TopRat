@@ -20,6 +20,22 @@ import pytest
 from tracker import TRACKING_COLS, CANDIDATE_COLS
 
 
+# Modules that latch their paths onto pipelib.DATA at import time. The fixture below
+# reloads them under a scratch root and MUST reload them back, or the scratch path
+# outlives the test.
+DATA_BOUND = ('pipelib', 'blocklist', 'backlog', 'scheduler')
+
+
+def _reload_data_bound():
+    """Re-resolve DATA_BOUND against whatever the data root currently is."""
+    import importlib
+    import sys
+    for name in DATA_BOUND:
+        mod = sys.modules.get(name)
+        if mod is not None:
+            importlib.reload(mod)
+
+
 def _write_csv(path, cols, rows):
     with open(path, 'w', newline='', encoding='utf-8') as f:
         w = csv.DictWriter(f, fieldnames=cols)
@@ -72,7 +88,21 @@ def board(tmp_path, monkeypatch):
         assert str(root) in pipelib.DATA, 'the scratch data root is not in effect'
         return backlog
 
-    return build
+    yield build
+
+    # Teardown is as load-bearing as setup, and its absence was a real bug. monkeypatch
+    # restores TOP_RAT_DATA on its own, but not until AFTER this point (finalizers run in
+    # reverse dependency order), and the reloads above latched the scratch path into module
+    # globals — putting the variable back does not move a module that already resolved. So
+    # undo the env FIRST, then reload onto the real root.
+    #
+    # Without these two lines the scratch root outlived the test and every later test in the
+    # session read its config out of a tmp_path pytest had already deleted. That is the whole
+    # "config goldens are order-dependent" defect: 8 tests in test_blocklist, test_parse_card
+    # and test_scoring passed alone and failed in a full run, because test_backlog is second
+    # in collection order and poisoned everything after it.
+    monkeypatch.undo()
+    _reload_data_bound()
 
 
 def _jobs(prefix, n, **kw):

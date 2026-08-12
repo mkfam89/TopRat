@@ -8,7 +8,7 @@ against the tracker's own history and, when it recognizes one, produces a short 
     "Repost - last seen 2026-06-15; you applied 2026-06-20. Prior note: emailed recruiter."
 
 It is ADVISORY: nothing in the pipeline skips, filters, or reclassifies a job because of
-this. Reposts are NEVER excluded from search — the note just lets Khoa reuse an already
+this. Reposts are NEVER excluded from search — the note just lets the user reuse an already
 tailored resume or ban the employer (blocklist.py) if a listing that never seems to close
 looks like a ghost job. Only the manual employer blocklist can actually skip jobs.
 

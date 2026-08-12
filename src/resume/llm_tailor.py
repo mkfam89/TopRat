@@ -12,7 +12,7 @@ WHAT IT DOES
 FLAT RATE, NEVER METERED (2026-08-04)
     The transport is the **Claude Code CLI in non-interactive mode** (`claude -p`), NOT the
     Messages API. `claude -p` draws from the Claude subscription's usage limits, so tailoring
-    costs nothing beyond the plan Khoa already pays for. The old `sk-ant-` API-key path was
+    costs nothing beyond the plan the user already pays for. The old `sk-ant-` API-key path was
     removed on purpose: it billed per use at API rates, which is exactly what this project
     does not want.
 
@@ -161,13 +161,35 @@ def _summary_rules():
 # prompt
 # --------------------------------------------------------------------------- #
 
+_owner_cache = None
+
+
+def _owner_name():
+    """Whose resume this is, for the system prompt. From profile.json identity.full_name.
+
+    The prompt used to name the first user directly ("You tailor <real name>'s resume..."),
+    which told the model the wrong person's name for every other user. Falls back to a
+    neutral noun — the prompt reads fine without a name, and a wrong name is worse than
+    none since rule 4 is specifically about not inventing an identity."""
+    global _owner_cache
+    if _owner_cache is None:
+        try:
+            import profile_lib as pl
+            _owner_cache = str(((pl.load_profile(clean=True) or {}).get("identity") or {})
+                               .get("full_name") or "").strip() or "the candidate"
+        except Exception:
+            _owner_cache = "the candidate"
+    return _owner_cache
+
+
 def build_prompt(item, bank, jd_text, rules):
     """Return (system, user) strings. Pure — safe to unit-test."""
     notes = str(item.get("userNotes") or "").strip()
     flagged = item.get("flaggedSkills") or []
 
+    who = _owner_name()
     system = (
-        "You tailor Khoa Pham's resume for one job by SELECTING bullets from a fixed bank "
+        "You tailor %s's resume for one job by SELECTING bullets from a fixed bank "
         "and writing a summary. You output ONE JSON object (the content.json) and nothing else.\n"
         "HARD RULES — a violation makes the output unusable:\n"
         "1. bullet_ids MUST come from the provided bank. Never invent a bullet or an id. To "
@@ -176,7 +198,7 @@ def build_prompt(item, bank, jd_text, rules):
         "2. Every role gets AT LEAST TWO bullets.\n"
         "3. The three trailing roles (Senior Implementation Consultant, Implementation Analyst, "
         "HP / Performance Engineering Intern) appear TOGETHER or not at all.\n"
-        "4. The summary's opening phrase is Khoa's REAL identity from the summary rules. NEVER "
+        "4. The summary's opening phrase is %s's REAL identity from the summary rules. NEVER "
         "adopt, restate, or blend the target job title into it. Tailor only the sentences after "
         "the opener.\n"
         "5. No section headers other than the fixed set. Never emit ADDITIONAL EXPERIENCE, CORE "
@@ -185,7 +207,7 @@ def build_prompt(item, bank, jd_text, rules):
         "bullets toward the job; do not fabricate.\n"
         "7. Put ZERO notes, TODOs, or flagged-skill lines in the content. Gaps are handled "
         "elsewhere.\n"
-    )
+    ) % (who, who)
 
     schema = {
         "company": "<company slug, letters/digits>",
@@ -221,12 +243,17 @@ def build_prompt(item, bank, jd_text, rules):
         json.dumps(schema, ensure_ascii=False),
     ]
     if flagged:
-        parts += ["", "Skills the JD wants that Khoa may lack — do NOT claim these: %s"
+        parts += ["", "Skills the JD wants the owner may lack — do NOT claim these: %s"
                   % ", ".join(map(str, flagged))]
     if notes:
-        # Khoa's own instructions for THIS posting — highest priority short of the hard rules.
-        parts += ["", "KHOA'S INSTRUCTIONS FOR THIS JOB (follow these; they override your own "
-                  "emphasis judgement, never the hard rules):", notes]
+        # The owner's own instructions for THIS posting — highest priority short of the hard rules.
+        # The heading used to be the first user's name in caps, which told the model the wrong
+        # person's name for every other user (same defect _owner_name() fixed at line 190) and
+        # put a real name in a shipped source file. Falls back to a neutral noun.
+        who = _owner_name()
+        parts += ["", "%s INSTRUCTIONS FOR THIS JOB (follow these; they override your own "
+                  "emphasis judgement, never the hard rules):"
+                  % (("%s'S" % who).upper() if who else "THE OWNER'S"), notes]
     parts += ["", "Return ONLY the JSON object."]
     return system, "\n".join(parts)
 

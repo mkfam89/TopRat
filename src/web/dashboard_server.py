@@ -14,6 +14,7 @@ Dev:  http://127.0.0.1:8765/dev — hidden page: restart this process after a .p
 import os, sys; sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import _paths  # noqa: F401  -- src/_paths.py: puts every src/ folder on sys.path; _paths.ROOT = project folder
 import os, sys, json, csv, subprocess, webbrowser, threading, time, io, zipfile
+import http.client                       # port_is_ours(): ask a busy port whether it is us
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs, unquote
 try:
@@ -158,18 +159,26 @@ ONBOARD_JS = """
 """
 
 # ---- live scheduler pill (injected into every page's nav) ----
-# The scheduler already knew whether a job was running and when the next one fires, but that
-# answer only existed on the /schedule page — so "is it actually running?" meant leaving the
-# board. This polls the status-only endpoint and paints one chip in the nav.
+# ONE place the scheduler talks to the user. It used to be five: this chip, plus four warning
+# banners stacked down /schedule — a missed-runs list, a "why did the chip send me here"
+# explainer, a paused-searches notice and a watchdog-is-off warning. Four warnings on one page
+# is not four times the signal; it is a wall the reader learns to scroll past. Worse, three of
+# them could only be seen from /schedule, which is the page you go to BECAUSE something is
+# wrong — so the warning arrived after the user had already worked out they had a problem.
+#
+# Now the chip states ONE number — how many scheduled runs were missed — and the bubble behind
+# it carries every message: each missed task on its own line with the reason and a Run now,
+# then the failures, the paused searches and the watchdog, each with the button that fixes it.
+# /schedule keeps the settings (times, on/off switches) and no warnings at all.
 #
 # NO COUNTDOWN. An earlier build ticked "in 5h 47m" down every second; it drew the eye on
 # every page for a number that changes nothing, and a per-second timer to say "still 5 hours"
 # is motion without information. The chip shows the next run TIME instead, which is what a
-# person actually checks against. The one number that does move — how long a run has been
-# going — only appears while a job is actually running.
+# person actually checks against.
 #
-# The chip never decides anything: `state` is computed once in scheduler.status_all() so the
-# nav and the Schedule page cannot disagree about whether something is wrong.
+# The chip never decides anything on its own: the per-task facts come from
+# scheduler.status_all() and the watchdog facts from watchdog_state_cached(), so the bubble and
+# the /schedule cards cannot disagree about what is wrong.
 SCHED_PILL_JS = """
 <script>(function(){
   var el = document.getElementById('uiNavSched'); if(!el) return;
@@ -188,84 +197,146 @@ SCHED_PILL_JS = """
     return d.toLocaleDateString([], {month:'short', day:'numeric'}) + ' ' + t;
   }
   function mins(s){ if(s == null) return ''; return s < 90 ? Math.round(s) + 's' : Math.round(s/60) + 'm'; }
-  // Schedule labels are written for the /schedule CARD, where a full sentence reads well
-  // ("Hourly scrape - find new jobs and send an alert"). In a nav chip that sentence pushes
-  // the tabs off screen, so keep only the name before the dash. The full text stays in the
-  // tooltip. Trimming here, not in the config, so the cards keep their explanations.
-  function shortLabel(s){
-    s = String(s || '').split(/\\s+[-\\u2013\\u2014]\\s+/)[0].trim();
-    return s.length > 26 ? s.slice(0, 25).trim() + '\\u2026' : s;
-  }
   function esc(s){ var d = document.createElement('div'); d.textContent = s == null ? '' : String(s);
     return d.innerHTML; }
 
-  // The chip is now the ONE place run status is reported (the /schedule sections dropped their
-  // status pills), so it has to say what it is a status OF. Unlabelled, a lone "Hourly scrape ·
-  // 5:00 PM" in a nav bar full of job-posting counts reads as being about the postings.
-  var LABEL = '<span class="slbl">Scheduled tasks status:</span>';
+  // The chip is the ONE place scheduler status is reported, so it has to say what it is a
+  // status OF. Unlabelled, a lone "2 missed" in a nav bar full of job-posting counts reads as
+  // being about the postings.
+  var LABEL = '<span class="slbl">Scheduled tasks:</span>';
+
+  // ---------------- what the chip counts ----------------
+  // Missed runs, and ONLY missed runs. Every other thing that can be wrong lives in the bubble.
+  // A chip that cycles through five different sentences ("stuck?", "failed", "searches
+  // paused", "2 missed", "next 9:00") teaches the user to re-read it every time instead of
+  // recognising it; one number in one place is a thing you can glance at.
+  function missedList(){
+    var all = (S && S.jobs) || {}, out = [];
+    for(var k in all){
+      if(Object.prototype.hasOwnProperty.call(all, k) && all[k].missed) out.push([k, all[k]]);
+    }
+    return out;
+  }
+  function runningList(){
+    var all = (S && S.jobs) || {}, out = [];
+    for(var k in all){
+      if(Object.prototype.hasOwnProperty.call(all, k) && all[k].running) out.push([k, all[k]]);
+    }
+    return out;
+  }
+
+  // Everything that is wrong but is NOT a missed run — the contents of the four banners that
+  // used to sit on /schedule, in one list. Each entry carries the words AND the button, because
+  // a warning that only states a problem makes the reader go hunting for the control that
+  // fixes it. `sev` decides the chip's colour: 'bad' is a failure, 'warn' is a nudge, 'info'
+  // never colours the chip at all (it is context, not a fault).
+  function problems(){
+    var out = [], all = (S && S.jobs) || {}, k, j;
+    for(k in all){
+      if(!Object.prototype.hasOwnProperty.call(all, k)) continue;
+      j = all[k]; if(!j.enabled) continue;
+      if(j.stuck){
+        out.push({sev:'bad', head:(j.label || k) + ' may be stuck',
+          body:'It has been running for ' + mins(j.elapsedSec) + ' — far longer than the '
+             + Math.round(j.lastDurationSec || 0) + 's it normally takes. Nothing was cancelled; a slow '
+             + 'network looks the same from here. A step gives up on its own after 30 minutes. If it '
+             + 'is still here after that, close the dashboard, open it again, then run the task.'});
+      } else if(j.failed){
+        out.push({sev:'bad', head:(j.label || k) + ' did not finish', run:k,
+          body:'The last run stopped with: <code>' + esc(j.lastResult || 'unknown error') + '</code>. '
+             + (String(j.lastResult || '').indexOf('interrupted') === 0
+                ? 'The dashboard was closed while it was still working, so it never got to the end. '
+                : 'The step that failed is named in the message; the full output is in '
+                  + '<code>schedule_log.txt</code>. ')
+             + 'Nothing is broken permanently.'});
+      }
+    }
+    // The pending-job cap. This one exists because the pause is otherwise invisible: no error,
+    // no empty board, just postings that stop arriving — indistinguishable from a quiet week.
+    var B = (S && S.backlog) || {};
+    if(B.paused){
+      out.push({sev:'warn', head:'The searches are paused',
+        body:'<b>' + esc(String(B.count || 0)) + ' postings</b> are waiting on a decision and the limit '
+           + 'is <b>' + esc(String(B.cap || 0)) + '</b>. The searching tasks are still switched on — they '
+           + 'are holding off, and start again by themselves once the count drops.',
+        acts:[{act:'board', label:'Open the board', primary:true}]});
+    }
+    // The watchdog. Without it, "a scheduled task runs only while the dashboard is open" is a
+    // trap rather than a rule, so its OFF state belongs beside the missed runs it causes.
+    var W = (S && S.watchdog) || null;
+    if(W){
+      if(!W.supported){
+        out.push({sev:'info', head:'This computer cannot restart the dashboard by itself',
+          body:'The watchdog needs the Windows Task Scheduler. Here, the tasks run only while '
+             + 'this dashboard is open.'});
+      } else if(W.desired && !W.enabled){
+        out.push({sev:'bad', head:'The watchdog did not turn on',
+          body:(W.error ? esc(W.error) + '. ' : '') + 'The switch says it is on, but Windows has no '
+             + 'task registered — so nothing restarts the dashboard if it stops.',
+          acts:[{act:'wd-on', label:'Try again', primary:true},
+                {act:'wd-go', label:'Show me the setting'}]});
+      } else if(!W.desired){
+        out.push({sev:'warn', head:'The watchdog is off',
+          body:'The tasks run only while this dashboard window is open. Turn it on and Windows starts '
+             + 'the dashboard again — minimized — whenever it is not running.',
+          acts:[{act:'wd-on', label:'Turn it on', primary:true},
+                {act:'wd-go', label:'Show me the setting'}]});
+      } else if(W.pauseMin){
+        out.push({sev:'info', head:'The watchdog is paused',
+          body:'For the next ' + esc(String(W.pauseMin)) + ' minutes the dashboard stays closed if you '
+             + 'close it. After that, Windows starts it again.'});
+      }
+    }
+    return out;
+  }
+  function worstSev(probs){
+    var w = '';
+    for(var i = 0; i < probs.length; i++){
+      if(probs[i].sev === 'bad') return 'bad';
+      if(probs[i].sev === 'warn') w = 'warn';
+    }
+    return w;
+  }
 
   function paint(){
     if(!S || !S.available){ el.hidden = true; setPop(false); return; }
-    var name = esc(shortLabel(S.stateLabel || S.nextLabel || S.stateJob));
-    var nextAt = when(S.nextRun, S.now);
+    var n = missedList().length, probs = problems(), worst = worstSev(probs);
+    var running = runningList().length;
     var cls, html, tip;
-    if(S.state === 'stuck'){
-      cls = 'is-error';
-      html = '<span class="sdot"></span>' + name + ' <span class="seta">stuck?</span>';
-      tip = 'This run has been going for ' + mins(S.stateElapsedSec) + ' — much longer than it '
-          + 'normally takes. Click to see what to do.';
-    } else if(S.state === 'running'){
-      cls = 'is-running';
-      html = '<span class="sdot spin"></span>' + name + ' <span class="seta">running</span>';
-      tip = 'Running now for ' + mins(S.stateElapsedSec) + '. Click for the Scheduled tasks page.';
-    } else if(S.state === 'failed'){
-      cls = 'is-error';
-      html = '<span class="sdot"></span>' + name + ' <span class="seta">failed</span>';
-      tip = 'The last run did not finish: ' + (S.stateDetail || 'unknown error')
-          + '. Click to see what to do.';
-    } else if(S.state === 'paused'){
-      // The pending-job cap is holding the searches back. This state exists because the pause
-      // is otherwise invisible: no error, no empty board, just postings that stop arriving —
-      // which is indistinguishable from a quiet week. It deliberately does NOT show a next-run
-      // time, since the whole point is that the next run will not happen yet.
-      var B = S.backlog || {};
-      cls = 'is-missed';
-      html = '<span class="sdot"></span><span class="smiss">searches paused</span> '
-           + '<span class="seta">' + esc(String(B.count || 0)) + ' waiting</span>';
-      tip = (B.count || 0) + ' postings are waiting on a decision and the limit is ' + (B.cap || 0)
-          + '. The searches start again by themselves once you clear some. Click for details.';
-    } else if(S.state === 'missed'){
-      cls = 'is-missed';
-      html = '<span class="sdot"></span><span class="smiss">' + S.missedCount + ' missed</span> '
-           + '<span class="seta">next ' + esc(nextAt) + '</span>';
-      tip = 'The dashboard was closed at ' + S.missedCount + ' scheduled run time(s). Click to catch up.';
-    } else if(S.state === 'idle'){
-      cls = 'is-idle';
-      html = '<span class="sdot"></span>' + name + ' <span class="seta">' + esc(nextAt) + '</span>';
-      tip = 'Next run: ' + (S.nextLabel || S.nextJob) + ' at ' + nextAt
-          + '. Tasks run only while this dashboard is open.';
+    if(n){
+      cls = (worst === 'bad') ? 'is-error' : 'is-missed';
+      html = '<span class="sdot"></span><span class="smiss">' + n + ' missed</span>';
+      tip = n + (n === 1 ? ' scheduled task was' : ' scheduled tasks were') + ' due while the dashboard '
+          + 'was closed. Click to see which, and to catch them up.';
     } else {
-      cls = 'is-idle';
-      html = '<span class="sdot"></span>Nothing scheduled';
-      tip = 'Every scheduled task is switched off. Click to turn one on.';
+      // Calm, and still useful: the resting question is "when does the next one go?".
+      cls = (worst === 'bad') ? 'is-error' : (worst === 'warn' ? 'is-missed' : 'is-idle');
+      html = '<span class="sdot' + (running ? ' spin' : '') + '"></span>Nothing missed'
+           + (S.nextRun ? ' <span class="seta">next ' + esc(when(S.nextRun, S.now)) + '</span>' : '');
+      tip = 'No scheduled run has been skipped.'
+          + (S.nextRun ? ' Next: ' + (S.nextLabel || S.nextJob) + ' at ' + when(S.nextRun, S.now) + '.' : '');
     }
+    // The count stays a count of MISSED runs. Anything else that needs a look is one quiet mark
+    // — enough to make the chip worth opening, without turning it into a second sentence.
+    if(worst) html += ' <span class="swarn" title="Something else needs a look">⚠</span>';
+    if(!n && worst) tip += ' ' + probs.length + (probs.length === 1 ? ' thing needs' : ' things need')
+                         + ' a look — click to read them.';
     el.className = 'ui-nav-sched ' + cls;
     el.innerHTML = LABEL + html;
     el.title = tip;
-    // Hand the state to /schedule so it can explain THIS problem on arrival, instead of the
-    // user landing on a list of six cards and having to work out which one the chip meant.
-    el.href = '/schedule' + (S.stateJob ? '?job=' + encodeURIComponent(S.stateJob)
-                                        + '&why=' + encodeURIComponent(S.state) : '');
+    // A modifier-click still opens the settings page; naming the job scrolls it into view there.
+    el.href = '/schedule' + (S.stateJob ? '?job=' + encodeURIComponent(S.stateJob) : '');
     el.hidden = false;
     if(open) renderPop();          // a poll landed while the bubble is up: keep them in step
   }
 
   // ---------------- the bubble ----------------
-  // The chip has room for one word ("2 missed") and the question that follows is always WHICH
-  // job. That answer used to be a page away — click the chip, land on /schedule, read six
-  // cards to find the one it meant. The bubble expands out of the chip and names them, with a
-  // Run now on each, so the common case never leaves the page. The Schedule page stays one
-  // click down in the footer, for what a bubble should not do: edit a time, switch a job off.
+  // The chip has room for one number ("2 missed") and the question that follows is always WHICH
+  // tasks, and why. That answer used to be a page away — click the chip, land on /schedule, read
+  // four stacked banners and six cards to find the one it meant. The bubble expands out of the
+  // chip and holds all of it: the missed tasks with a Run now on each, then every other warning
+  // the app has, each with its own button. The Schedule page stays one click down in the footer,
+  // for what a bubble should not do: edit a time, switch a task off.
   var pop = document.getElementById('uiNavSchedPop'), open = false;
   // A page served from an older cached nav has the chip but not the bubble. Build it rather
   // than dying on the first click.
@@ -281,65 +352,66 @@ SCHED_PILL_JS = """
     return d.toLocaleDateString([], {month:'short', day:'numeric'}) + ' '
          + d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
   }
-  // One row per job that wants attention. The sub-line answers the question the tag raises:
-  // a missed job says when it last ran and when it next will, a failed one says what it said.
-  function jobRow(name, j){
-    var tag = '', sub;
-    if(j.running){
-      tag = '<span class="stag run">running</span>';
-      sub = 'Going for ' + mins(j.elapsedSec) + (j.stuck ? ' — longer than this task normally takes' : '');
-    } else if(j.missed){
-      tag = '<span class="stag miss">missed</span>';
-      sub = (j.lastRunAt ? 'Last ran ' + esc(stamp(j.lastRunAt)) : 'Has never run')
-          + ' · next ' + (esc(when(j.nextRun, S.now)) || 'not scheduled');
-    } else if(j.failed){
-      tag = '<span class="stag fail">failed</span>';
-      sub = 'Last run said: ' + esc(j.lastResult || 'unknown error');
-    } else {
-      sub = 'Next ' + (esc(when(j.nextRun, S.now)) || 'not scheduled');
-    }
+  // One row per missed task. The sub-line answers the question the tag raises: when it last
+  // ran, and when it will next go if it is simply left alone.
+  function missRow(name, j){
     return '<div class="sjob"><div class="sjmain">'
-         + '<div class="sjname">' + esc(j.label || name) + tag + '</div>'
-         + '<div class="swhen">' + sub + '</div></div>'
-         + (j.running ? '' : '<button class="srun" data-job="' + esc(name) + '">▶ Run now</button>')
+         + '<div class="sjname">' + esc(j.label || name) + '<span class="stag miss">missed</span></div>'
+         + '<div class="swhen">' + (j.lastRunAt ? 'Last ran ' + esc(stamp(j.lastRunAt)) : 'Has never run')
+         + ' · next ' + (esc(when(j.nextRun, S.now)) || 'not scheduled') + '</div></div>'
+         + '<button class="srun" data-job="' + esc(name) + '">▶ Run now</button></div>';
+  }
+  // A running task is not a warning, so it gets a plain line with no button — but leaving it
+  // out entirely would make the bubble contradict the pulsing dot on the chip.
+  function runRow(name, j){
+    return '<div class="sjob"><div class="sjmain">'
+         + '<div class="sjname">' + esc(j.label || name) + '<span class="stag run">running</span></div>'
+         + '<div class="swhen">Going for ' + mins(j.elapsedSec) + '</div></div></div>';
+  }
+  // One warning, its explanation, and the button that resolves it. `head` is escaped here;
+  // `body` is built with esc() around every value in problems(), so it is trusted HTML.
+  function probRow(p){
+    var acts = (p.acts || []).map(function(a){
+      return '<button class="sact' + (a.primary ? ' primary' : '') + '" data-act="' + esc(a.act) + '">'
+           + esc(a.label) + '</button>';
+    });
+    if(p.run) acts.unshift('<button class="sact primary srun" data-job="' + esc(p.run) + '">▶ Run it now</button>');
+    return '<div class="sprob ' + esc(p.sev) + '">'
+         + '<div class="spname">' + esc(p.head) + '</div>'
+         + '<div class="spbody">' + p.body + '</div>'
+         + (acts.length ? '<div class="spacts">' + acts.join('') + '</div>' : '')
          + '</div>';
   }
   function renderPop(){
     if(!S || !S.available){ pop.innerHTML = ''; return; }
-    var all = S.jobs || {}, bad = [], missed = 0;
-    for(var k in all){
-      if(!Object.prototype.hasOwnProperty.call(all, k)) continue;
-      var j = all[k];
-      if(j.enabled && (j.missed || j.failed || j.running)){ bad.push([k, j]); if(j.missed) missed++; }
-    }
-    var head, body = '', note = '';
-    var B = S.backlog || {};
-    if(B.paused){
-      // Ranked ahead of the missed/failed list for the same reason the chip is: a paused search
-      // is the reason the board stopped filling, and there is exactly one thing to do about it,
-      // which is not on this page. No Run-now button here — running one search would add to a
-      // backlog the user has not cleared, which is what the cap is for.
-      head = 'The searches are paused';
-      body = '<div class="sempty"><b>' + esc(String(B.count || 0)) + ' postings</b> are waiting on '
-           + 'a decision and the limit is <b>' + esc(String(B.cap || 0)) + '</b>. The searching '
-           + 'tasks are switched on — they are holding off, and start again by themselves once '
-           + 'the count drops.</div>';
-      note = '<div class="snote">Clear some on the board: skip them (the postings are kept) or '
-           + 'delete them. <a href="/">Open the board →</a></div>';
-    } else if(!bad.length){
-      head = 'Everything is on schedule';
-      body = '<div class="sempty">Nothing missed or failed. Next up is <b>'
-           + esc(S.nextLabel || S.nextJob || 'nothing scheduled') + '</b>'
-           + (S.nextRun ? ' at ' + esc(when(S.nextRun, S.now)) : '') + '.</div>';
-    } else {
-      head = missed ? (missed + (missed === 1 ? ' missed run' : ' missed runs')) : 'Scheduled task status';
-      body = bad.map(function(r){ return jobRow(r[0], r[1]); }).join('');
+    var miss = missedList(), running = runningList(), probs = problems(), n = miss.length;
+    var html = '<h4>' + (n ? n + (n === 1 ? ' missed run' : ' missed runs') : 'Nothing missed') + '</h4>';
+    if(n){
+      html += miss.map(function(r){ return missRow(r[0], r[1]); }).join('');
       // The cause of a missed run is almost always this one fact, and it is not obvious.
-      if(missed) note = '<div class="snote">A scheduled task can only run while this dashboard is '
-                      + 'open. These were due while it was closed — running one now catches it up.</div>';
+      html += '<div class="snote">A scheduled task can only run while this dashboard is open. These '
+            + 'were due while it was closed, and the app never fires a missed task by itself — it '
+            + 'would go off the moment you opened the app. Run one to catch it up, or leave it and '
+            + 'let the next scheduled run pick it up.</div>';
+    } else {
+      html += '<div class="sempty">No scheduled run has been skipped. Next up is <b>'
+            + esc(S.nextLabel || S.nextJob || 'nothing scheduled') + '</b>'
+            + (S.nextRun ? ' at ' + esc(when(S.nextRun, S.now)) : '') + '.</div>';
     }
-    pop.innerHTML = '<h4>' + esc(head) + '</h4>' + body + note
-      + '<div class="sfoot"><a href="' + el.getAttribute('href') + '">Open the Scheduled tasks page →</a></div>';
+    // A STUCK task is also a running task, and it already gets a full block below saying how
+    // long it has gone and what to do. Printing the plain "Going for 40m" line as well would be
+    // the same fact twice, three lines apart.
+    html += running.filter(function(r){ return !r[1].stuck; })
+                   .map(function(r){ return runRow(r[0], r[1]); }).join('');
+    // The other three banners, in the order a reader needs them: what is broken, then what is
+    // held back, then the setting that would have prevented the missed runs above.
+    if(probs.length){
+      html += '<div class="ssec">' + (n ? 'Also worth a look' : 'Worth a look') + '</div>'
+            + probs.map(probRow).join('');
+    }
+    pop.innerHTML = html
+      + '<div class="sfoot"><a href="' + (el.getAttribute('href') || '/schedule')
+      + '">Open the Scheduled tasks page →</a></div>';
   }
   function setPop(o){
     open = !!o && !!(S && S.available);
@@ -359,9 +431,28 @@ SCHED_PILL_JS = """
     setPop(false);
   });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') setPop(false); });
-  // Run now → the SAME manual path the Schedule page uses, so a press here and a press there
-  // are one code path (serialized against other jobs, logged, visible on this very chip).
+  // The buttons the four banners used to carry. Each calls the SAME endpoint the /schedule
+  // control calls, so a press here and a press there are one code path — the bubble can never
+  // put the app in a state the settings page would not.
   pop.addEventListener('click', async function(e){
+    var a = e.target.closest && e.target.closest('.sact[data-act]');
+    if(a){
+      var act = a.getAttribute('data-act');
+      if(act === 'board'){ location.href = '/'; return; }
+      if(act === 'wd-go'){ location.href = '/schedule#watchdog'; return; }
+      if(act === 'wd-on'){
+        a.disabled = true; a.textContent = 'turning on…';
+        try{
+          var wv = (S && S.watchdog) || {};
+          var wr = await fetch('/api/watchdog', {method:'POST', headers:{'Content-Type':'application/json'},
+                     body: JSON.stringify({enable:true, everyMin: wv.everyMin || 5})});
+          var wd = await wr.json();
+          if(!wd || !wd.ok){ a.textContent = 'Windows refused'; a.title = (wd && wd.message) || ''; return; }
+          poll();
+        }catch(err){ a.textContent = 'did not turn on'; }
+        return;
+      }
+    }
     var b = e.target.closest && e.target.closest('.srun'); if(!b) return;
     b.disabled = true; b.textContent = 'starting…';
     try{
@@ -439,6 +530,69 @@ def inject_nav(html_bytes, active):
             return (html[:j+1] + extra + html[j+1:]).encode('utf-8')
     return (extra + html).encode('utf-8')
 
+# ----------------------------------------------------------------- agent prompts
+# The two Claude scheduled tasks that run the pipeline automatically are driven by prompts
+# that live in Claude's own Scheduled folder, OUTSIDE this repo — so a new user cloning the
+# code had no way to get them and no way to know they existed. The text now ships in
+# agent_prompts/ and this renders it with the user's own name and folder path filled in, for
+# the Copy button on Settings. We deliberately do NOT write into Claude's Scheduled folder:
+# that is another app's storage, the layout is not ours to depend on, and pasting into the
+# Claude window is a step a non-technical user can see working.
+AGENT_PROMPTS_DIR = os.path.join(HERE, 'agent_prompts')
+
+AGENT_PROMPTS = [
+    {'id': 'job-alert-resume', 'file': 'daily-discovery.md',
+     'title': 'Find new jobs every weekday morning',
+     'when': 'Weekdays at 6am',
+     'blurb': 'Searches the job boards, scores everything onto your board, and tailors a '
+              'resume for the local ones. Jobs further away wait for you to press Tailor.'},
+    {'id': 'job-tailor-queue-processor', 'file': 'tailor-queue.md',
+     'title': 'Tailor the resumes you asked for',
+     'when': 'Every hour, 7am to 6pm',
+     'blurb': 'Does nothing at all unless you pressed Tailor on a job. When you have, it '
+              'writes those resumes in the background so they are ready when you look.'},
+]
+
+
+def render_agent_prompt(name):
+    """The prompt text for one scheduled task, personalized. '' if the file is missing.
+
+    Substitution is a plain string replace on {{TOKEN}} — no template engine, because the
+    body is a prompt full of braces, backslashes and JSON and anything cleverer would start
+    interpreting them."""
+    path = os.path.join(AGENT_PROMPTS_DIR, name)
+    try:
+        with open(path, encoding='utf-8') as f:
+            text = f.read()
+    except OSError:
+        return ''
+    prof = load_json(cfg('profile.json'), {}) or {}
+    ident = prof.get('identity') if isinstance(prof.get('identity'), dict) else {}
+    loc = ((prof.get('search') or {}).get('location') or {}) if isinstance(prof.get('search'), dict) else {}
+    try:
+        from pipelib import resume_prefix as _rp
+        prefix = _rp()
+    except Exception:
+        prefix = 'Resume_'
+    # Script paths are built with os.path.join, not written into the template with literal
+    # backslashes: this app ships a macOS launcher too, and a hardcoded 'src\pipeline\...'
+    # is simply wrong there. to_process.json comes from the DATA root, which is not always
+    # the project folder once the code/data split is on.
+    for token, value in (
+        ('{{JOBPIPE}}', os.path.join(HERE, 'src', 'pipeline', 'jobpipe.py')),
+        ('{{GIT_DAILY}}', os.path.join(HERE, 'src', 'ops', 'git_daily.py')),
+        ('{{SCRAPE}}', os.path.join(HERE, 'src', 'pipeline', 'scrape.py')),
+        ('{{TO_PROCESS}}', TO_PROCESS),
+        ('{{PROJECT_DIR}}', HERE),
+        ('{{OWNER}}', str(ident.get('full_name') or '').strip() or 'the user'),
+        ('{{RESUME_PREFIX}}', prefix),
+        ('{{LOCAL_AREA}}', str(loc.get('formatted_address') or loc.get('query') or '').strip()
+         or 'your local area'),
+    ):
+        text = text.replace(token, value)
+    return text
+
+
 def load_json(fp, default):
     try:
         with open(fp, encoding='utf-8') as f: return json.load(f)
@@ -470,6 +624,107 @@ def resolve_port(default=8765):
     if env.isdigit(): return int(env)
     ic = instance_cfg().get('port')
     return ic if isinstance(ic, int) else default
+
+# ---- the port actually bound (config/runtime.json) ------------------------------
+# resolve_port() says which port this copy WANTS. When that port is taken by a foreign
+# process we bind the next free one instead (bind_port below) — and at that moment the
+# wanted port and the real port stop agreeing. watchdog.py and stop_board.py resolve the
+# port independently, so without this file the watchdog would probe an empty socket,
+# conclude the board is down, and start a second server every tick.
+#
+# So: the process that owns the socket writes where it is. The file lives beside the CODE
+# (not in the data root) because two worktrees sharing one data root are two servers, and
+# it is git-ignored per-copy state, never committed and never shipped.
+RUNTIME_JSON = os.path.join(os.path.dirname(INSTANCE_JSON), 'runtime.json')
+PORT_SCAN = 10                          # how many ports to try past the wanted one
+
+def runtime_write(port):
+    try:
+        os.makedirs(os.path.dirname(RUNTIME_JSON), exist_ok=True)
+        with open(RUNTIME_JSON, 'w', encoding='utf-8') as f:
+            json.dump({'port': port, 'pid': os.getpid(), 'boot': int(BOOT_TS),
+                       'codeDir': HERE,
+                       '_readme': 'Written by the running dashboard so the watchdog and'
+                                  ' stop_board find the socket it actually bound. Deleted on'
+                                  ' a clean stop. Safe to delete; do not edit.'}, f, indent=2)
+    except OSError:
+        pass                            # a read-only config dir must not stop the server
+
+def runtime_read():
+    d = load_json(RUNTIME_JSON, {})
+    return d if isinstance(d, dict) else {}
+
+def runtime_clear():
+    try:
+        if runtime_read().get('pid') == os.getpid():
+            os.remove(RUNTIME_JSON)     # only OUR record — never another instance's
+    except OSError:
+        pass
+
+def port_is_ours(port, timeout=1.0):
+    """Is the server on `port` THIS copy of the app? (None = nothing/not us answering.)
+
+    /api/dev/ping reports codeDir, so we can tell "I am already running" (do not start a
+    second one) apart from "some other program, or another copy, holds my port" (move over).
+    """
+    try:
+        conn = http.client.HTTPConnection('127.0.0.1', port, timeout=timeout)
+        conn.request('GET', '/api/dev/ping')
+        body = json.loads(conn.getresponse().read().decode('utf-8', 'replace'))
+        conn.close()
+    except Exception:
+        return None
+    cd = body.get('codeDir')
+    return None if not cd else (os.path.normcase(os.path.abspath(cd)) ==
+                                os.path.normcase(os.path.abspath(HERE)))
+
+class AlreadyRunning(Exception):
+    def __init__(self, port):
+        super().__init__('this copy of the dashboard is already running on %d' % port)
+        self.port = port
+
+def bind_port(preferred, wait=2.5):
+    """Bind `preferred`, or the next free port after it. Returns (server, port, moved_from).
+
+    Raises AlreadyRunning when the wanted port is held by THIS copy — a second dashboard on
+    the same data root is never what the user meant by double-clicking Start Here twice.
+
+    Moving over is a LAST resort, hence `wait`: /dev's restart closes the old socket and
+    launches the replacement immediately, so for a moment the port it was told to take is
+    still in teardown. Falling forward on that half-second would silently strand the
+    restarted server on 8766 while the browser polls 8765. So we insist on the wanted port
+    for a couple of seconds first, and only scan when something is genuinely camped on it.
+    """
+    if port_is_ours(preferred):
+        raise AlreadyRunning(preferred)
+    last, deadline = None, time.time() + max(0.0, wait)
+    while True:
+        try:
+            return ThreadingHTTPServer(('127.0.0.1', preferred), Handler), preferred, 0
+        except OSError as e:
+            last = e
+            if time.time() >= deadline:
+                break
+            time.sleep(0.25)
+    for n in range(1, PORT_SCAN + 1):
+        try:
+            return ThreadingHTTPServer(('127.0.0.1', preferred + n), Handler), preferred + n, preferred
+        except OSError as e:
+            last = e
+    raise last
+
+def live_port():
+    """The port a running instance of THIS copy is on, else None.
+
+    Used by --print-port so the launchers open the window that exists rather than the port
+    the config asked for. Verified against the socket: a stale file from a crashed run must
+    not send Start Here.bat to a dead port.
+    """
+    d = runtime_read()
+    p = d.get('port')
+    if not isinstance(p, int) or d.get('pid') == os.getpid():
+        return None
+    return p if port_is_ours(p) else None
 
 def scheduler_disabled():
     return _env_truthy_pl('DISABLE_SCHEDULER') or bool(instance_cfg().get('disable_scheduler'))
@@ -721,6 +976,24 @@ def watchdog_state():
     return {'desired': bool(s.get('watchdog', False)), 'enabled': mwd.is_enabled(),
             'supported': mwd.supported(), 'everyMin': every, 'pauseMin': pause,
             'task': mwd.TASK_NAME, 'error': WATCHDOG_ERR}
+
+# The watchdog moved into the nav chip's bubble (it is the setting that CAUSES the missed runs
+# the chip counts), so /api/sched-status now carries it — and that endpoint is polled once a
+# minute by every open tab. mwd.is_enabled() shells out to schtasks.exe, which is far too much
+# process-spawning for a fact that only changes when the user flips the switch. Cached briefly;
+# the toggle clears the cache, so the bubble never lags behind the switch it points at.
+_WD_CACHE = {'at': 0.0, 'val': None}
+_WD_TTL = 45.0
+
+def watchdog_state_cached():
+    now = time.time()
+    if _WD_CACHE['val'] is None or (now - _WD_CACHE['at']) > _WD_TTL:
+        _WD_CACHE['val'] = watchdog_state()
+        _WD_CACHE['at'] = now
+    return _WD_CACHE['val']
+
+def watchdog_cache_clear():
+    _WD_CACHE['at'] = 0.0
 
 def reconcile_watchdog():
     """Make the scheduled task match the wanted setting. It defaults to OFF: registering a
@@ -1094,7 +1367,10 @@ class Handler(BaseHTTPRequestHandler):
             # Liveness + process identity. The restart flow polls this and waits for a pid/boot
             # DIFFERENT from the one it started with: "the port answers" on its own would match
             # the old process in the moment before it exits, and the page would reload too early.
-            return self._send(200, json.dumps({'ok': True, 'pid': os.getpid(), 'boot': BOOT_TS}))
+            # codeDir identifies WHICH copy answered, so a starting server can tell "I am already
+            # running here" from "another copy (or another program) is sitting on my port".
+            return self._send(200, json.dumps({'ok': True, 'pid': os.getpid(), 'boot': BOOT_TS,
+                                               'codeDir': HERE, 'port': PORT}))
         if p == '/api/dev/info':
             return self._send(200, json.dumps(dev_info()))
         if p == '/api/archived':
@@ -1128,6 +1404,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, json.dumps({'available': False}))
             st = sched.status_all()
             st['available'] = True
+            # Rides along because the chip's bubble is now the only place the watchdog warning
+            # appears, and a second fetch per poll per tab to say "still off" is not worth it.
+            st['watchdog'] = watchdog_state_cached()
             return self._send(200, json.dumps(st))
         if p == '/api/autostart':
             return self._send(200, json.dumps(autostart_state()))
@@ -1174,6 +1453,16 @@ class Handler(BaseHTTPRequestHandler):
             except Exception as e:
                 return self._send(200, json.dumps({'available': False, 'binary': '',
                                                    'apiKeyInEnv': False, 'error': str(e)}))
+        if p == '/api/agent-prompts':
+            # The two scheduled-task prompts, personalized, for the Copy buttons on Settings.
+            # Always 200 with a list: a missing agent_prompts/ file yields an empty `prompt`
+            # and the UI disables that one card, rather than the whole section erroring out.
+            try:
+                out = [dict(a, prompt=render_agent_prompt(a['file'])) for a in AGENT_PROMPTS]
+                return self._send(200, json.dumps({'prompts': out, 'projectDir': HERE}))
+            except Exception as e:
+                return self._send(200, json.dumps({'prompts': [], 'projectDir': HERE,
+                                                   'error': str(e)}))
         if p == '/api/data-root':
             # Where this user's settings + tracker data live, and how that was decided.
             # Read-only here; POST writes the override into config/instance.json.
@@ -1486,7 +1775,7 @@ class Handler(BaseHTTPRequestHandler):
                     return '', False
                 try:
                     c = scr.classify(role or '', skills or '')
-                    base = c.get('baseResume', '')      # e.g. 'resume_template/PHAM_KHOA_RESUME.docx'
+                    base = c.get('baseResume', '')      # e.g. 'resume_template/<base>.docx'
                     name = os.path.basename(base)
                     # Resolve against pipelib.TEMPLATE_DIR — the SAME folder tailor_local copies
                     # from, which follows the DATA root. This used to test
@@ -2191,6 +2480,9 @@ class Handler(BaseHTTPRequestHandler):
             every = int(s.get('watchdogEveryMin', 5) or 5)
             ok, msg = (mwd.install(every) if enable else mwd.uninstall())
             WATCHDOG_ERR = '' if ok else msg
+            # The nav chip's bubble reads a cached copy; drop it so the warning it shows agrees
+            # with the switch the user just moved, on the very next poll rather than 45s later.
+            watchdog_cache_clear()
             return self._send(200, json.dumps({'ok': ok, 'message': msg, 'state': watchdog_state()}))
         return self._send(404, '{"error":"not found"}')
 
@@ -2202,20 +2494,32 @@ def main():
     # instance's port instead of hardcoding it: `python src/web/dashboard_server.py --print-port`
     # prints the number and exits without binding a socket or starting the scheduler.
     if '--print-port' in sys.argv:
-        print(PORT); return
-    url = f'http://127.0.0.1:{PORT}/'
+        # A RUNNING instance wins over the configured number: if it had to move over, the
+        # launcher must open the window that exists, not the port the config asked for.
+        print(live_port() or PORT); return
     staging = scheduler_disabled()     # staging instances disable the scheduler (and autostart)
     label = instance_label()
     try:
-        srv = ThreadingHTTPServer(('127.0.0.1', PORT), Handler)
-    except OSError as e:
-        print(f'The dashboard did not start on {url} ({e}).')
-        print('The dashboard is probably already running in another window. Open ' + url + ' in your browser.')
+        srv, PORT, moved_from = bind_port(PORT)
+    except AlreadyRunning as e:
+        url = f'http://127.0.0.1:{e.port}/'
+        print(f'The dashboard is already running in another window on {url}.')
+        print('Open that address in your browser. (Nothing was started — a second copy on the'
+              ' same data would fight the first over every file it writes.)')
         input('Press Enter to close.'); return
+    except OSError as e:
+        print(f'The dashboard did not start ({e}).')
+        print(f'Ports {PORT}-{PORT + PORT_SCAN} are all busy. Free one, or set a different'
+              ' "port" in config/instance.json.')
+        input('Press Enter to close.'); return
+    url = f'http://127.0.0.1:{PORT}/'
     SERVER_OBJ = srv          # /api/dev/restart needs to release this socket before relaunching
+    runtime_write(PORT)       # tell watchdog.py / stop_board.py where we actually landed
     print('=' * 60)
     print(f'  Job tracker dashboard is running:  {url}' + (f'   [{label}]' if label else ''))
     print('  Keep this window OPEN. Close it to stop the dashboard.')
+    if moved_from:
+        print(f'  NOTE: port {moved_from} was busy (not this app), so this window took {PORT}.')
     print('=' * 60)
     if staging:
         print('  Scheduler DISABLED for this instance (config/instance.json disable_scheduler'
@@ -2253,7 +2557,9 @@ def main():
         threading.Timer(1.0, lambda: webbrowser.open(url)).start()
     try: srv.serve_forever()
     except KeyboardInterrupt: pass
-    finally: srv.server_close()
+    finally:
+        srv.server_close()
+        runtime_clear()       # a stale port record would send the watchdog at a dead socket
 
 if __name__ == '__main__':
     main()

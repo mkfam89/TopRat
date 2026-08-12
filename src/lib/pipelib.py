@@ -109,7 +109,7 @@ def resolve_data_root():
         d = os.path.expanduser(d)
         # A Windows path ("C:\...") read on a non-Windows box is not a path at all there:
         # '\' and ':' are ordinary characters, so os.makedirs() would happily create ONE
-        # folder literally named 'C:\Users\...\job_agent_profile_KP' inside the repo, and
+        # folder literally named 'C:\Users\you\...\job_agent_profile_XX' inside the repo, and
         # the run would write its state into that junk instead of the real data root.
         # Ignore the pointer instead and fall through to the platform defaults.
         if os.name != 'nt' and re.match(r'^[A-Za-z]:[\\/]', d):
@@ -246,6 +246,76 @@ def _profile_template_dir():
     return ''
 
 
+# ---------------------------------------------------------------- resume prefix
+# Every tailored resume is named "<prefix><Company>_<Role>.docx". The prefix used to be a
+# hardcoded literal carrying the FIRST user's name, in six places, so a second user got
+# resumes with someone else's name in the filename. It now comes from profile.json
+# identity.resume_prefix (the field setup.py / the /setup page have always written but
+# nothing ever read).
+#
+# Three-step fallback, so the zero-token script path still runs with NO profile at all:
+#   1. identity.resume_prefix           — what the wizard stored
+#   2. derived from identity.full_name  — "Jane Doe" -> "Jane_Doe_Resume_"
+#   3. _DEFAULT_RESUME_PREFIX           — anonymous last resort
+# Step 3 is deliberately GENERIC rather than the original owner's literal prefix. Keeping
+# that literal as the default read like harmless backward compatibility, but it is exactly
+# the string release.py's PII gate exists to keep out of a shipped copy — and it was dead
+# weight anyway, since any configured install sets step 1.
+_DEFAULT_RESUME_PREFIX = 'Resume_'
+
+# Matches the configured prefix AND any legacy/other-user one. Filenames already on disk
+# were written under whatever prefix was current when they were tailored; the scan filters
+# and stem() must keep resolving those, or every previously-tailored resume in New/ and
+# Applied/ silently stops matching its tracker id. Non-greedy: '_Resume_' occurs once.
+_ANY_PREFIX_RE = re.compile(r'^.+?_Resume_')
+
+_resume_prefix_cache = None
+
+def _derive_resume_prefix(full_name):
+    parts = re.findall(r'[A-Za-z0-9]+', full_name or '')
+    return ('_'.join(parts) + '_Resume_') if parts else ''
+
+def resume_prefix():
+    """Filename prefix for tailored resumes, from profile.json (cached per process)."""
+    global _resume_prefix_cache
+    if _resume_prefix_cache is None:
+        prof = _read_json_quiet(cfg('profile.json'))
+        ident = prof.get('identity') if isinstance(prof, dict) else None
+        ident = ident if isinstance(ident, dict) else {}
+        p = str(ident.get('resume_prefix') or '').strip()
+        if not p:
+            p = _derive_resume_prefix(ident.get('full_name'))
+        # A prefix without the separator would collide with the stem, so normalize it.
+        if p and not p.endswith('_'):
+            p += '_'
+        _resume_prefix_cache = p or _DEFAULT_RESUME_PREFIX
+    return _resume_prefix_cache
+
+def reset_resume_prefix():
+    """Drop the cache — for tests and for the /setup save path."""
+    global _resume_prefix_cache
+    _resume_prefix_cache = None
+
+def is_resume_file(fname):
+    """Is this a tailored-resume file (any prefix, current or legacy)?
+
+    Used by every folder scan. Deliberately prefix-AGNOSTIC rather than an equality
+    check on resume_prefix(): the moment a user edits the prefix in Settings, an
+    equality check would orphan every resume already on disk."""
+    # Extension check stays case-SENSITIVE to match the scans this replaced (and stem(),
+    # which strips a lowercase extension). Loosening it here would admit a '.PDF' that
+    # stem() then fails to strip, producing an id with the extension still attached.
+    #
+    # '~$' is rejected HERE, not just by the callers. The old literal-prefix test excluded
+    # a Word lock file ('~$<prefix>Acme_SRE.docx') for free because it did not start with
+    # the prefix; the regex matches it, and dashboard_build._id_in_dir has no separate '~$'
+    # guard — a stale lock file would have read as "this job's resume is already filed here"
+    # and deleted the real copy out of New/.
+    if fname.startswith('~$') or fname.startswith('PREVIEW'):
+        return False
+    return fname.endswith(('.pdf', '.docx')) and bool(_ANY_PREFIX_RE.match(fname))
+
+
 _DATA_TEMPLATES = os.path.join(DATA, 'resume_template')
 TEMPLATE_DIR = (_profile_template_dir()
                 or (_DATA_TEMPLATES if SPLIT and os.path.isdir(_DATA_TEMPLATES)
@@ -279,13 +349,16 @@ def template_files():
     except OSError:
         return []
 
-# Exclude every file that lives in resume_template/ (by basename) from job-folder
-# scans, plus legacy names for backward compatibility.
-TEMPLATES = set(template_files()) | {
-    'PHAM_KHOA_RESUME.pdf', 'PHAM_KHOA_RESUME.docx',
-    'Khoa_Pham_Resume_business_data_analyst.docx',
-    'Khoa_Pham_Resume_TechSupportEng.docx',
-}
+# Exclude every file that lives in resume_template/ (by basename) from job-folder scans.
+#
+# There used to be a hardcoded set of four legacy basenames here from the original
+# single-user install. They were personal filenames living in shipped code — the thing
+# release.py's PII gate rejects — and they were also the wrong mechanism: any base resume
+# the user actually has is already covered by template_files(), and a legacy name that is
+# NO LONGER in the template folder describes a file this install has no other reason to
+# know about. A user who still has such a stray in a job folder can delete it, which is
+# what they would have to do for any other stray anyway.
+TEMPLATES = set(template_files())
 
 def load_json(p, default=None):
     try:
@@ -326,7 +399,16 @@ def _safe_write_text(path, text, verify_json=False, tries=6):
     raise IOError('safe_write failed for %s after %d tries (%s)' % (path, tries, last))
 
 def stem(fname):
-    return fname.replace('Khoa_Pham_Resume_', '').replace('.pdf', '').replace('.docx', '')
+    # Strip the CONFIGURED prefix first, then fall back to any '<name>_Resume_' prefix, so
+    # files tailored under an older prefix (or by a previous owner of the install) still
+    # resolve to their tracker id. Order matters: the configured prefix is exact, the
+    # regex is a best-effort rescue for everything else.
+    p = resume_prefix()
+    if p and fname.startswith(p):
+        fname = fname[len(p):]
+    else:
+        fname = _ANY_PREFIX_RE.sub('', fname, count=1)
+    return fname.replace('.pdf', '').replace('.docx', '')
 def camel_to_words(s):
     s = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1 \2', s)
     s = re.sub(r'([a-z\d])([A-Z])', r'\1 \2', s)

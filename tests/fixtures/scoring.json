@@ -2016,7 +2016,9 @@
    "baseType": "docx",
    "category": "CORE"
   },
-  "flagged": [],
+  "flagged": [
+   "Change Management"
+  ],
   "id": "li_4445471875",
   "requiredSkills": [
    "Azure",
@@ -2032,7 +2034,7 @@
    "SQL",
    "REST APIs"
   ],
-  "skillMatch": 0.92,
+  "skillMatch": 0.85,
   "title": "Sr. IT Analyst"
  },
  {

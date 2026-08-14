@@ -1,0 +1,201 @@
+{
+  "_note": "FROZEN TEST COPY of config/skill_aliases.json. Maps posting-specific tool names onto canonical skills so skill-match reflects transferable capability. Only 'aliases' and 'substringStems' are read (scoring._matchable).",
+  "aliases": {
+    "Kubernetes": [
+      "AKS",
+      "Azure Kubernetes Service",
+      "Azure Kubernetes Service (AKS)",
+      "EKS",
+      "GKE",
+      "K8s",
+      "Helm",
+      "OpenShift",
+      "Kustomize",
+      "Container Orchestration"
+    ],
+    "Azure DevOps": [
+      "Azure Repos",
+      "Azure Pipelines",
+      "Azure DevOps Pipelines",
+      "Pipelines",
+      "Azure Boards",
+      "Boards",
+      "Azure Artifacts",
+      "Artifacts",
+      "ADO",
+      "Azure Pipeline"
+    ],
+    "Azure": [
+      "Microsoft Azure",
+      "Azure Virtual Desktop",
+      "Azure Virtual Desktop (AVD)",
+      "AVD",
+      "Microsoft Entra ID",
+      "Entra ID",
+      "Azure AD",
+      "Azure Active Directory",
+      "Azure SQL",
+      "Azure Functions",
+      "Azure Roles",
+      "Azure Cloud",
+      "Microsoft 365",
+      "M365"
+    ],
+    "CI/CD": [
+      "GitHub Actions",
+      "GitLab CI",
+      "Jenkins",
+      "ArgoCD",
+      "Argo CD",
+      "GitOps",
+      "CircleCI",
+      "Travis CI",
+      "Continuous Integration",
+      "Continuous Delivery",
+      "Continuous Deployment",
+      "DevSecOps",
+      "Build Pipelines"
+    ],
+    "Monitoring": [
+      "Azure Monitor",
+      "Log Analytics",
+      "Azure Log Analytics",
+      "Application Insights",
+      "App Insights",
+      "Datadog",
+      "New Relic",
+      "Dynatrace",
+      "Splunk",
+      "ELK",
+      "Kibana",
+      "AppDynamics",
+      "CloudWatch"
+    ],
+    "Observability": [
+      "OpenTelemetry",
+      "Distributed Tracing",
+      "Telemetry",
+      "OTel"
+    ],
+    "Infrastructure as Code": [
+      "ARM",
+      "ARM Templates",
+      "Bicep",
+      "BICEP",
+      "Pulumi",
+      "Terragrunt",
+      "Provisioning"
+    ],
+    "Terraform": [
+      "Terraform (HCL)",
+      "HCL"
+    ],
+    "Git": [
+      "GitHub",
+      "GitLab",
+      "Bitbucket",
+      "Version Control",
+      "Git SCM",
+      "Source Control"
+    ],
+    "SQL": [
+      "PostgreSQL",
+      "Postgres",
+      "MySQL",
+      "T-SQL",
+      "MSSQL",
+      "MS SQL",
+      "SQL Server",
+      "KQL",
+      "Kusto",
+      "Azure SQL Database",
+      "MariaDB",
+      "PL/SQL",
+      "Relational Databases"
+    ],
+    "Bash": [
+      "Shell",
+      "Shell Scripting",
+      "Shell Scripts",
+      "Unix Shell",
+      "Scripting"
+    ],
+    "Python": [
+      "Python3",
+      "Py"
+    ],
+    "Linux": [
+      "Ubuntu",
+      "Debian",
+      "RHEL",
+      "Red Hat",
+      "CentOS",
+      "Unix",
+      "Linux Administration",
+      "Linux System Administration"
+    ],
+    "REST APIs": [
+      "REST",
+      "RESTful",
+      "REST API",
+      "API",
+      "APIs",
+      "Web API",
+      "Web Services",
+      "Postman",
+      "cURL",
+      "OpenAPI",
+      "Swagger",
+      "Webhooks"
+    ],
+    "Docker": [
+      "Containers",
+      "Containerization",
+      "Podman",
+      "Container"
+    ],
+    "Incident Management": [
+      "On-call",
+      "On call",
+      "PagerDuty",
+      "Incident Response",
+      "Opsgenie",
+      "MTTR",
+      "Site Reliability"
+    ],
+    "Data Quality": [
+      "Data Validation",
+      "Data Cleansing",
+      "Data Scrubbing",
+      "Data Cleaning",
+      "Data Integrity"
+    ],
+    "Ansible": [
+      "Configuration Management",
+      "Config Management"
+    ],
+    "Automation": [
+      "Runbooks",
+      "Toil Reduction",
+      "Workflow Automation"
+    ]
+  },
+  "substringStems": [
+    "kubernetes",
+    "terraform",
+    "ansible",
+    "prometheus",
+    "grafana",
+    "logstash",
+    "jenkins",
+    "gitlab",
+    "github",
+    "azuredevops",
+    "postgres",
+    "openshift",
+    "rundeck",
+    "pagerduty",
+    "microsoftazure",
+    "azuremonitor"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+ "_readme": "Depersonalized profile for the test data root. Only the fields the config-derived goldens actually read: search.titles feeds scoring._title_terms, search.location + radius_miles feed locality.profile_center. No identity block.",
+ "search": {
+  "titles": [
+   "devops",
+   "site reliability",
+   "cloud",
+   "platform",
+   "support",
+   "data analyst",
+   "business analyst",
+   "operations analyst",
+   "data quality"
+  ],
+  "location": {
+   "query": "Houston, Texas",
+   "city": "Houston",
+   "state": "TX",
+   "country": "US",
+   "lat": 29.7589382,
+   "lon": -95.3676974,
+   "formatted_address": "Houston, TX, US"
+  },
+  "radius_miles": 55
+ }
+}

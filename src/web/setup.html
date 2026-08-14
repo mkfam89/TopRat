@@ -273,16 +273,16 @@
 <body>
 <div class="wrap">
   <h1>Settings</h1>
-  <p class="sub">Four things are required: your <b>name</b>, <b>target roles</b>, <b>location</b>, and <b>skills</b>.
-    Everything else is optional and can wait. Every value can be changed later.<br>
-    <b>Nothing is written until you press Save.</b> Each step has its own <b>✓ Save this step</b> button; a step
-    with edits you have not saved shows a <b style="color:#b45309">•</b> on its tab. A save writes
-    <code>config/profile.json</code> and regenerates your search URLs, skills list, and alerts.</p>
+  <p class="sub">Four items are necessary: your <b>name</b>, <b>target roles</b>, <b>location</b>, and <b>skills</b>.
+    Everything else is optional. You can change every value later.<br>
+    <b>The app writes nothing until you press Save.</b> Each step has its own <b>✓ Save this step</b> button.
+    A step with unsaved changes shows a <b style="color:#b45309">•</b> on its tab. A save writes
+    <code>config/profile.json</code>. It then makes your search URLs, your skills list and your alerts again.</p>
 
   <div class="welcome" id="welcome_box">
     <b>👋 Welcome!</b> Your profile does not exist yet. It takes about 2 minutes to make. The profile
-    drives job discovery, scoring, and resume tailoring. You can skip it now. The dashboard then
-    reminds you once a day.
+    controls job discovery, scoring and resume tailoring. You can skip it now. The dashboard then
+    reminds you one time each day.
     <div style="margin-top:12px;"><button class="skip" type="button" onclick="skipSetup()">Skip for now →</button></div>
   </div>
 
@@ -308,7 +308,7 @@
     <div class="row">
       <div><label>Tailored-resume filename prefix</label><input id="resume_prefix" type="text" placeholder="Jane_Doe_Resume_">
         <div class="hint">The app names each tailored file <i>prefix</i> + Company_Role.docx.
-          Leave it empty and the greyed-out suggestion from your name is used.</div></div>
+          If you leave the box empty, the app uses the gray suggestion from your name.</div></div>
     </div>
     <div class="row">
       <div><label>Resume folder</label>
@@ -322,24 +322,24 @@
           <button class="ghost" type="button" id="browse_template_dir"
                   onclick="browseInto('template_dir','Choose the folder with your base resumes')">📂 Browse…</button>
         </div>
-        <div class="hint">Your base resumes (and the STAR stories file, if you have one) live here.
-          It is the only content source the app tailors from — nothing is invented, and nothing
-          outside this folder is read. Leave it empty to use the greyed-out folder, which the app
-          creates for you. Browse elsewhere if your resumes already live somewhere you keep backed
-          up — Documents, Dropbox, OneDrive.</div>
+        <div class="hint">Your base resumes stay here, with the STAR stories file if you have one.
+          This folder is the only content source for tailoring. The app invents nothing, and it
+          reads no file outside this folder. If you leave the box empty, the app uses the gray
+          folder and makes that folder for you. If your resumes are already in a folder with a
+          backup, such as Documents, Dropbox or OneDrive, click Browse and select it.</div>
         <div class="callout warn" id="tpl_outside" style="display:none;margin-top:8px;">
-          That folder is <b>outside the app folder</b>. Two consequences: the daily Git checkpoint
-          and <code>Backups\snapshots\</code> will not cover your base resumes, and if the folder is
-          ever missing or offline (a sync folder that has not downloaded yet) the app quietly falls
-          back to its own <code>resume_template</code> instead of stopping — so a run could tailor
-          from the wrong base. Fine if you want it; just know it is not covered by the app's backup.
+          CAUTION: That folder is <b>outside the app folder</b>. There are two results. The daily
+          Git checkpoint and <code>Backups\snapshots\</code> do not cover your base resumes. Also,
+          if the folder is absent or offline, the app uses its own <code>resume_template</code> and
+          continues. A sync folder that did not download yet is offline. A run can then tailor from
+          the wrong base resume. This location is a valid choice, but the app backup does not cover it.
         </div>
-        <div class="hint">Takes effect after you save this step and restart the dashboard.</div></div>
+        <div class="hint">This change takes effect after you save this step and restart the dashboard.</div></div>
     </div>
     <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
       <button class="ghost" type="button" id="import_btn">📂 Load an existing profile.json…</button>
       <input type="file" id="import_file" accept=".json,application/json" style="display:none">
-      <span class="hint">The app backs up your current profile automatically. It keeps the last 2 copies.</span>
+      <span class="hint">The app copies your current profile automatically. It keeps the last 2 copies.</span>
     </div>
   </div>
   </div>
@@ -354,13 +354,13 @@
     <label>Target role keywords <span class="hint">(comma-separated · the app quotes multi-word terms)</span></label>
     <textarea id="titles" placeholder="site reliability engineer, devops engineer"></textarea>
 
-    <label>Location <span class="hint">(where you are — the app measures every job's distance from here)</span></label>
+    <label>Location <span class="hint">(where you are. The app measures the distance to each job from here)</span></label>
     <div class="geo">
       <input id="loc_query" type="text" placeholder="Austin, TX">
       <!-- "Look up" alone reads like a search. It geocodes: city text → coordinates, which is
            what the radius filter and the nearby-first ranking need. Say that on the button. -->
       <button class="ghost" type="button" onclick="lookup()"
-              title="Turns the city you typed into map coordinates (latitude/longitude) so jobs can be ranked by distance.">📍 Get coordinates</button>
+              title="Turns the city that you typed into map coordinates (latitude and longitude). The app then ranks jobs by distance.">📍 Get coordinates</button>
     </div>
     <div class="hint" id="loc_resolved"></div>
 
@@ -387,7 +387,7 @@
   <details class="sec" id="sec_filters">
     <summary>
       <span class="st">Narrow it down</span>
-      <span class="sv">Salary floor, radius, years of experience, remote/hybrid, seniority. Skip it and you see everything.</span>
+      <span class="sv">Salary floor, radius, years of experience, remote or hybrid, and seniority. If you skip this step, you see every job.</span>
       <span class="pill">optional</span>
     </summary>
     <div class="body">
@@ -396,9 +396,16 @@
 
       <div class="row">
         <div><label>Radius (miles)</label><input id="radius_miles" type="number" min="0"></div>
-        <div><label>Min salary ($/yr)</label><input id="salary_min" type="number" min="0" step="1000"></div>
-        <div><label>Max salary ($/yr)</label><input id="salary_max" type="number" min="0" step="1000"></div>
+        <div><label>Min salary ($/yr)</label><input id="salary_min" type="number" min="0" step="1000" placeholder="none"></div>
+        <div><label>Max salary ($/yr)</label><input id="salary_max" type="number" min="0" step="1000" placeholder="none"></div>
       </div>
+      <!-- The minimum stopped being search-only on 2026-08-13: it now also removes jobs from
+           the board. A number that quietly deletes results must say so where it is typed. -->
+      <div class="hint">The app sends the <b>minimum</b> to the job boards, and it also removes a
+        job from your board when the pay is below it. It removes a job only when the posting
+        states the pay, or when Adzuna estimates it. It compares the <b>top</b> of the range, so
+        $95,000-$130,000 stays for a $105,000 minimum. A job that shows no pay always stays.
+        Set the minimum to 0 to stop the removal.</div>
       <div class="row">
         <div><label>Min years experience</label><input id="yoe_min" type="number" min="0"></div>
         <div><label>Max years experience</label><input id="yoe_max" type="number" min="0"></div>
@@ -433,9 +440,9 @@
        as a menu, not a form. The JS opens exactly one — the first thing not yet set up. -->
   <div class="pane" data-step="3">
 
-  <p class="lead"><b>All of this is optional.</b> The pipeline searches, scores, tracks, and writes
-    template resumes without a single one of them. Open a row to see what it adds. You can finish
-    setup having opened none.</p>
+  <p class="lead"><b>All of this is optional.</b> The pipeline searches, scores, tracks and writes
+    template resumes without them. Open a row to see what that row adds. You can complete the setup
+    and open no row.</p>
 
   <!-- 1 · one checkbox, and it is the difference between the app working and not working.
        Sits above phone alerts because everything else on this page assumes the app is running:
@@ -444,13 +451,13 @@
   <details class="sec" id="sec_uptime">
     <summary>
       <span class="st">Keep it running</span>
-      <span class="sv">Let Windows start the dashboard again if it stops — so the searches keep happening.</span>
+      <span class="sv">Windows starts the dashboard again if it stops, so the searches continue.</span>
       <span class="pill">optional</span>
     </summary>
     <div class="body">
-      <p class="why">The searches run inside this dashboard, so they only happen while it is open. Turn
-        this on and Windows checks every few minutes whether it is running, and starts it again —
-        <b>minimized</b>, so it never takes over your screen.</p>
+      <p class="why">The searches run inside this dashboard, so they happen only while it is open. If
+        you turn this setting on, Windows looks at the dashboard every few minutes. If the dashboard
+        is closed, Windows starts it again <b>minimized</b>, so it never covers your screen.</p>
       <label class="tog"><input type="checkbox" id="uptime_watchdog"> Restart the dashboard by itself if it stops</label>
       <div class="row" style="margin-top:10px;">
         <div><label>Check every</label>
@@ -464,7 +471,7 @@
       <!-- Unlike every other field on this page, this one acts on the machine the moment it is
            clicked (it registers a Windows scheduled task), so it must say so — otherwise the
            user leaves without pressing Save and assumes nothing happened. -->
-      <div class="hint" id="uptime_status">This one applies straight away — you do not need to save it.</div>
+      <div class="hint" id="uptime_status">This setting applies immediately. You do not need to save it.</div>
     </div>
   </details>
 
@@ -472,18 +479,18 @@
   <details class="sec" id="sec_ntfy">
     <summary>
       <span class="st">Phone alerts</span>
-      <span class="sv">Get a push when a new match appears — including while the dashboard is closed.</span>
+      <span class="sv">Get an alert on your phone when a new match appears, also while the dashboard is closed.</span>
       <span class="pill">optional</span>
     </summary>
     <div class="body">
-      <p class="why">The hourly radar runs as a plain script and pushes one grouped alert per batch of
-        new matches. Free, no account: you invent a secret <b>topic</b> name and subscribe your phone to
-        it. Blank topic = nothing is sent.</p>
+      <p class="why">The hourly radar runs as a plain script. It sends one grouped alert for each batch
+        of new matches. It is free and it needs no account. You invent a secret <b>topic</b> name, and
+        your phone subscribes to that topic. If the topic box is empty, the app sends nothing.</p>
       <div class="helpbar">
-        <span class="txt">The guide generates a secure topic and walks through the phone app.</span>
+        <span class="txt">The guide makes a secure topic and shows you each step in the phone app.</span>
         <a class="howto" href="/help/ntfy" target="_blank">📱 How to configure ntfy →</a>
       </div>
-      <label>ntfy topic <span class="hint">(long random string — treat it like a password)</span></label>
+      <label>ntfy topic <span class="hint">(a long random string. Keep it secret, like a password)</span></label>
       <input id="notify_topic" type="text" placeholder="jobradar-7f3b91c4d2e8">
       <div class="hint">Anyone who guesses the topic can read your alerts. Do not use "jobs".</div>
       <label class="tog"><input type="checkbox" id="notify_enabled"> Enable phone alerts</label>
@@ -491,7 +498,7 @@
         <button class="ghost" type="button" onclick="testNotify()">🔔 Send test alert</button>
         <span id="notify_status" class="hint"></span>
       </div>
-      <div class="hint">Press ✓ Save this step first — the test reads the saved topic, not the box above.</div>
+      <div class="hint">Press ✓ Save this step first. The test reads the saved topic, and not the box above.</div>
     </div>
   </details>
 
@@ -503,20 +510,20 @@
   <details class="sec" id="sec_claudecli">
     <summary>
       <span class="st">AI resume tailoring</span>
-      <span class="sv">Rewrites each resume for the posting — hands-off in the queue, or with your own notes.</span>
+      <span class="sv">Rewrites each resume for the posting, automatically in the queue or with your own notes.</span>
       <span class="pill">optional</span>
     </summary>
     <div class="body">
-      <p class="why">Runs <b>Claude Code</b> on this machine, on the Claude plan you already pay for —
-        <b>no API key, nothing metered</b>. Without it the queue still runs and produces a template-copy
-        resume; it just isn't rewritten for the posting.</p>
-      <p class="why">Once it is installed you also get a <b>notes box</b> on the job board's
-        <b>Tailor resume</b> button — "lead with the on-call work", "they want Terraform, not Azure" —
-        and the tailoring pass reads it. There is nothing to switch on: the box appears because the
-        thing that reads it exists.</p>
+      <p class="why">This feature runs <b>Claude Code</b> on this machine, on the Claude plan that you
+        already pay for. There is <b>no API key and no metered cost</b>. Without Claude Code, the queue
+        still runs and makes a template copy. That copy is not rewritten for the posting.</p>
+      <p class="why">After you install it, the <b>Tailor resume</b> button on the job board also shows a
+        <b>notes box</b>. You can type "lead with the on-call work" or "they want Terraform, not Azure",
+        and the tailoring pass reads your note. There is no switch. The box appears because the
+        software that reads it is present.</p>
       <div class="helpbar">
-        <span class="txt">Install Claude Code, run <code>claude login</code>, sign in with your plan.</span>
-        <a class="howto" href="/help/claude-code" target="_blank">⚡ How to set this up →</a>
+        <span class="txt">Install Claude Code. Run <code>claude login</code>. Then sign in with your plan.</span>
+        <a class="howto" href="/help/claude-code" target="_blank">⚡ How to configure this →</a>
       </div>
       <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
         <button type="button" onclick="testClaudeCli()">Check now</button>
@@ -528,18 +535,18 @@
            after the old job_tracker.html was replaced; the caps sat on the Schedule page,
            beside run times they have nothing to do with). -->
       <div class="subhead">When to use AI instead of a template</div>
-      <p class="why">When your skills already cover a posting, the run copies the matching
-        template — free, instant, no tokens. AI tailoring is for the postings your skills
-        <b>don't</b> already cover. This is where that line sits.</p>
+      <p class="why">If your skills already cover a posting, the run copies the matching template.
+        That copy is free and immediate, and it uses no tokens. AI tailoring is for the postings that
+        your skills <b>do not</b> cover. This setting is that limit.</p>
       <label>Use a template when the skill match is at least</label>
       <select id="cust_level" onchange="syncCustHint()"></select>
       <div class="hint" id="cust_hint"></div>
 
       <div class="subhead">How many AI resumes per scheduled run</div>
-      <p class="why">Each scheduled run sorts by <b>local jobs first, then best skill match</b> and
-        AI-tailors the top N. <b>Only AI resumes count against the cap</b> — a template copy is free
-        and instant, so those are never capped, and neither is a job you queue yourself with the
-        <b>Tailor</b> button.</p>
+      <p class="why">Each scheduled run sorts the jobs by <b>local jobs first, then best skill
+        match</b>. It then AI-tailors the top N jobs. <b>Only AI resumes count against the cap.</b> A
+        template copy is free and immediate, so the cap never applies to it. The cap also never
+        applies to a job that you queue with the <b>Tailor</b> button.</p>
       <div class="row">
         <div><label>Daily run — AI-tailor up to</label><input id="prio_daily" type="number" min="0" value="20"></div>
         <div><label>Hourly run — AI-tailor up to</label><input id="prio_queue" type="number" min="0" value="10"></div>
@@ -558,23 +565,23 @@
   <details class="sec" id="sec_agents">
     <summary>
       <span class="st">Run it automatically</span>
-      <span class="sv">Searches and tailors on a schedule, so your board is filled in when you open it.</span>
+      <span class="sv">Searches and tailors on a schedule, so your board is full when you open it.</span>
       <span class="pill">optional</span>
     </summary>
     <div class="body">
-      <p class="why">Everything here works by hand without this — press <b>Search</b> and
-        <b>Tailor</b> yourself and nothing changes. This just does it for you on a schedule.
-        You set it up by <b>pasting a message into Claude</b>; there is no file to edit.</p>
+      <p class="why">Everything here also works by hand. Press <b>Search</b> and <b>Tailor</b>
+        yourself, and the result is the same. This feature only does it for you on a schedule. To
+        configure it, <b>paste a message into Claude</b>. There is no file to edit.</p>
       <ol class="steps3">
         <li>Press <b>Copy</b> on one of the cards below.</li>
-        <li>Open <b>Claude</b> and paste it into a new chat.</li>
-        <li>Send it. Claude sets up the scheduled task and tells you when it will run.
-          <span class="q">Repeat for the second card.</span></li>
+        <li>Open <b>Claude</b> and paste the message into a new chat.</li>
+        <li>Send the message. Claude makes the scheduled task and gives you the run time.
+          <span class="q">Do the same for the second card.</span></li>
       </ol>
       <div id="agent_cards"></div>
-      <p class="why" style="margin-bottom:0;">Your computer has to be on and Claude running at
-        the scheduled time. Nothing is lost if it isn't — the next run picks up everything that
-        was posted in the meantime.</p>
+      <p class="why" style="margin-bottom:0;">Your computer must be on, and Claude must run at the
+        scheduled time. If your computer is off, you lose nothing. The next run collects every
+        posting from the time in between.</p>
     </div>
   </details>
 
@@ -582,19 +589,19 @@
   <details class="sec" id="sec_adzuna">
     <summary>
       <span class="st">Sharper salary estimates</span>
-      <span class="sv">Fills in market pay for postings that don't list any. Free Adzuna signup.</span>
+      <span class="sv">Fills in market pay for a posting that gives no pay. The Adzuna signup is free.</span>
       <span class="pill">optional</span>
     </summary>
     <div class="body">
-      <p class="why">Without it, estimates come from the posting text plus a wide band table — still
-        shown, just rougher.</p>
+      <p class="why">Without these keys, the estimate comes from the posting text and a wide band
+        table. The app still shows an estimate, but the estimate is less exact.</p>
       <div class="helpbar">
-        <span class="txt">Free signup. The guide shows exactly which two values to copy.</span>
+        <span class="txt">The signup is free. The guide names the two values that you copy.</span>
         <a class="howto" href="/help/adzuna" target="_blank">🔑 How to get these keys →</a>
       </div>
       <div class="row">
         <div><label>Application ID <span class="hint">(app_id)</span></label><input id="adzuna_app_id" type="text" placeholder="your Application ID" autocomplete="off"></div>
-        <div><label>Application Key <span class="hint">(app_key — kept private)</span></label><input id="adzuna_app_key" type="password" placeholder="paste your key" autocomplete="off"></div>
+        <div><label>Application Key <span class="hint">(app_key. The app keeps it private)</span></label><input id="adzuna_app_key" type="password" placeholder="paste your key" autocomplete="off"></div>
       </div>
       <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
         <button type="button" onclick="saveAdzuna()">Save Adzuna keys</button>
@@ -605,54 +612,54 @@
   </details>
 
   <!-- ---- Advanced: low payoff for a new user, and the data folder needs a restart ---- -->
-  <div class="grouphead">Advanced &amp; housekeeping <span class="n">— most people never open these</span></div>
+  <div class="grouphead">Advanced &amp; maintenance <span class="n">— most people never open these</span></div>
 
   <details class="sec" id="sec_git">
     <summary>
       <span class="st">Off-machine backup</span>
-      <span class="sv">Copies your job history to a private repo, so a dead laptop doesn't take it.</span>
+      <span class="sv">Copies your job history to a private repository. A dead laptop then loses nothing.</span>
       <span class="pill">optional</span>
     </summary>
     <div class="body">
-      <p class="why">Every daily run already commits a local checkpoint — an undo for a corrupted tracker
-        or a bad resume — and that happens whether or not these fields are filled in. A <b>remote URL</b>
-        only adds the second copy that lives somewhere else. Name and email are just the commit author;
-        Git refuses to commit without them and they log you in to nothing.</p>
+      <p class="why">Every daily run already commits a local checkpoint. That checkpoint is an undo for
+        a corrupt tracker or a bad resume, and it happens with these fields empty. A <b>remote URL</b>
+        adds a second copy in a different place. The name and the email are the commit author only. Git
+        refuses to commit without them, and they sign you in to nothing.</p>
       <div class="callout warn">
-        <b>Use a private repository.</b> These commits contain your job search: employers, notes,
-        salary figures, and your resume content.
+        <b>CAUTION: Use a private repository.</b> These commits hold your job search: the employers,
+        your notes, the salary figures, and your resume content.
       </div>
       <div class="row">
         <div><label>Git commit name</label><input id="git_name" type="text" placeholder="Jane Doe"></div>
         <div><label>Git commit email</label><input id="git_email" type="email" placeholder="jane@example.com"></div>
       </div>
-      <label>Git remote URL <span class="hint">(blank = checkpoints stay on this computer)</span></label>
+      <label>Git remote URL <span class="hint">(empty = the checkpoints stay on this computer)</span></label>
       <input id="git_remote" type="text" placeholder="https://github.com/yourname/job-agent-data.git">
-      <div class="hint">HTTPS or SSH, any host. Stored in <code>config/git.json</code>, which Git ignores —
-        your identity and URL never enter the repository.</div>
+      <div class="hint">HTTPS or SSH, on any host. The app stores it in <code>config/git.json</code>, and
+        Git ignores that file. Your identity and your URL never enter the repository.</div>
     </div>
   </details>
 
   <details class="sec" id="sec_dataroot">
     <summary>
       <span class="st">Data folder location</span>
-      <span class="sv">Move your profile, tracker, and resumes somewhere backed up. Needs a restart.</span>
+      <span class="sv">Move your profile, your tracker and your resumes to a folder with a backup. It needs a restart.</span>
       <span class="pill">optional</span>
     </summary>
     <div class="body">
-      <p class="why">Holds all personal data — <code>config/</code>, the tracker and CSVs, the tailored
-        resumes, and your <code>resume_template/</code> base resumes. By default it is a
-        <code>user_data_&lt;your initials&gt;</code> folder <b>inside the app folder</b>, so the whole
-        install is one self-contained thing to copy, back up, or hand to another machine. Move it out
-        if you would rather keep your data somewhere separately backed up; the app's code stays where
-        it is either way.</p>
+      <p class="why">This folder holds all personal data: <code>config/</code>, the tracker and the CSV
+        files, the tailored resumes, and the base resumes in <code>resume_template/</code>. By default
+        it is a <code>user_data_&lt;your initials&gt;</code> folder <b>inside the app folder</b>. The
+        whole installation is therefore one folder to copy, to back up, or to move to another machine.
+        Move the data folder out if you keep your backups somewhere else. The code of the app stays in
+        the same place in both cases.</p>
       <div id="dr_current" style="margin:2px 0 12px;"></div>
       <label>Data folder</label>
       <!-- data-selfsave: has its own button, needs a confirm + a restart, so it must not
            ride along with "Save this step". -->
       <input id="data_root" type="text" data-selfsave placeholder="user_data_ME">
-      <div class="hint">Full path. The app creates the folder but <b>moves no files</b> — copy your
-        existing data there before you restart.</div>
+      <div class="hint">Give the full path. The app makes the folder, but it <b>moves no files</b>.
+        Copy your existing data there before you restart the app.</div>
       <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
         <button class="ghost" type="button" id="browse_data_root"
                 onclick="browseInto('data_root','Choose the data folder')">📂 Browse…</button>
@@ -669,13 +676,14 @@
   <details class="sec" id="sec_blocklist">
     <summary>
       <span class="st">Blocked employers</span>
-      <span class="sv">Employers whose postings are always skipped. Fill this in over time, not now.</span>
+      <span class="sv">The app always skips the postings of these employers. Fill this list in with time, not now.</span>
       <span class="pill" id="blocklist_pill">none</span>
     </summary>
     <div class="body">
-      <p class="why">Banned employers are <b>skipped every time</b> — never tailored for, now or later.
-        Separate from the 👻 ghost-risk score, which is only a guess. Ban the name as the listing shows
-        it: "Felix Pago", not "Felix". The job board also has a per-row 🚫 Ban button.</p>
+      <p class="why">The app <b>always skips</b> a banned employer. It never tailors a resume for that
+        employer, now or later. This list is different from the 👻 ghost-risk score, which is a guess
+        only. Ban the name as the listing shows it: "Felix Pago", and not "Felix". The job board also
+        has a 🚫 Ban button on each row.</p>
       <div id="blocklist_rows" style="margin-bottom:10px;"></div>
       <div class="row" style="align-items:end;">
         <div><label>Employer name</label><input id="ban_name" type="text" data-selfsave placeholder="Acme Corp"></div>
@@ -699,7 +707,7 @@
   <div class="card">
     <h2>Review</h2>
     <div id="review_rows"></div>
-    <div class="hint" style="margin-top:10px;">A save writes <code>config/profile.json</code>. It then generates the LinkedIn and hiringcafe.com search URLs, the skills list, and the alerts. The app applies each filter only to the boards that support it.</div>
+    <div class="hint" style="margin-top:10px;">A save writes <code>config/profile.json</code>. It then makes the LinkedIn and hiringcafe.com search URLs, the skills list and the alerts. The app applies each filter only to the boards that support that filter.</div>
   </div>
   </div>
 </div>
@@ -766,6 +774,14 @@ function setChips(id,vals){ const set=new Set(vals||[]);
 function getChips(id){ return [...document.querySelectorAll('#'+id+' .chip.on')].map(c=>c.dataset.val); }
 const V=id=>document.getElementById(id).value;
 const setV=(id,v)=>document.getElementById(id).value=(v==null?'':v);
+/* Money fields where 0 means "not set", not "zero dollars". setV would write a literal 0 into
+   the box, and "$0" reads like a real limit the user chose rather than an empty setting. Blank
+   the field instead and let its placeholder say "none". The save path already turns an empty
+   box back into 0 (+V(id)||0), so this changes what is SHOWN, never what is stored. Not folded
+   into setV: 0 is a legitimate value for radius and years-of-experience. */
+const setMoney=(id,v)=>document.getElementById(id).value=(+v>0?v:'');
+// "$105,000 – $0" was the tell that a one-sided range needs a word, not a number.
+const money=n=>+n>0?'$'+(+n).toLocaleString():'none';
 const C=id=>document.getElementById(id).checked;
 const setC=(id,v)=>document.getElementById(id).checked=!!v;
 const csv=s=>(s||'').split(',').map(x=>x.trim()).filter(Boolean);
@@ -929,8 +945,8 @@ function go(d){ show(cur+d); }
 // Moving between steps never loses anything — the values stay in the form — so this does
 // not nag. It only points out that the step just left still needs a save.
 function reloadDiscard(){
-  if(DIRTY.size && !confirm('Reload from the saved profile?\n\nUnsaved changes on '+
-     DIRTY.size+' step'+(DIRTY.size===1?'':'s')+' are discarded.')) return;
+  if(DIRTY.size && !confirm('Reload from the saved profile?\n\nThe app discards the unsaved changes on '+
+     DIRTY.size+' step'+(DIRTY.size===1?'':'s')+'.')) return;
   load();
 }
 function skipSetup(){
@@ -956,14 +972,14 @@ function renderReview(){
                  .filter(Boolean).length;
   box.innerHTML =
     '<div class="'+(need?'callout warn':'callout')+'" style="margin:0 0 10px;">' +
-      (need ? '<b>'+need+' required '+(need===1?'value is':'values are')+' still empty.</b> They are marked below.'
-            : '<b>Everything required is filled in.</b> Optional gaps below are fine to leave.') +
+      (need ? '<b>'+need+' necessary '+(need===1?'value is':'values are')+' still empty.</b> The list below marks them.'
+            : '<b>Every necessary value is filled in.</b> You can leave the optional gaps below.') +
     '</div>' +
     rvRow('Name', V('full_name'), !V('full_name').trim()) +
     rvRow('Resume filename prefix', prefixValue(), !prefixValue(), true) +
     rvRow('Target roles', titles.join(', '), !titles.length) +
     rvRow('Location', (LOC.formatted_address||V('loc_query')) + (LOC.lat?' ✓ geocoded':''), !V('loc_query').trim()) +
-    rvRow('Salary range', sMin||sMax ? ('$'+sMin.toLocaleString()+' – $'+sMax.toLocaleString()) : '', !(sMin||sMax), true) +
+    rvRow('Salary range', sMin||sMax ? (money(sMin)+' – '+money(sMax)) : '', !(sMin||sMax), true) +
     rvRow('Workplace', getChips('workplace_types').join(', '), !getChips('workplace_types').length, true) +
     rvRow('Skills (never-invent)', skills.length+' listed', !skills.length) +
     '<div class="rv"><b>Boards</b><span>'+[C('use_linkedin')?'LinkedIn':'',C('use_hiringcafe')?'hiringcafe.com':''].filter(Boolean).join(' + ')+'</span></div>' +
@@ -986,7 +1002,7 @@ async function load(){
   syncFolderHints();   // load() may land before or after loadDataRoot(); both call this
   setV('titles',(s.titles||[]).join(', ')); setV('exclude_terms',(s.exclude_terms||[]).join(', '));
   LOC=s.location||{}; setV('loc_query',LOC.query||LOC.formatted_address||''); showLoc();
-  setV('radius_miles',s.radius_miles); setV('salary_min',s.salary_min); setV('salary_max',s.salary_max);
+  setV('radius_miles',s.radius_miles); setMoney('salary_min',s.salary_min); setMoney('salary_max',s.salary_max);
   const y=s.years_experience||[0,15]; setV('yoe_min',y[0]); setV('yoe_max',y[1]);
   setChips('workplace_types',s.workplace_types); setChips('seniority',s.seniority); setChips('employment_types',s.employment_types);
   setC('include_remote_anywhere_in_country',s.include_remote_anywhere_in_country);
@@ -1008,7 +1024,7 @@ async function load(){
 }
 function showLoc(){ document.getElementById('loc_resolved').textContent =
   LOC.lat ? `→ ${LOC.formatted_address||''}  (${(+LOC.lat).toFixed(4)}, ${(+LOC.lon).toFixed(4)})`
-          : 'No coordinates yet. Press Get coordinates — without them the radius filter has no center point.'; }
+          : 'No coordinates yet. Press Get coordinates. Without coordinates, the radius filter has no center point.'; }
 async function lookup(){
   const q=V('loc_query'); if(!q){status('Enter a city first.','err');return;}
   status('geocoding…');
@@ -1096,7 +1112,7 @@ function showDone(j){
   document.getElementById('done_files').textContent = files.length ? files.join('  ·  ') : 'profile.json';
   document.getElementById('done_sub').textContent =
     'Saved as ' + ((j&&j.profileName) || 'profile') +
-    '. The app regenerated your search URLs, skills list, and alert settings from it.';
+    '. The app made your search URLs, your skills list and your alert settings again from it.';
   document.getElementById('done_modal').classList.add('show');
 }
 function closeDone(){ document.getElementById('done_modal').classList.remove('show'); }
@@ -1191,9 +1207,9 @@ async function loadAdzuna(){
     setV('adzuna_app_id', d.app_id||'');
     const key=document.getElementById('adzuna_app_key');
     key.value='';
-    key.placeholder = d.keySet ? ('•••••• saved'+(d.keyHint?' ('+d.keyHint+')':'')+' — leave blank to keep') : 'paste your key';
+    key.placeholder = d.keySet ? ('•••••• saved'+(d.keyHint?' ('+d.keyHint+')':'')+'. Leave it empty to keep the key.') : 'paste your key';
     s.textContent = d.configured ? '✓ Configured. The estimates use Adzuna.'
-                  : (d.app_id ? 'App ID set. Key missing.' : 'Not configured. The estimates use bands.');
+                  : (d.app_id ? 'The App ID is set. The key is absent.' : 'Not configured. The estimates use bands.');
     s.style.color = d.configured ? '#059669' : '#6b7280';
     secPill('adzuna', d.configured ? 'on' : 'not set', d.configured);
   }catch(e){ secPill('adzuna','unavailable',false); }
@@ -1231,8 +1247,8 @@ async function clearAdzuna(){
 let CLAUDECLI_OK = false;
 function claudeReady(){ return CLAUDECLI_OK; }
 function topappReason(){
-  return '<b>Claude Code is not detected on this machine.</b> This feed is read by Claude Code '+
-         'running locally — install it and run <code>claude login</code>. Open '+
+  return '<b>The app did not find Claude Code on this machine.</b> Claude Code runs locally and '+
+         'reads this feed. Install it and run <code>claude login</code>. Then open '+
          '<span class="gatelink" onclick="gotoClaudeSetup()">setup</span> → AI resume tailoring.';
 }
 function topappBubble(mode){
@@ -1256,8 +1272,8 @@ function applyTopApplicantGate(){
   // The hint describes the source and nothing else. Why the row is LOCKED belongs to the
   // bubble, which only appears on hover/focus/click — printing the gate reason here too made
   // it read as an error the moment the page loaded, with nothing touched.
-  note.innerHTML = 'Read by the Claude agent from your signed-in browser. Needs an active '+
-    'LinkedIn Premium session — LinkedIn exposes no API for this feed, so the app cannot '+
+  note.innerHTML = 'The Claude agent reads this feed from your signed-in browser. It needs an '+
+    'active LinkedIn Premium session. LinkedIn gives no API for this feed, so the app cannot '+
     'authenticate to it.';
 }
 // --- scheduled-agent prompts (Settings -> Run it automatically) ---
@@ -1275,8 +1291,8 @@ function renderAgents(){
   const box = document.getElementById('agent_cards');
   if(!box) return;
   if(!AGENTS.length){
-    box.innerHTML = '<p class="why">The prompt files could not be read from '+
-      '<code>agent_prompts/</code>. Reinstalling or re-downloading the app restores them.</p>';
+    box.innerHTML = '<p class="why">The app cannot read the prompt files from '+
+      '<code>agent_prompts/</code>. Install the app again, or download it again, to restore them.</p>';
     return;
   }
   box.innerHTML = AGENTS.map((a,i)=>{
@@ -1299,7 +1315,7 @@ function renderAgents(){
 function copyAgent(i){
   const a = AGENTS[i]; if(!a || !a.prompt) return;
   const say = t => { const el=document.getElementById('agent_ok_'+i); if(el) el.textContent=t; };
-  const ask = 'Please set this up as a scheduled task:\n\n' + a.prompt;
+  const ask = 'Make this a scheduled task:\n\n' + a.prompt;
   // clipboard.writeText needs a secure context; the board is served over plain http on
   // localhost, which browsers DO treat as secure — but a user reaching it by LAN IP is not
   // in one, hence the textarea fallback rather than a silent no-op.
@@ -1309,7 +1325,7 @@ function copyAgent(i){
     ta.select();
     let ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
     document.body.removeChild(ta);
-    say(ok ? 'Copied ✓ now paste it into Claude' : 'Could not copy — open "See what this says" and copy it by hand.');
+    say(ok ? 'Copied ✓ now paste it into Claude' : 'The copy failed. Open "See what this says" and copy the text by hand.');
   };
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(ask).then(()=>say('Copied ✓ now paste it into Claude'), fallback);
@@ -1333,11 +1349,11 @@ function gotoClaudeSetup(){
 // matched enough", and a 0-100 box invites tuning a number nobody can feel the effect of.
 // 1.01 is deliberately > 1 — no score can reach it, so nothing ever takes the template path.
 const CUST_LEVELS = [
-  {thr:1.01, label:'Never — always use AI',                   hint:'Every queued job gets an AI-tailored resume. Most tokens.'},
-  {thr:0.80, label:'80% — a high match uses the template',    hint:'Default. AI only when your skills leave a real gap.'},
-  {thr:0.60, label:'60% — a good match uses the template',    hint:'Fewer tokens; more postings get a straight template copy.'},
-  {thr:0.40, label:'40% — a fair match uses the template',    hint:'Templates for most jobs. AI is reserved for weak matches.'},
-  {thr:0.20, label:'20% — almost everything uses the template', hint:'Near-zero tokens. Resumes are barely adapted to the posting.'},
+  {thr:1.01, label:'Never — always use AI',                   hint:'Every queued job gets an AI-tailored resume. This uses the most tokens.'},
+  {thr:0.80, label:'80% — a high match uses the template',    hint:'The default. AI runs only when your skills leave a real gap.'},
+  {thr:0.60, label:'60% — a good match uses the template',    hint:'Fewer tokens. More postings get a template copy.'},
+  {thr:0.40, label:'40% — a fair match uses the template',    hint:'Most jobs get a template. AI is only for a weak match.'},
+  {thr:0.20, label:'20% — almost everything uses the template', hint:'Almost no tokens. The resume changes very little for the posting.'},
 ];
 function custIndex(thr){ let b=0,bd=9;
   CUST_LEVELS.forEach((l,i)=>{ const d=Math.abs(l.thr-(thr??0.8)); if(d<bd){bd=d;b=i;} }); return b; }
@@ -1420,16 +1436,16 @@ function renderUptime(s){
     return noAutoOpen('uptime');
   }
   if(on){
-    msg.textContent='✓ On. Windows checks every '+(s.everyMin||5)+(s.everyMin===1?' minute':' minutes')
-      + ' and starts the dashboard again, minimized, if it is not running.'
+    msg.textContent='✓ On. Windows looks at the dashboard every '+(s.everyMin||5)+(s.everyMin===1?' minute':' minutes')
+      + '. If the dashboard is closed, Windows starts it again, minimized.'
       + (s.pauseMin ? ' Paused for '+s.pauseMin+' more minutes.' : '');
     msg.style.color='#059669';
   } else if(s.desired && !s.enabled){
-    msg.textContent='✗ Windows would not accept the scheduled task'+(s.error?': '+s.error:'')
+    msg.textContent='✗ Windows did not accept the scheduled task'+(s.error?': '+s.error:'')
       + '. Nothing restarts the dashboard, so the searches run only while it is open.';
     msg.style.color='#b91c1c';
   } else {
-    msg.textContent='This one applies straight away — you do not need to save it.';
+    msg.textContent='This setting applies immediately. You do not need to save it.';
     msg.style.color='#6b7280';
   }
   secPill('uptime', on ? (s.pauseMin ? 'paused' : 'on') : 'off', on);
@@ -1454,11 +1470,11 @@ async function loadClaudeCli(){
   try{
     const d=await (await fetch('/api/claude-cli')).json();
     if(d.available){
-      s.textContent='✓ Claude Code found at '+d.binary+'. Press Check now to confirm the login.'
-        + (d.apiKeyInEnv ? ' (ANTHROPIC_API_KEY is set in your environment; the app removes it so this stays on your plan.)' : '');
+      s.textContent='✓ The app found Claude Code at '+d.binary+'. Press Check now to make sure that the login works.'
+        + (d.apiKeyInEnv ? ' (Your environment sets ANTHROPIC_API_KEY. The app removes it, so this work stays on your plan.)' : '');
       s.style.color='#059669';
     }else{
-      s.textContent='Claude Code was not found. The queue writes template-copy resumes instead.';
+      s.textContent='The app did not find Claude Code. The queue writes template-copy resumes instead.';
       s.style.color='#6b7280';
     }
     CLAUDECLI_OK = !!d.available;
@@ -1468,7 +1484,7 @@ async function loadClaudeCli(){
 }
 async function testClaudeCli(){
   const s=document.getElementById('claudecli_status');
-  if(s){ s.textContent='checking… this asks Claude one short question and can take a moment.'; s.style.color='#6b7280'; }
+  if(s){ s.textContent='checking… The app asks Claude one short question. This can take a moment.'; s.style.color='#6b7280'; }
   try{
     const j=await (await fetch('/api/claude-cli-test',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})).json();
     if(s){ s.textContent=(j.ok?'✓ ':'✗ ')+(j.message||''); s.style.color=j.ok?'#059669':'#b91c1c'; }
@@ -1492,7 +1508,7 @@ async function browseInto(inputId, title){
   const say = (m,ok) => dr ? drStatus(m, ok===false?'#dc2626':(ok?'#059669':''))
                            : status(m, ok===false?'err':(ok?'ok':''));
   if(btn){ btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = 'Choose a folder…'; }
-  say('A folder window opened. It may be behind this browser window.');
+  say('A folder window opened. It can be behind this browser window.');
   try{
     const r = await fetch('/api/pick-folder', {method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -1504,8 +1520,8 @@ async function browseInto(inputId, title){
     // Fire the same event a keystroke would, so the step is marked unsaved and the user
     // still has to press Save — the picker never saves on its own.
     document.getElementById(inputId).dispatchEvent(new Event('input',{bubbles:true}));
-    say('✓ '+j.path+(dr ? ' — press "Use this folder" to apply it.'
-                        : ' — press "Save this step" to apply it.'), true);
+    say('✓ '+j.path+(dr ? '. Press "Use this folder" to apply it.'
+                        : '. Press "Save this step" to apply it.'), true);
   }catch(e){ say('The folder window failed: '+e.message, false); }
   finally{ if(btn){ btn.disabled = false; btn.textContent = btn.dataset.label || '📂 Browse…'; } }
 }

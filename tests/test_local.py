@@ -23,12 +23,11 @@ def test_non_local(jp):
     assert jp._is_local(None) is False
 
 
-# The goldens were snapshotted against a populated geo_cache.json. Without that
-# cache every town reads as non-local, so this fails on a fresh clone for want of
-# data, not for want of correct code. The two hardcoded cases above still cover
-# the actual keyword logic with no data at all.
-@pytest.mark.needs_userdata
-def test_golden_locations(jp):
+# The goldens need a populated geo_cache.json — without one every town reads as
+# non-local. That cache is now FROZEN (tests/fixtures/config_frozen/geo_cache.frozen.json)
+# along with local_keywords and the profile center, so this runs on a fresh clone and a
+# re-geocode of your live cache can no longer flip a golden.
+def test_golden_locations(jp, frozen_config):
     for row in GOLDEN:
         assert jp._is_local(row['location']) == row['isLocal'], repr(row['location'])
 

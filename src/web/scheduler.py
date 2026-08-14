@@ -68,6 +68,25 @@ _STATE_LOCK = threading.Lock()    # guard the state file
 # Truthiness and `name in _RUNNING` behave the same as the old set, so callers are unchanged.
 _RUNNING = {}
 
+# The BACKGROUND TAIL (`after_steps`) — steps that run after the job is reported DONE.
+#
+# Why it exists: the board renders from candidates.csv, which `jobpipe.py candidates` writes in
+# about a second. salary_probe.py then ran for ~4 MINUTES inside the same `steps` list for a
+# 2-of-88 hit rate, and because it held _RUNNING the whole time, the board's "Searching…" panel
+# sat there for four minutes after the jobs it was waiting for were already on disk.
+#
+# So a tail step is deliberately invisible to status_all(): it is NOT in _RUNNING, it does not
+# set runningJob, and it adds no row to the /schedule page. `_AFTER` exists for the log and for
+# the overlap guard, not for the UI.
+#
+# It holds NO _JOB_LOCK, so a four-minute price lookup can never hold up the next search. The
+# trade is that a tail can overlap the next scheduled job; that is safe here (the tail reads
+# candidates.csv and writes salary_cache.json, which nothing in `steps` writes), but two TAILS
+# writing salary_cache.json at once is not — hence _AFTER_LOCK, non-blocking. A skipped tail
+# costs nothing: the cache is durable, so the jobs it missed are simply probed on the next run.
+_AFTER_LOCK = threading.Lock()
+_AFTER = {}                       # {name: start_time} — logging + overlap guard only
+
 DEFAULT_TICK = 30
 DEFAULT_GRACE = 300
 
@@ -292,9 +311,81 @@ def _paused_by_backlog(job):
 
 
 # ---------------- execution ----------------
+def _run_steps(name, steps, tag=''):
+    """Run a list of steps sequentially; return 'ok' or the first failure string.
+
+    Shared by the foreground `steps` and the background `after_steps` so the two can never
+    drift on how a step is resolved, logged or timed out.
+    """
+    for step in steps or []:
+        script = step[0]
+        # Steps name a bare script ('scrape.py'); _paths.script() finds it under
+        # src/<group>/, so moving a file between groups never breaks a saved schedule.
+        cmd = [sys.executable, _paths.script(script)] + [str(x) for x in step[1:]]
+        _rotate_log()
+        try:
+            with open(LOG_PATH, 'a', encoding='utf-8') as lf:
+                lf.write(f'[{datetime.now().isoformat(timespec="seconds")}] '
+                         f'{name}{tag}: $ {" ".join(cmd[1:])}\n')
+                rc = subprocess.run(cmd, cwd=HERE, stdout=lf, stderr=lf, timeout=1800).returncode
+        except Exception as e:
+            return f'failed: {script} ({e})'
+        if rc != 0:
+            return f'failed: {script} exit {rc}'
+    return 'ok'
+
+
+def _start_after(name, job):
+    """Kick off the job's `after_steps` in the background. Call AFTER _JOB_LOCK is released.
+
+    Returns True if a tail was started. Never raises: a tail is by definition the part of the
+    run nobody is waiting on, so a failure here must not colour the job's own result.
+    """
+    steps = job.get('after_steps') or []
+    if not steps:
+        return False
+    if not _AFTER_LOCK.acquire(blocking=False):
+        # See _AFTER_LOCK: the cache is durable, so a skipped tail costs a delay, not data.
+        _log(f'{name}: after-steps skipped, another background tail is still running')
+        return False
+
+    def _tail():
+        t0 = time.time()
+        _AFTER[name] = t0
+        result = 'ok'
+        _log(f'{name}: after-steps START (background)')
+        try:
+            result = _run_steps(name, steps, tag=' [after]')
+        except Exception as e:
+            result = f'failed: {e}'
+        finally:
+            dur = round(time.time() - t0, 1)
+            # Merged INTO the job's own state row rather than given a row of its own: the tail
+            # is part of this job, and a second row would put it on the /schedule page, which
+            # is exactly what "invisible tail" rules out.
+            state = _load_state()
+            rec = state.setdefault('jobs', {}).setdefault(name, {})
+            rec['lastAfterResult'] = result
+            rec['lastAfterDurationSec'] = dur
+            rec['lastAfterAt'] = datetime.now().isoformat(timespec='seconds')
+            _save_state(state)
+            _log(f'{name}: after-steps DONE {result} ({dur}s)')
+            _AFTER.pop(name, None)
+            _AFTER_LOCK.release()
+
+    threading.Thread(target=_tail, daemon=True).start()
+    return True
+
+
 def run_job(name, manual=False):
     """Run a job's steps sequentially. Serialized: refuses if any job is running.
-    Returns a small dict describing the outcome (or start, for manual runs)."""
+    Returns a small dict describing the outcome (or start, for manual runs).
+
+    A job may also declare `after_steps` — the background tail (see _AFTER_LOCK). Those run
+    once `steps` succeed, AFTER this job is reported DONE and the lock is released, so the
+    duration and the running state this returns describe `steps` only. That is the point: the
+    tail is work nothing is waiting on, and holding the job open for it made the board look
+    stuck long after the postings had landed."""
     cfg = load_schedule()
     job = cfg.get('jobs', {}).get(name)
     if not job:
@@ -311,20 +402,7 @@ def run_job(name, manual=False):
         result = 'ok'
         _log(f'{name}: START ({"manual" if manual else "scheduled"})')
         try:
-            for step in job.get('steps', []):
-                script = step[0]
-                # Steps name a bare script ('scrape.py'); _paths.script() finds it under
-                # src/<group>/, so moving a file between groups never breaks a saved schedule.
-                cmd = [sys.executable, _paths.script(script)] + [str(x) for x in step[1:]]
-                _rotate_log()
-                try:
-                    with open(LOG_PATH, 'a', encoding='utf-8') as lf:
-                        lf.write(f'[{datetime.now().isoformat(timespec="seconds")}] {name}: $ {" ".join(cmd[1:])}\n')
-                        rc = subprocess.run(cmd, cwd=HERE, stdout=lf, stderr=lf, timeout=1800).returncode
-                except Exception as e:
-                    result = f'failed: {script} ({e})'; break
-                if rc != 0:
-                    result = f'failed: {script} exit {rc}'; break
+            result = _run_steps(name, job.get('steps', []))
         finally:
             dur = round(time.time() - t0, 1)
             state = _load_state()
@@ -336,6 +414,11 @@ def run_job(name, manual=False):
             _log(f'{name}: DONE {result} ({dur}s)')
             _RUNNING.pop(name, None)
             _JOB_LOCK.release()
+        # Only now — the lock is free, _RUNNING is clear and the job already reads as DONE, so
+        # the board stops waiting here rather than when the last price lookup returns. Gated on
+        # 'ok' because every tail so far prices the jobs a failed `steps` never produced.
+        if result == 'ok':
+            _start_after(name, job)
     th = threading.Thread(target=_work, daemon=True)
     th.start()
     if manual:

@@ -151,11 +151,7 @@ def test_score_job_is_a_noop_for_in_lane(jp):
     assert scored[0] == plain and scored[2] == 1.0
 
 
-# Golden values were snapshotted against the owner's live config (skills.json,
-# skill_aliases.json, strategy.json, blocklist). A clone with no data root reads an
-# empty config and scores everything differently, so this fails for want of data.
-@pytest.mark.needs_userdata
-def test_title_terms_read_live_config(jp):
+def test_title_terms_resolve_from_profile(jp, frozen_config):
     """In-lane terms must actually resolve from profile.json (or a strategy override)."""
     inl, off, factor = jp._title_terms()
     assert inl, 'no in-lane titles resolved - profile.json search.titles missing?'
@@ -168,11 +164,7 @@ def test_skill_hit_unknown_token_misses(jp):
     assert not jp._skill_hit('', matchable, stems)
 
 
-# Golden values were snapshotted against the owner's live config (skills.json,
-# skill_aliases.json, strategy.json, blocklist). A clone with no data root reads an
-# empty config and scores everything differently, so this fails for want of data.
-@pytest.mark.needs_userdata
-def test_skill_hit_known_skill_hits(jp):
+def test_skill_hit_known_skill_hits(jp, frozen_config):
     matchable, stems = jp._matchable()
     # 'SQL' is in config/skills.json; punctuation/case must not matter
     assert jp._skill_hit('sql', matchable, stems)
@@ -181,11 +173,11 @@ def test_skill_hit_known_skill_hits(jp):
 
 # ---- goldens ---------------------------------------------------------------
 
-# Golden values were snapshotted against the owner's live config (skills.json,
-# skill_aliases.json, strategy.json, blocklist). A clone with no data root reads an
-# empty config and scores everything differently, so this fails for want of data.
-@pytest.mark.needs_userdata
-def test_golden_skill_match(jp):
+# Snapshotted against tests/fixtures/config_frozen/, NOT the owner's live config — so
+# editing your real skills.json can no longer redden this, and a fresh clone can run it.
+# Regenerate with tests/make_fixtures.py after an intentional change to the frozen dials
+# or to the scoring code, and review the diff like code.
+def test_golden_skill_match(jp, frozen_config):
     for row in GOLDEN:
         match, flagged = jp.skill_match(row['requiredSkills'])
         assert match == row['skillMatch'], row['id']

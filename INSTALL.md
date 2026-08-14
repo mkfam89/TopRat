@@ -1,18 +1,19 @@
 # Install Top Rat
 
-Top Rat finds job postings, scores them against your skills, tailors a resume for the
-good ones, and shows everything on a board you open on your own computer.
+Top Rat finds job postings. It scores each posting against your skills. It writes a
+tailored resume for the good ones. It shows the result on a board that you open on your
+own computer.
 
-It runs **entirely on your machine**. There is no account, no server, no sign-up. Your
+The app runs only on your machine. It has no account, no server and no sign-up. Your
 resume and your job list never leave your computer.
 
-Installing takes about five minutes.
+The installation takes about five minutes.
 
 ---
 
 ## Step 1 — Download
 
-Go to the **Releases** page and download the file for your computer:
+Go to the **Releases** page. Download the file for your computer:
 
 | Your computer | Download |
 |---|---|
@@ -20,57 +21,58 @@ Go to the **Releases** page and download the file for your computer:
 | Mac (Apple silicon — M1 and later) | `TopRat-<version>-macos-arm64.zip` |
 | Mac (Intel) | `TopRat-<version>-macos-x64.zip` |
 
-Not sure which Mac you have? Click the Apple menu → **About This Mac**. If the Chip line
-says "Apple M-something", take the arm64 file.
+To identify your Mac, click the Apple menu. Then click **About This Mac**. If the Chip
+line shows "Apple M" and a number, take the arm64 file.
 
-**These downloads include their own copy of Python, so you do not need to install
-anything else.** It is a private copy that lives inside the Top Rat folder, changes
-nothing on the rest of your computer, and is deleted with the folder.
+**These downloads include their own copy of Python. You do not need to install anything
+else.** This copy is private. It stays inside the Top Rat folder, changes nothing else on
+your computer, and goes away with the folder.
 
-Unzip it somewhere permanent, such as your Documents folder. Top Rat keeps all your data
-inside its own folder, so avoid Downloads, where you might clear it out later.
+Unzip the file into a permanent location, such as your Documents folder. Top Rat keeps all
+your data inside its own folder. Do not use the Downloads folder, because you can empty it
+later.
 
-> **Only if you were given a source copy instead** (a `.zip` named `Source code`, or a
-> git clone): that version has no Python inside it, so you need **Python 3.8 or newer**
-> installed. Check with `python --version` (Windows) or `python3 --version` (macOS). If
-> it is missing, get it from <https://www.python.org/downloads/> — and on Windows, tick
-> **"Add python.exe to PATH"** on the installer's first screen. It is easy to miss, and
-> without it Top Rat cannot find Python.
+> **Read this only if you got a source copy** (a `.zip` with the name `Source code`, or a
+> git clone). A source copy has no Python inside it. You must install **Python 3.8 or
+> newer**. To see the version, run `python --version` on Windows or `python3 --version` on
+> macOS. If Python is absent, get it from <https://www.python.org/downloads/>. On Windows,
+> select **"Add python.exe to PATH"** on the first screen of the installer. This box is
+> easy to miss, and without it Top Rat cannot find Python.
 
 ---
 
-## Step 2 — Start it
+## Step 2 — Start the app
 
 **Windows:** double-click **`Start Here.bat`**
 
 **macOS and Linux:** double-click **`Start Here.command`**
 
-A small black window opens and reports what it is doing. After a few seconds your board
-appears in its own window. That black window can be closed once the board is up.
+A small black window opens and shows each step. After a few seconds, your board opens in
+its own window. You can then close the black window.
 
-If you are using your own Python rather than the bundled copy, the launcher asks you once
-whether to set up the app window (a small download). Say no and the board opens in your
-normal browser instead — the same app, just a tab. You are not asked again; to change your
-mind, delete `config/app_window.answered` and start it again.
+If you use your own Python, the launcher asks you once about the app window. The app
+window is a small download. If you answer no, the board opens in your usual browser
+instead. It is the same app, in a tab. The launcher does not ask again. To change your
+answer, delete `config/app_window.answered` and start the app again.
 
-That is the whole install. Everything below is optional.
+The installation is complete. Everything below is optional.
 
 ---
 
-## If your computer warns you
+## If your computer gives you a warning
 
-The app is not code-signed, because a signing certificate costs a few hundred dollars a
-year. Your computer therefore does not recognise the publisher and will say so once. This
-is expected, and after you allow it the first time you will not be asked again.
+The app has no code signature, because a signing certificate costs a few hundred dollars
+each year. Your computer therefore does not know the publisher, and it tells you once.
+This warning is normal. After you permit the app one time, the warning stops.
 
 **macOS — "cannot be opened because it is from an unidentified developer"**
 
 1. Right-click (or Control-click) `Start Here.command`
-2. Choose **Open**
+2. Click **Open**
 3. Click **Open** in the dialog
 
-The right-click matters: the plain double-click gives you no "Open anyway" button. If
-macOS still refuses, open Terminal in the project folder and run:
+Use the right-click. A normal double-click gives you no "Open anyway" button. If macOS
+still refuses, open Terminal in the project folder. Then run these two commands:
 
 ```
 xattr -d com.apple.quarantine "Start Here.command"
@@ -84,92 +86,94 @@ chmod +x "Start Here.command"
 
 ---
 
-## Step 3 — Set up your profile
+## Step 3 — Make your profile
 
-The first time the board opens, go to the **Setup** page and fill in:
+The first time the board opens, go to the **Setup** page. Fill in these items:
 
-- Your name and where you want to work
-- The job titles you are looking for
-- Your resume — put your base resume in the `resume_template` folder
+- Your name and the place where you want to work
+- The job titles that you look for
+- Your resume. Put your base resume in the `resume_template` folder
 
-The Setup page walks you through the rest. Nothing there is required to get started; the
-sections you skip simply stay switched off.
+The Setup page takes you through the other items. No item is necessary for the first run.
+The sections that you skip stay off.
 
 ---
 
 ## Optional extras
 
-**If you downloaded a Release zip, skip this section** — the app window and resume
-writing are already included. This is for source copies.
+**If you downloaded a Release zip, skip this section.** That zip includes the app window
+and the resume writer. This section is for source copies.
 
-Top Rat works without every one of these. Each unlocks one more feature, and the app
-tells you when something is missing rather than failing.
+Top Rat runs without each one of these packages. Each package adds one more feature. If a
+package is absent, the app tells you and continues.
 
-Install them all at once by opening a terminal in the project folder and running:
+To install them all at the same time, open a terminal in the project folder. Then run this
+command:
 
 ```
 pip install -r requirements.txt
 ```
 
-Or pick individually:
+You can also install them one at a time:
 
 | Install this | What it gives you | Without it |
 |---|---|---|
-| `pip install pywebview` | Its own app window | Opens in your normal browser |
-| `pip install python-docx` | Tailored `.docx` resumes | Jobs are still found and scored |
-| `pip install python-jobspy` | LinkedIn as a job source | Other job sources still work |
-| [LibreOffice](https://www.libreoffice.org/download/) | A `.pdf` next to each `.docx` | You get the `.docx` only |
+| `pip install pywebview` | Its own app window | The board opens in your usual browser |
+| `pip install python-docx` | Tailored `.docx` resumes | The app still finds and scores jobs |
+| `pip install python-jobspy` | LinkedIn as a job source | The other job sources still work |
+| [LibreOffice](https://www.libreoffice.org/download/) | A `.pdf` beside each `.docx` | You get the `.docx` only |
 
 LibreOffice is a normal application, not a Python package. Install it only if you want PDF
 copies for job sites that ask for one.
 
 ---
 
-## Keeping it running
+## Keep the app running
 
-By default Top Rat runs only while it is open, and scheduled searches happen only during
-that time.
+By default, Top Rat runs only while it is open. The scheduled searches happen only in that
+time.
 
-To have it start by itself, open the **Setup** page and turn on **"Keep it running"**. Then
-you never need the Start Here file again.
+To start the app automatically, go to the **Setup** page. Then turn on **"Keep it
+running"**. After that, you do not need the Start Here file again.
 
 ---
 
 ## If something goes wrong
 
 **Nothing happens when I double-click.**
-If you downloaded a Release zip, check there is a `python` folder next to `Start Here.bat`
-— if it is missing, the unzip did not finish, so unzip it again. If you are running from a
-source copy, Python is probably not installed or not on your PATH; on Windows, re-run the
-Python installer and tick "Add python.exe to PATH".
+If you downloaded a Release zip, look for a `python` folder beside `Start Here.bat`. If
+that folder is absent, the unzip did not finish. Unzip the file again. If you run a source
+copy, Python is absent or not on your PATH. On Windows, run the Python installer again and
+select "Add python.exe to PATH".
 
-**The window flashes and disappears.**
-It should never do this — every error path is supposed to stop and tell you why. If it
-does, open a terminal in the project folder and run `python app.py` to see the message.
+**The window flashes and goes away.**
+The app must not do this. Every error path stops and gives a reason. If the window still
+goes away, open a terminal in the project folder. Then run `python app.py` to see the
+message.
 
-**The board does not open, or the page will not load.**
-Something else may be using the port. Top Rat picks another one automatically, so try
-starting it again first. If it still fails, open `logs/execution.log` and read the last
-few lines — they say what failed.
+**The board does not open, or the page does not load.**
+Another program can hold the port. Top Rat then picks a different port, so start the app
+again first. If the board still does not open, read the last lines of
+`logs/execution.log`. Those lines name the failure.
 
-**It says the dashboard is already running.**
-It is. Open <http://127.0.0.1:8765/> in your browser.
+**The app says that the dashboard already runs.**
+It does. Open <http://127.0.0.1:8765/> in your browser.
 
-**How do I stop it completely?**
+**How do I stop the app completely?**
 
 ```
 python app.py --stop-info
 ```
 
-That prints the steps for your system.
+That command prints the steps for your system.
 
 ---
 
-## Uninstalling
+## Uninstall
 
-Delete the folder. That is all of it.
+Delete the folder. That step removes all of it.
 
-Top Rat does not write to your registry, does not install system-wide packages, and does
-not put files anywhere else — with one exception: if you turned on "Keep it running", turn
-that off on the Setup page first (Windows users can also run `Uninstall Watchdog.bat`), so
-nothing tries to start it again after the folder is gone.
+Top Rat does not write to your registry. It does not install system-wide packages. It puts
+no files anywhere else. There is one exception. If you turned on "Keep it running", turn
+that setting off on the Setup page first. Windows users can also run
+`Uninstall Watchdog.bat`. Then nothing tries to start the app after you delete the folder.

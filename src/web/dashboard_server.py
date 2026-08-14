@@ -236,17 +236,17 @@ SCHED_PILL_JS = """
       if(!Object.prototype.hasOwnProperty.call(all, k)) continue;
       j = all[k]; if(!j.enabled) continue;
       if(j.stuck){
-        out.push({sev:'bad', head:(j.label || k) + ' may be stuck',
-          body:'It has been running for ' + mins(j.elapsedSec) + ' — far longer than the '
-             + Math.round(j.lastDurationSec || 0) + 's it normally takes. Nothing was cancelled; a slow '
-             + 'network looks the same from here. A step gives up on its own after 30 minutes. If it '
-             + 'is still here after that, close the dashboard, open it again, then run the task.'});
+        out.push({sev:'bad', head:(j.label || k) + ' is possibly stuck',
+          body:'It runs for ' + mins(j.elapsedSec) + ' now. That is much more than the usual '
+             + Math.round(j.lastDurationSec || 0) + 's. The app cancelled nothing. A slow network '
+             + 'looks the same from here. A step stops by itself after 30 minutes. If the task is '
+             + 'still here after that time, close the dashboard, open it again, then run the task.'});
       } else if(j.failed){
         out.push({sev:'bad', head:(j.label || k) + ' did not finish', run:k,
           body:'The last run stopped with: <code>' + esc(j.lastResult || 'unknown error') + '</code>. '
              + (String(j.lastResult || '').indexOf('interrupted') === 0
-                ? 'The dashboard was closed while it was still working, so it never got to the end. '
-                : 'The step that failed is named in the message; the full output is in '
+                ? 'The dashboard closed while the task was still at work, so the task never reached the end. '
+                : 'The message names the step that failed. The full output is in '
                   + '<code>schedule_log.txt</code>. ')
              + 'Nothing is broken permanently.'});
       }
@@ -256,9 +256,9 @@ SCHED_PILL_JS = """
     var B = (S && S.backlog) || {};
     if(B.paused){
       out.push({sev:'warn', head:'The searches are paused',
-        body:'<b>' + esc(String(B.count || 0)) + ' postings</b> are waiting on a decision and the limit '
-           + 'is <b>' + esc(String(B.cap || 0)) + '</b>. The searching tasks are still switched on — they '
-           + 'are holding off, and start again by themselves once the count drops.',
+        body:'<b>' + esc(String(B.count || 0)) + ' postings</b> wait for a decision, and the limit '
+           + 'is <b>' + esc(String(B.cap || 0)) + '</b>. The searching tasks are still on. They wait, '
+           + 'and they start again by themselves when the count decreases.',
         acts:[{act:'board', label:'Open the board', primary:true}]});
     }
     // The watchdog. Without it, "a scheduled task runs only while the dashboard is open" is a
@@ -271,14 +271,14 @@ SCHED_PILL_JS = """
              + 'this dashboard is open.'});
       } else if(W.desired && !W.enabled){
         out.push({sev:'bad', head:'The watchdog did not turn on',
-          body:(W.error ? esc(W.error) + '. ' : '') + 'The switch says it is on, but Windows has no '
-             + 'task registered — so nothing restarts the dashboard if it stops.',
+          body:(W.error ? esc(W.error) + '. ' : '') + 'The switch shows on, but Windows has no task '
+             + 'for it. Nothing restarts the dashboard if it stops.',
           acts:[{act:'wd-on', label:'Try again', primary:true},
                 {act:'wd-go', label:'Show me the setting'}]});
       } else if(!W.desired){
         out.push({sev:'warn', head:'The watchdog is off',
-          body:'The tasks run only while this dashboard window is open. Turn it on and Windows starts '
-             + 'the dashboard again — minimized — whenever it is not running.',
+          body:'The tasks run only while this dashboard window is open. If you turn it on, Windows '
+             + 'starts the dashboard again, minimized, each time it is closed.',
           acts:[{act:'wd-on', label:'Turn it on', primary:true},
                 {act:'wd-go', label:'Show me the setting'}]});
       } else if(W.pauseMin){
@@ -389,10 +389,10 @@ SCHED_PILL_JS = """
     if(n){
       html += miss.map(function(r){ return missRow(r[0], r[1]); }).join('');
       // The cause of a missed run is almost always this one fact, and it is not obvious.
-      html += '<div class="snote">A scheduled task can only run while this dashboard is open. These '
-            + 'were due while it was closed, and the app never fires a missed task by itself — it '
-            + 'would go off the moment you opened the app. Run one to catch it up, or leave it and '
-            + 'let the next scheduled run pick it up.</div>';
+      html += '<div class="snote">A scheduled task runs only while this dashboard is open. These '
+            + 'tasks were due while it was closed. The app never starts a missed task by itself, '
+            + 'because that task starts at the moment you open the app. Run one task to catch up, '
+            + 'or leave it for the next scheduled run.</div>';
     } else {
       html += '<div class="sempty">No scheduled run has been skipped. Next up is <b>'
             + esc(S.nextLabel || S.nextJob || 'nothing scheduled') + '</b>'
@@ -549,8 +549,8 @@ AGENT_PROMPTS = [
     {'id': 'job-tailor-queue-processor', 'file': 'tailor-queue.md',
      'title': 'Tailor the resumes you asked for',
      'when': 'Every hour, 7am to 6pm',
-     'blurb': 'Does nothing at all unless you pressed Tailor on a job. When you have, it '
-              'writes those resumes in the background so they are ready when you look.'},
+     'blurb': 'This task does nothing until you press Tailor on a job. After that, it '
+              'writes those resumes in the background, so they are ready when you look.'},
 ]
 
 
@@ -2046,8 +2046,8 @@ class Handler(BaseHTTPRequestHandler):
             if isinstance(expect, int) and expect != len(ids):
                 return self._send(409, json.dumps({
                     'ok': False, 'stale': True, 'count': len(ids),
-                    'error': 'The board changed: there are now %d pending jobs, not %d. '
-                             'Nothing was changed. Reload and try again.' % (len(ids), expect)}))
+                    'error': 'The board changed. There are now %d pending jobs, and not %d. '
+                             'The app changed nothing. Reload the page and try again.' % (len(ids), expect)}))
             if not ids:
                 return self._send(200, json.dumps({'ok': True, 'affected': 0, **backlog_state()}))
             try:
@@ -2504,8 +2504,8 @@ def main():
     except AlreadyRunning as e:
         url = f'http://127.0.0.1:{e.port}/'
         print(f'The dashboard is already running in another window on {url}.')
-        print('Open that address in your browser. (Nothing was started — a second copy on the'
-              ' same data would fight the first over every file it writes.)')
+        print('Open that address in your browser. (The app started nothing. A second copy on the'
+              ' same data competes with the first copy for every file that it writes.)')
         input('Press Enter to close.'); return
     except OSError as e:
         print(f'The dashboard did not start ({e}).')

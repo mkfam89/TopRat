@@ -21,6 +21,34 @@ import _paths  # noqa: E402,F401
 FIXTURES = os.path.join(ROOT, 'tests', 'fixtures')
 
 
+# --- the docx lint fixtures are BUILT, not committed -----------------------------
+#
+# .gitignore excludes *.docx repo-wide (tailored resumes are binaries; the repo commits
+# code only), which also excludes tests/fixtures/docx/. A fresh clone — CI's included —
+# therefore has the folder empty, and every lint_resume test failed with R00
+# "could not read document: PackageNotFoundError" until this hook existed.
+#
+# So build them at session start when they are missing. tests/build_docx_fixtures.py is
+# the same generator you run by hand; it is deterministic and offline, and the whole set
+# takes well under a second. If python-docx is not installed we stay silent: the lint
+# tests will say so themselves, and the rest of the suite has no reason to care.
+_DOCX_FIXTURES = os.path.join(FIXTURES, 'docx')
+
+
+def pytest_sessionstart(session):
+    import glob
+    import subprocess
+    if glob.glob(os.path.join(_DOCX_FIXTURES, '*.docx')):
+        return
+    builder = os.path.join(ROOT, 'tests', 'build_docx_fixtures.py')
+    try:
+        subprocess.run([sys.executable, builder], check=True,
+                       capture_output=True, text=True, timeout=120)
+    except Exception as exc:  # missing python-docx, or the builder itself broke
+        print('\ncould not build tests/fixtures/docx (%s); lint_resume tests will fail'
+              % exc)
+
+
 def load_fixture(name):
     with open(os.path.join(FIXTURES, name), encoding='utf-8') as f:
         return json.load(f)
@@ -30,6 +58,34 @@ def load_fixture(name):
 def jp():
     import jobpipe
     return jobpipe
+
+
+# --- the FROZEN config root ------------------------------------------------------
+#
+# See tests/frozen_root.py for why this exists and why the files are committed under
+# '.frozen.json' names. The mechanics live there rather than here because
+# tests/make_fixtures.py WRITES the goldens through the same root these fixtures READ
+# them through; two implementations would eventually disagree, and a regeneration that
+# baked live values into fixtures the suite checks against frozen ones is precisely the
+# drift being prevented.
+import frozen_root as _frozen  # noqa: E402
+
+
+@pytest.fixture(scope='session')
+def frozen_root(tmp_path_factory):
+    """A real data root on disk, built once per session from the committed frozen copies."""
+    return _frozen.materialize(str(tmp_path_factory.mktemp('frozen_data_root')))
+
+
+@pytest.fixture
+def frozen_config(frozen_root):
+    """Point config reads at the frozen root for the duration of one test.
+
+    Restores on the way out, so the autouse _data_root_restored guard below stays
+    satisfied and no later test inherits the frozen dials.
+    """
+    with _frozen.activate(frozen_root) as root:
+        yield root
 
 
 # --- the data root must come back ------------------------------------------------

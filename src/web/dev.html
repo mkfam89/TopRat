@@ -70,29 +70,29 @@
 <div class="wrap">
   <a class="back" href="/">&larr; Back to the board</a>
   <h1>Dev tools</h1>
-  <p class="sub">A hidden page for testing. It is not in the menu and nothing links to it &mdash;
-  type <code>/dev</code> to get here. Read-only, apart from the restart button.</p>
+  <p class="sub">A hidden page for tests. It is not in the menu, and no link points to it.
+  Type <code>/dev</code> to open it. It is read-only, except the restart button.</p>
 
   <div class="card">
     <h2>Restart the server</h2>
-    <p style="margin:0 0 12px">Use this after you edit a <b>.py</b> file. That code is already
-    loaded into the running process, so an edit does nothing until the process is replaced.</p>
+    <p style="margin:0 0 12px">Use this button after you edit a <b>.py</b> file. The running
+    process already holds that code, so an edit does nothing until the server starts again.</p>
     <div class="row">
       <button id="btnRestart" onclick="restart()">&#8635; Restart server</button>
       <button class="ghost" onclick="load()">&#8635; Refresh this page</button>
       <span class="stat" id="restartStat"></span>
     </div>
     <div class="callout" style="margin:14px 0 0">
-      <b>You do not need this for .html or .css edits.</b> The server re-reads the page files from
-      disk on every request and sends everything <code>no-store</code>, so a plain browser refresh
-      already shows your change to <code>cards.html</code>, <code>setup.html</code>,
-      <code>ui.css</code> and the rest.
+      <b>You do not need this for .html or .css edits.</b> The server reads the page files from
+      disk on every request and sends them with <code>no-store</code>. A normal browser refresh
+      therefore shows your change to <code>cards.html</code>, <code>setup.html</code>,
+      <code>ui.css</code> and the other pages.
     </div>
-    <p class="note" style="margin:12px 0 0">What happens: the page tells the server to go, the
-    server answers, frees its port, launches a replacement on the same port and exits. This page
-    then waits for a <i>different</i> process to answer and reloads itself. The restarted server
-    runs hidden in the background, the same way the watchdog starts it &mdash; so if you launched
-    it from a terminal, that terminal is no longer attached afterwards.</p>
+    <p class="note" style="margin:12px 0 0">What happens: the page tells the server to stop. The
+    server answers, frees its port, starts a replacement on the same port, and exits. This page
+    then waits for a <i>different</i> process to answer, and it loads itself again. The new server
+    runs hidden in the background, as the watchdog starts it. If you started the server from a
+    terminal, that terminal is no longer attached.</p>
   </div>
 
   <div class="card">
@@ -104,8 +104,8 @@
     <h2>Last 20 log lines <span class="note" id="logPath"></span></h2>
     <pre class="log" id="log">Loading…</pre>
     <p class="note" style="margin:10px 0 0">From <code>logs/execution.log</code>
-    (<code>src/lib/runlog.py</code>). Read this before re-running anything &mdash; a failed run
-    already said what went wrong here.</p>
+    (<code>src/lib/runlog.py</code>). Read this before you run anything again. A failed run
+    already gave the reason here.</p>
   </div>
 
   <div class="card">

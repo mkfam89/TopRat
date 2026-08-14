@@ -1,5 +1,5 @@
 {
-  "_note": "Default job definitions for scheduler.py. This file is versioned with the code. Do not edit it by hand. The live schedule is the user copy in <data_root>/config/schedule.json. The user copy sets the times and the on/off state. This file sets the label, the group, the type, and the steps of each job. The group decides which collapsible section the job appears under on the schedule page: search, resumes, or upkeep. A job with no group falls into 'other'. If the user copy is absent, scheduler.py reads this file, and the schedule page shows the default jobs. Times are local, in 24-hour HH:MM format. In the days list, 0 is Monday and 6 is Sunday. To change the live schedule, use the schedule page of the dashboard.",
+  "_note": "Default job definitions for scheduler.py. This file is versioned with the code. Do not edit it by hand. The live schedule is the user copy in <data_root>/config/schedule.json. The user copy sets the times and the on/off state. This file sets the label, the group, the type, and the steps of each job. A job may also list after_steps: those run only if steps succeed, and they start AFTER the job is reported finished, so nothing waits on them. Use after_steps for slow work that the board does not need in order to show the jobs - salary_probe.py is there because it takes minutes to price the postings that jobpipe.py candidates has already put on the board in a second. The group decides which collapsible section the job appears under on the schedule page: search, resumes, or upkeep. A job with no group falls into 'other'. If the user copy is absent, scheduler.py reads this file, and the schedule page shows the default jobs. Times are local, in 24-hour HH:MM format. In the days list, 0 is Monday and 6 is Sunday. To change the live schedule, use the schedule page of the dashboard.",
   "tick_seconds": 30,
   "grace_seconds": 300,
   "jobs": {
@@ -33,11 +33,13 @@
           "listings.json"
         ],
         [
+          "notify.py"
+        ]
+      ],
+      "after_steps": [
+        [
           "salary_probe.py",
           "--no-adzuna"
-        ],
-        [
-          "notify.py"
         ]
       ],
       "description": "This task searches for new job postings every hour. It scores each posting against your skills. If a posting is a good match, the task sends an alert to your phone."
@@ -68,7 +70,9 @@
           "candidates",
           "--listings",
           "listings.json"
-        ],
+        ]
+      ],
+      "after_steps": [
         [
           "salary_probe.py"
         ]
@@ -95,7 +99,9 @@
           "candidates",
           "--listings",
           "listings.json"
-        ],
+        ]
+      ],
+      "after_steps": [
         [
           "salary_probe.py"
         ]

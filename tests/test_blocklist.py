@@ -107,11 +107,12 @@ def test_unblocked_employer_is_pending(tmp_blocklist):
 
 # ---- enforcement: cmd_candidates ----------------------------------------
 
-# Golden values were snapshotted against the owner's live config (skills.json,
-# skill_aliases.json, strategy.json, blocklist). A clone with no data root reads an
-# empty config and scores everything differently, so this fails for want of data.
-@pytest.mark.needs_userdata
-def test_candidates_excludes_blocked_from_ready(tmp_blocklist, tmp_path, monkeypatch):
+# frozen_config supplies the strategy floors and title lane cmd_candidates reads on its
+# way to candidates.csv; tmp_blocklist patches only blocklist.BLOCKLIST, so the two do not
+# fight over the data root. skill_match is stubbed below, so what is pinned here is the
+# blocked-employer exclusion and nothing else.
+def test_candidates_excludes_blocked_from_ready(tmp_blocklist, tmp_path, monkeypatch,
+                                                frozen_config):
     blocklist.block_employer("Felix", tactic="bait-switch")
     listings = [
         {"title": "Senior Engineer", "company": "Felix", "requiredSkills": ["Python"],

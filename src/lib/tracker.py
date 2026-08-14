@@ -20,6 +20,7 @@ from pipelib import (BASE, JSON_PATH, HTML_PATH, TRACKING_CSV, ARCHIVE_CSV,
 from scoring import norm, skill_match, score_job, strategy
 from blocklist import is_blocked
 import reposts  # advisory repost annotation (never excludes)
+import payfilter  # pay floor: profile.json search.salary_min, applied to the RESULT
 
 def read_tracker():
     if os.path.exists(JSON_PATH) and os.path.getsize(JSON_PATH) > 2:
@@ -355,6 +356,22 @@ def cmd_candidates(a):
                 r['repostNote'] = info['note']
     except Exception:
         pass  # advisory only — a detector hiccup must never break discovery
+    # Pay floor (profile.json search.salary_min = the /setup "Min salary" field). The
+    # discovery floor above asks "is this job a skills match?"; this asks "can it pay what
+    # was asked for?" — and only when a REAL figure says otherwise (the posting's own pay,
+    # or Adzuna's prediction; never this pipeline's own band guess, never silence). See
+    # payfilter.py for the full rule. It runs here with whatever the salary cache already
+    # knows, which for a brand-new job is nothing — salary_probe.py re-sweeps the file at
+    # the end of its run, once today's jobs have figures. Queued jobs are exempt here (the
+    # column payfilter.exempt() would read does not exist in candidates.csv).
+    pay_min = payfilter.min_expected()
+    pay_dropped = []
+    if pay_min:
+        _, low = payfilter.filter_rows([r for r in rows if r['id'] not in queued], pay_min)
+        if low:
+            gone = {r['id'] for r, _ in low}
+            rows = [r for r in rows if r['id'] not in gone]
+            pay_dropped = [(r['id'], why) for r, why in low]
     rows.sort(key=lambda r: -(r['skillMatch'] if isinstance(r['skillMatch'], float) else 0))
     with open(CANDIDATES_CSV, 'w', newline='', encoding='utf-8') as f:
         w = _csv.DictWriter(f, fieldnames=CANDIDATE_COLS); w.writeheader(); w.writerows(rows)
@@ -363,7 +380,12 @@ def cmd_candidates(a):
              and r['hasResume'] != 'yes' and r['status'] != 'blocked']
     nblocked = sum(1 for r in rows if r['status'] == 'blocked')
     bnote = f", {nblocked} blocked-employer" if nblocked else ""
-    print(f"candidates.csv: {len(rows)} kept ({dropped} low-match remote dropped, floor {int(floor*100)}%{bnote}) | >= {int(thr*100)}% needing a resume: {len(ready)}")
+    pnote = f", {len(pay_dropped)} under ${pay_min:,d}" if pay_dropped else ""
+    print(f"candidates.csv: {len(rows)} kept ({dropped} low-match remote dropped, floor {int(floor*100)}%{bnote}{pnote}) | >= {int(thr*100)}% needing a resume: {len(ready)}")
+    # Name every job the pay rule removed. A drop with no trace is the one thing the user
+    # cannot audit later — the row is gone from candidates.csv, so the log IS the record.
+    for jid, why in pay_dropped:
+        print(f"  pay-drop {jid[:52]:<52} {why}")
 
 # ---------- archive (Step 11) ----------
 def cmd_archive(a):

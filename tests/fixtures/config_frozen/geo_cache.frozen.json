@@ -1,0 +1,137 @@
+{
+ "baytown, tx": {
+  "lat": 29.7355047,
+  "lon": -94.9774274,
+  "resolved": "Baytown, TX, US"
+ },
+ "channelview, texas, united states": {
+  "lat": 29.7760599,
+  "lon": -95.1146533,
+  "resolved": "Channelview, TX, US"
+ },
+ "deer park, texas, united states": {
+  "lat": 29.7052284,
+  "lon": -95.1238204,
+  "resolved": "Deer Park, TX, US"
+ },
+ "deer park, tx": {
+  "lat": 29.7052284,
+  "lon": -95.1238204,
+  "resolved": "Deer Park, TX, US"
+ },
+ "fort bend county, tx": {
+  "lat": 29.511218,
+  "lon": -95.7807348,
+  "resolved": "Fort Bend County, TX, US"
+ },
+ "friendswood, texas, united states": {
+  "lat": 29.5293998,
+  "lon": -95.2010447,
+  "resolved": "Friendswood, TX, US"
+ },
+ "galveston, texas, united states": {
+  "lat": 29.3872254,
+  "lon": -94.992736,
+  "resolved": "Galveston County, TX, US"
+ },
+ "galveston, tx": {
+  "lat": 29.3872254,
+  "lon": -94.992736,
+  "resolved": "Galveston County, TX, US"
+ },
+ "harris county, texas, united states": {
+  "lat": 29.8119769,
+  "lon": -95.3741247,
+  "resolved": "Harris County, TX, US"
+ },
+ "houston, texas, united states": {
+  "lat": 29.7589382,
+  "lon": -95.3676974,
+  "resolved": "Houston, TX, US"
+ },
+ "houston, tx": {
+  "lat": 29.7589382,
+  "lon": -95.3676974,
+  "resolved": "Houston, TX, US"
+ },
+ "humble, texas, united states": {
+  "lat": 29.9988312,
+  "lon": -95.2621553,
+  "resolved": "Humble, TX, US"
+ },
+ "humble, tx": {
+  "lat": 29.9988312,
+  "lon": -95.2621553,
+  "resolved": "Humble, TX, US"
+ },
+ "katy, texas, united states": {
+  "lat": 29.7857853,
+  "lon": -95.8243956,
+  "resolved": "Katy, TX, US"
+ },
+ "katy, tx": {
+  "lat": 29.7857853,
+  "lon": -95.8243956,
+  "resolved": "Katy, TX, US"
+ },
+ "north houston, tx": {
+  "lat": 29.9199024,
+  "lon": -95.5187207,
+  "resolved": "Harris County, TX, US"
+ },
+ "richmond, texas, united states": {
+  "lat": 29.5821811,
+  "lon": -95.7607832,
+  "resolved": "Richmond, TX, US"
+ },
+ "spring, texas, united states": {
+  "lat": 30.070979,
+  "lon": -95.4013419,
+  "resolved": "Spring, TX, US"
+ },
+ "spring, tx": {
+  "lat": 30.070979,
+  "lon": -95.4013419,
+  "resolved": "Spring, TX, US"
+ },
+ "sugar land, tx": {
+  "lat": 29.6196787,
+  "lon": -95.6349463,
+  "resolved": "Sugar Land, TX, US"
+ },
+ "sweeny, texas, united states": {
+  "lat": 29.0428593,
+  "lon": -95.6977341,
+  "resolved": "Sweeny, TX, US"
+ },
+ "texas city, tx": {
+  "lat": 29.396013,
+  "lon": -94.9175485,
+  "resolved": "Texas City, TX, US"
+ },
+ "the woodlands, texas, united states": {
+  "lat": 30.1734194,
+  "lon": -95.504686,
+  "resolved": "The Woodlands, TX, US"
+ },
+ "the woodlands, tx": {
+  "lat": 30.1734194,
+  "lon": -95.504686,
+  "resolved": "The Woodlands, TX, US"
+ },
+ "waller, texas, united states": {
+  "lat": 29.9443902,
+  "lon": -95.9955885,
+  "resolved": "Waller County, TX, US"
+ },
+ "waller, tx": {
+  "lat": 29.9443902,
+  "lon": -95.9955885,
+  "resolved": "Waller County, TX, US"
+ },
+ "webster, texas, united states": {
+  "lat": 29.5351724,
+  "lon": -95.1161564,
+  "resolved": "Webster, TX, US"
+ }
+}

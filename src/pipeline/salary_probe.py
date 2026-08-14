@@ -63,6 +63,7 @@ HERE = _paths.ROOT
 # when the data repo isn't split out). adzuna.json is a secret and lives with the data.
 from pipelib import (DATA, CONFIG, cfg, SALARY_CACHE as CACHE, SALARY_QUOTA as QUOTA,
                      CANDIDATES_CSV as CANDIDATES, TRACKING_CSV)
+import payfilter  # pay floor, re-applied once this run has filled in the figures
 ADZUNA_CFG = cfg('adzuna.json')
 
 # Adzuna free-tier ceilings (developer.adzuna.com/docs/terms_of_service, checked 2026-07-20).
@@ -534,6 +535,31 @@ def retryable_miss(entry):
     return stage2_pending(entry) and adzuna_creds()[0] is not None
 
 
+def pay_sweep(a):
+    """Re-apply the pay floor to candidates.csv now that this run has filled in figures.
+
+    `jobpipe candidates` already ran the same rule when it wrote the file, but a job
+    discovered THIS run had no salary yet at that moment — this is the pass where a job
+    Adzuna has just priced below the minimum finally leaves the board. That is what
+    "once the salaries are populated" means, and it is why the sweep lives here instead
+    of being a fourth step every user would have to add to their schedule.
+
+    Skipped for the informational and single-job modes. A dashboard "get salary" click on
+    ONE job (--ids/--json) must never silently delete rows the user is looking at, and
+    --dry/--stats/--quota promise to change nothing. Never fatal: a pay-filter fault must
+    not fail a probe run that did its own job correctly."""
+    if a.dry or a.as_json or a.ids.strip():
+        return
+    try:
+        res = payfilter.sweep()
+    except Exception as e:
+        print('salary_probe: pay filter skipped (%s)' % e)
+        return
+    msg = payfilter.note(res)
+    if msg:
+        print('salary_probe: %s' % msg)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--ids', default='')
@@ -605,6 +631,10 @@ def main():
         else:
             print('salary_probe: nothing to probe (%d cached, %d candidates)'
                   % (len(cache), len(rows)))
+            # Still sweep: nothing new to fetch does not mean nothing to filter. The
+            # minimum may have changed on /setup since the last run, and every figure
+            # needed to act on it is already in the cache.
+            pay_sweep(a)
         return 0
     if a.dry:
         for r in todo:
@@ -664,6 +694,7 @@ def main():
     print('salary_probe: %d probed | posting=%d jobsworth=%d unresolved=%d'
           % (len(todo), stage1, stage2, len(todo) - stage1 - stage2))
     print('salary_probe: %s' % note)
+    pay_sweep(a)
     if blocked:
         print('salary_probe: WARNING - Adzuna is out of quota, so unresolved jobs will use '
               'the salary_bands.json estimate until the window resets.')

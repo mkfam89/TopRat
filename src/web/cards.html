@@ -670,8 +670,10 @@
      The TOOLBAR is pinned back to the card column's width while this is on, so it does not jump
      wider the moment a search narrows the list to zero and snap back on the next keystroke.
      Copy is built by renderEmpty(), which always names the CAUSE — no jobs at all, vs. a search,
-     a filter set, or a status list that happens to be empty — and carries the button that undoes
-     exactly that cause. "Nothing here" with no way out is what made it feel like a dead end. */
+     a filter set, or a status list that happens to be empty — and carries the button that answers
+     exactly that cause: the undo when something is HIDING jobs, and "Run a search now" when there
+     are none to hide (empty board, or every job decided). "Nothing here" with no way out is what
+     made it feel like a dead end. */
   .empty{display:flex;justify-content:center;padding:34px 12px 60px;}
   .empty[hidden]{display:none;}
   .emptybox{width:100%;max-width:440px;text-align:center;background:var(--surface,#fbfcfd);
@@ -1171,7 +1173,7 @@ let VIEW = (function(){
 const SUBTEXT = {
   cards: 'Click a card to see the job at the right. The quick-skip control and <b>Move to applied</b> are in the top-right corner of the card.',
   table: 'Click any row to open the full job detail under it. Click the row again to close it. Click a column header to sort. The search and the filters apply to both views.',
-  queue: 'Jobs waiting for a tailored resume — they land here when you press <b>Tailor resume</b> on the board. Click any row to open the full job detail under it. The hourly pass builds these on its own.',
+  queue: 'These jobs wait for a tailored resume. A job comes here when you press <b>Tailor resume</b> on the board. Click any row to open the full job detail under it. The hourly pass builds these resumes by itself.',
 };
 
 function setView(v){
@@ -1239,7 +1241,7 @@ function salaryTip(j){
   if(s==='manual') return 'You entered this salary manually. It overrides the figure that the app resolved.';
   if(s==='posted' || s==='posting') return 'Pay listed on the job posting itself.';
   if(s==='band') return 'The posting gives no pay. This figure comes from the salary band for this job family (config/salary_bands.json).';
-  if(s==='jobsworth' || s==='probe' || s==='adzuna') return "Estimated by Adzuna's salary predictor from the posting details.";
+  if(s==='jobsworth' || s==='probe' || s==='adzuna') return "An estimate from the salary predictor of Adzuna, based on the posting details.";
   return j.salaryEstimated ? 'An estimate. The posting gives no exact pay.' : 'The best salary figure available for this job.';
 }
 function empTip(j){
@@ -1678,11 +1680,11 @@ function tailorErr(j){ const e = j && j.tailorError; return (e && e.code) ? e : 
 const ERR_TITLE = {
   template_missing:  'The base resume file is missing',
   template_none:     'resume_template/ holds no base resume',
-  render_rejected:   'The resume was rejected by the formatting check',
-  copy_failed:       'The resume file could not be written',
-  content_unreadable:'The tailoring content file could not be read',
-  ai_failed:         'Claude could not tailor this resume',
-  pdf_failed:        'The PDF copy was not created',
+  render_rejected:   'The formatting check rejected the resume',
+  copy_failed:       'The app did not write the resume file',
+  content_unreadable:'The app did not read the tailoring content file',
+  ai_failed:         'Claude did not tailor this resume',
+  pdf_failed:        'The app did not make the PDF copy',
 };
 // What to DO about it. The message states the cause; a person still has to be told the fix, and
 // every one of these is fixed outside the board, so no dialog button can do it for you.
@@ -1706,7 +1708,7 @@ function errTag(j, label){
 function showTailorError(id){
   const j = jobById(id); if(!j) return;
   const e = tailorErr(j); if(!e) return;
-  const lines = [e.message || 'The tailoring queue could not build a resume for this job.'];
+  const lines = [e.message || 'The tailoring queue did not build a resume for this job.'];
   if(e.detail && e.detail !== e.message) lines.push('Details: ' + e.detail);
   if(ERR_FIX[e.code]) lines.push('Fix: ' + ERR_FIX[e.code]);
   if(e.predicted) lines.push('This is checked before the queue runs, so nothing has failed yet — '
@@ -1773,7 +1775,7 @@ function resumeBubble(j, cls){
      bubble. The table keeps a cell here (see resumeCell) — a blank column reads as broken. */
   if(st === 'undetermined') return '';
   const label = err ? '⚠ Error' : j.queued ? 'Queued' : F_LABEL[st];
-  const tip = err ? (ERR_TITLE[err.code] || 'The tailoring queue could not build this resume') + ' — click for details.'
+  const tip = err ? (ERR_TITLE[err.code] || 'The tailoring queue did not build this resume') + '. Click for details.'
              : j.queued ? 'In the tailoring queue. Click for the queue options: edit the instructions, see the whole queue, or take this job out.'
              : hasResume(j) ? 'Résumé: Tailored. Click to open it in a new tab.'
                        : 'Résumé: ' + label + '. Click for details.';
@@ -1836,19 +1838,19 @@ function backlogNote(){
   return {
     n,
     skip: 'Mark all ' + n + ' as skipped?\n\n'
-        + 'Nothing is lost. Every posting keeps its details, its notes and its link, and moves '
+        + 'You lose nothing. Every posting keeps its details, its notes and its link, and moves '
         + 'to the Skipped list. You can set any of them back to Pending later.\n\n'
-        + 'The searches start again as soon as this is done.',
+        + 'The searches start again after this action.',
     del:  'Delete all ' + n + ' from the board?\n\n'
-        + 'This cannot be undone from the board. The postings, their details and their notes '
-        + 'are removed. Nothing records that they were here, so a later search may find some of '
-        + 'them again.\n\n'
+        + 'CAUTION: You cannot undo this action from the board. The app removes the postings, '
+        + 'their details and their notes. It keeps no record of them, so a later search can find '
+        + 'some of them again.\n\n'
         // A bookmark is the one signal that a posting was kept on purpose. It is named here
         // because the button says "all", and "all" is exactly what would take them with it.
         + (BACKLOG.bookmarked ? BACKLOG.bookmarked + ' of them '
-             + (BACKLOG.bookmarked===1 ? 'is bookmarked and will be deleted too.'
-                                       : 'are bookmarked and will be deleted too.') + '\n\n' : '')
-        + 'Choose Cancel if you want to keep the record — Skip all keeps everything.'
+             + (BACKLOG.bookmarked===1 ? 'is bookmarked, and the app deletes it too.'
+                                       : 'are bookmarked, and the app deletes them too.') + '\n\n' : '')
+        + 'To keep the record, choose Cancel. Skip all keeps everything.'
   };
 }
 
@@ -1881,10 +1883,10 @@ function renderBacklog(){
     el.innerHTML =
       '<div class="bltext">'
       + '<div class="bltitle">⏸ The job searches are paused</div>'
-      + '<div class="blbody">The <b>hourly search</b> is switched off and nothing is waiting on '
-      + 'the board, so no new postings are arriving.</div>'
-      + '<div class="blfoot">Switch it back on under Scheduled tasks, or run a search yourself '
-      + 'from there — nothing else is holding it back.</div>'
+      + '<div class="blbody">The <b>hourly search</b> is off, and no job waits on the board. '
+      + 'No new postings arrive.</div>'
+      + '<div class="blfoot">Turn it on again under Scheduled tasks, or run a search there '
+      + 'yourself. Nothing else stops it.</div>'
       + '</div><div class="blacts">'
       + '<button class="ui-btn sm primary" onclick="location.href=\'/schedule\'">Scheduled tasks</button>'
       + '<button class="ui-btn sm" onclick="dismissBacklog()">Dismiss</button></div>';
@@ -1896,7 +1898,7 @@ function renderBacklog(){
     el.className = 'blbanner soft';
     el.innerHTML =
       '<div class="bltext"><div class="bltitle">Your board is nearly full</div>'
-      + '<div class="blbody"><b>' + b.count + ' of ' + b.cap + '</b> jobs are waiting on a decision. '
+      + '<div class="blbody"><b>' + b.count + ' of ' + b.cap + '</b> jobs wait for a decision. '
       + 'At ' + b.cap + ', the searches pause until you clear some.</div></div>'
       + '<div class="blacts"><button class="ui-btn sm" onclick="showPending()">Review them</button></div>';
     return;
@@ -1914,11 +1916,11 @@ function renderBacklog(){
     '<div class="bltext">'
     + '<div class="bltitle">⏸ The job searches are paused</div>'
     + '<div class="blbody"><b>' + b.count + ' jobs</b> are waiting on a decision, and the limit is '
-    + '<b>' + b.cap + '</b>. The scheduled searches are holding off so the board does not keep growing.'
+    + '<b>' + b.cap + '</b>. The scheduled searches wait, so the board does not continue to grow.'
     + '<br><b>Skip all</b> keeps every posting and its details, in the Skipped list. '
-    + '<b>Delete all</b> removes them from the board for good.</div>'
-    + '<div class="blfoot">The searches start again on their own once the count is under '
-    + b.cap + '. Your scheduled tasks stay switched on — nothing was turned off.</div>'
+    + '<b>Delete all</b> removes them from the board permanently.</div>'
+    + '<div class="blfoot">If the count goes under ' + b.cap + ', the searches start again by '
+    + 'themselves. Your scheduled tasks stay on. The app turned nothing off.</div>'
     + '</div><div class="blacts">' + busy + '</div>';
 }
 
@@ -2002,15 +2004,15 @@ const STATUS_LABEL = {active:'Pending', all:'All',
                       applied:'Applied', skipped:'Skipped', bookmarked:'Bookmarked', banned:'Banned'};
 const STATUS_EMPTY = {
   active:     ['You are all caught up',
-               'Every job on the board has been applied to, skipped, or banned. Nothing is waiting on a decision.'],
+               'You applied to, skipped or banned every job on the board. No job waits for a decision.'],
   applied:    ['Nothing marked applied yet',
                'Open a job, press <b>Status</b> and pick Applied. It moves into this list.'],
   skipped:    ['Nothing skipped yet',
-               'Jobs you pass on land here. They stay on the board, so a skip is always reversible.'],
+               'A job that you pass on comes here. It stays on the board, so you can always undo a skip.'],
   bookmarked: ['No bookmarks yet',
                'Press the star on a job to keep it in this list.'],
   banned:     ['No banned employers',
-               'Banning an employer hides every posting from them. They collect here, and an unban brings them back.'],
+               'A ban hides every posting from that employer. Those postings collect here, and an unban returns them.'],
   all:        ['Nothing to show here',
                'Every job on the board belongs to a banned employer. The <b>Banned</b> list still has them.'],
 };
@@ -2034,6 +2036,10 @@ const EMPTY_ART = `<svg width="94" height="58" viewBox="26 113 460 285" aria-hid
   </g>
 </svg>`;
 const MOTTO = 'Stay ahead of the pack, be a top rat.';
+// Shared by both empty states that can start a run (see runAct), so the wording of a search in
+// progress does not drift between them.
+const SEARCHING_MSG = 'The search runs now. The app scrapes, scores and prices the job boards. '
+                    + 'The board fills itself at the end.';
 
 function renderEmpty(list){
   document.body.classList.toggle('is-empty', !list.length);
@@ -2066,13 +2072,10 @@ function renderEmpty(list){
     // config pages are a detour, and a first-run visitor has already been sent to /setup by
     // ONBOARD_JS before ever reaching this panel.
     title = 'No jobs on the board yet';
-    msg = SEARCH_RUNNING
-        ? 'The search is running now. Job boards are being scraped, scored and priced. The board fills itself when it finishes.'
-        : 'Nothing has been found so far. Run a search now, or put one on the schedule and it '
-          + 'runs on its own from then on.';
-    acts.push({label: SEARCH_RUNNING ? 'Searching…' : '▶ Run a search now',
-               fn:'runSearchNow()', pri:true, off:SEARCH_RUNNING},
-              {label:'Schedule searches', href:'/schedule'});
+    msg = SEARCH_RUNNING ? SEARCHING_MSG
+        : 'The app found nothing so far. Run a search now. You can also add a search to the '
+          + 'schedule, and then it runs by itself.';
+    acts.push(runAct(), {label:'Schedule searches', href:'/schedule'});
   }else{
     // The jobs are here; something trimmed them. Name every reason, offer the undo for each.
     const causes = [];
@@ -2080,6 +2083,16 @@ function renderEmpty(list){
     if(nf) causes.push(nf === 1 ? '1 active filter' : nf + ' active filters');
     if(!causes.length){
       [title, msg] = STATUS_EMPTY[fs] || STATUS_EMPTY.all;
+      /* "All caught up" is the one status list whose emptiness is a SUPPLY problem, not a display
+         problem: every job on the board is applied, skipped or banned, so no undo below brings
+         work back — "Show all jobs" only re-shows decisions already made. The remedy is new
+         postings, so the run goes here too, ahead of that undo. Deliberately not offered on the
+         other lists: applied/skipped/bookmarked/banned are empty because nothing has been put in
+         them yet, and a scrape does not fill them. */
+      if(fs === 'active'){
+        if(SEARCH_RUNNING) msg = SEARCHING_MSG;
+        acts.push(runAct());
+      }
     }else{
       // Name the CONDITION, not the outcome. "No jobs match" reads like a verdict on the board
       // ("there is nothing for you"); the board is full and a filter set is hiding it.
@@ -2128,11 +2141,15 @@ function resetBoard(){
 }
 
 /* ---------------- run a search from the empty board ----------------
-   The board is empty because no search has RUN yet, so the panel offers the run itself instead
-   of two links to pages that only configure one. This is the SAME zero-token path the scheduler
+   Two empty states are answered by a search, and both offer the run itself instead of a link to
+   a page that only configures one: no jobs on the board at all (no search has ever RUN), and
+   "You are all caught up" (jobs exist, every one of them is decided). A search/filter emptiness
+   is NOT one of them — the same condition would hide whatever the run brings back.
+   This is the SAME zero-token path the scheduler
    uses — POST /api/run → scheduler.run_job(name, manual=True), which shells out to
-   scrape.py → jobpipe candidates → salary_probe. No Claude anywhere in it, per the CLAUDE.md
-   "everything works without Claude" rule.
+   scrape.py → jobpipe candidates. salary_probe is no longer in that chain: it is the job's
+   `after_steps` tail, which starts once the task is reported done and holds nothing up (see
+   watchSearch). No Claude anywhere in it, per the CLAUDE.md "everything works without Claude" rule.
    Widest net first: the 7-day sweep, falling back to the daily and hourly jobs if a customized
    schedule dropped it. run_job returns as soon as the worker thread starts, so the state lives
    in SEARCH_RUNNING/SEARCH_NOTE (module-level, NOT on the button — renderEmpty rebuilds its
@@ -2140,6 +2157,13 @@ function resetBoard(){
 const RUN_JOBS = ['weekly_sweep','daily_scrape','radar'];
 let SEARCH_RUNNING = false, SEARCH_NOTE = '', SEARCH_ERR = false;
 function searchNote(t, bad){ SEARCH_NOTE = t||''; SEARCH_ERR = !!bad; render(); }
+
+// The button, in one place, for both callers. A function declaration (hoisted) and not a const,
+// because renderEmpty is defined ABOVE this section and calls it.
+function runAct(){
+  return {label: SEARCH_RUNNING ? 'Searching…' : '▶ Run a search now',
+          fn:'runSearchNow()', pri:true, off:SEARCH_RUNNING};
+}
 
 async function runSearchNow(){
   if(SEARCH_RUNNING) return;
@@ -2167,23 +2191,49 @@ async function runSearchNow(){
     + '<a href="/setup">check your search settings</a>.', true);
 }
 
-// Poll the scheduler until its running job clears, then reload the board. /api/sched-status is
-// the status-only endpoint the nav pill uses, so this adds no new server work.
+/* Poll until the JOBS ARRIVE — not until the scheduled task ends. /api/sched-status is the
+   status-only endpoint the nav pill uses, so this still adds no new server work.
+
+   The two are not the same moment, and the gap used to be minutes. A search task ends with work
+   that ENRICHES postings already on the board (pricing them), so waiting for the task meant
+   holding "Searching…" long after the board could have been drawn. `backlog.count` is the
+   pending-job count from the SAME payload — backlog._pending() counts tracking.csv + candidates.csv,
+   the exact two files /api/jobs merges — so a rise in it means rows the board can render are on
+   disk NOW. First reading is the baseline (the board as the run found it) and any rise ends the
+   wait; the old "task finished" test stays as the fallback that catches a run which adds nothing.
+
+   Prices land later, on their own. They arrive by the next refresh, and a job with a blank pay
+   chip is worth incomparably more on screen than an accurate one four minutes from now. */
 function watchSearch(){
-  let seen = false, tries = 0;
+  let seen = false, tries = 0, base = null;
   const tick = async ()=>{
     tries++;
-    let running = null, ok = true;
-    try{ const s = await (await fetch('/api/sched-status')).json(); running = s.runningJob || null; }
+    let running = null, ok = true, count = null;
+    try{
+      const s = await (await fetch('/api/sched-status')).json();
+      running = s.runningJob || null;
+      if(s.backlog && typeof s.backlog.count === 'number') count = s.backlog.count;
+    }
     catch(e){ ok = false; }
     if(running) seen = true;
+    // Set on the first reading that arrives, so a failed first poll costs the arrival test but
+    // never mis-sets the baseline to a post-arrival count (which would hide the rise entirely).
+    if(ok && count !== null && base === null) base = count;
+    const arrived = ok && count !== null && base !== null && count > base;
     // ~5 minutes of polling, then stop guessing and let the user reload.
-    if((ok && seen && !running) || tries > 100){
+    if(arrived || (ok && seen && !running) || tries > 100){
       SEARCH_RUNNING = false;
       await load();                       // JOBS is refilled; if any arrived, the panel is gone
-      if(!JOBS.length) searchNote('The search finished and found nothing. Your search terms may '
-        + 'be too narrow, or the boards have nothing new. '
+      /* Test the LIST, not JOBS. On a caught-up board JOBS is never empty (every job is decided),
+         so a JOBS test would report success while the panel still says "all caught up" — the
+         button would look like it did nothing. currentList() is what the user is looking at, and
+         the run is only offered when no search or filter narrows it. */
+      if(!currentList().length) searchNote('The search is complete and it found nothing. Your search terms '
+        + 'can be too narrow, or the boards have nothing new. '
         + '<a href="/setup">Check your search settings</a>.', false);
+      // Said out loud only when the board was drawn while the task was still going, because that
+      // is the only case where a blank pay chip means "not yet" rather than "not found".
+      else if(arrived && running) toast('Jobs are in. Pay is still loading.');
       return;
     }
     setTimeout(tick, 3000);
@@ -2342,7 +2392,7 @@ function resumeCell(j){
   // On /queue this is the whole question the column exists to answer: it is still here, why?
   if(tailorErr(j) && !hasResume(j)) return errTag(j, 'Error');
   if(!hasResume(j))
-    return '<span class="t-none" title="No resume file for this job yet — that is what it is waiting in the queue for.">None</span>';
+    return '<span class="t-none" title="No resume file for this job yet. The job waits in the queue for that file.">None</span>';
   const name = (j.resumePath || j.resumePdf || j.resumeDocx || '').split('/').pop();
   // Trim the leading "<name>_Resume_" that every generated file shares. Without it the column
   // ellipsises every row to the same stub and names nothing.

@@ -41,6 +41,17 @@ def ask_int(prompt, default):
         try: return int(str(v).replace(',', '').replace('$', ''))
         except ValueError: print('  Enter a number.')
 
+def ask_money(prompt, default):
+    """A salary prompt where 0 means "no limit", not "zero dollars". Shows and accepts the
+    word `none` so the default never reads as a $0 the user deliberately chose; stores 0
+    either way, which is what every reader of the field already treats as off."""
+    while True:
+        v = str(ask(prompt, 'none' if not default else str(default))).strip()
+        if v.lower() in ('none', 'no', '-', '0'):
+            return 0
+        try: return int(v.replace(',', '').replace('$', ''))
+        except ValueError: print('  Enter a number, or "none".')
+
 def ask_choices(prompt, options, default):
     print(prompt)
     for i, o in enumerate(options, 1):
@@ -145,8 +156,8 @@ def main():
     yoe = s.get('years_experience', [0, 15])
     s['years_experience'] = [ask_int('Minimum years experience', yoe[0]), ask_int('Maximum years experience', yoe[1] if len(yoe) > 1 else 15)]
     s['employment_types'] = ask_choices('Employment types:', EMPLOYMENT, s.get('employment_types', ['Full Time']))
-    s['salary_min'] = ask_int('Minimum salary ($/yr)', s.get('salary_min', 80000))
-    s['salary_max'] = ask_int('Maximum salary ($/yr, target ceiling)', s.get('salary_max', 150000))
+    s['salary_min'] = ask_money('Minimum salary ($/yr, or "none")', s.get('salary_min', 80000))
+    s['salary_max'] = ask_money('Maximum salary ($/yr, target ceiling, or "none")', s.get('salary_max', 150000))
     # advanced hiringcafe.com-only filters keep sensible defaults unless already set
     s.setdefault('security_clearances', ['None'])
     s.setdefault('air_travel_ok', ['Minimal', 'None'])

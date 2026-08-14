@@ -11,15 +11,18 @@ from conftest import load_fixture
 GOLDEN = load_fixture('cards.json')
 
 
-@pytest.fixture(scope='module')
-def ms(jp):
+@pytest.fixture
+def ms(jp, frozen_config):
+    """The matchable skill set, built from the FROZEN dials (tests/fixtures/config_frozen).
+
+    Every test in this file routes segments through this set, so pinning it is what lets
+    the whole module run on a clone with no data root. Function-scoped rather than
+    module-scoped because frozen_config is per-test; _matchable() is two small json
+    loads, so rebuilding it per test costs nothing measurable.
+    """
     return jp._matchable()
 
 
-# Golden values were snapshotted against the owner's live config (skills.json,
-# skill_aliases.json, strategy.json, blocklist). A clone with no data root reads an
-# empty config and scores everything differently, so this fails for want of data.
-@pytest.mark.needs_userdata
 def test_full_card(jp, ms):
     matchable, stems = ms
     got = jp._parse_card(
@@ -31,10 +34,6 @@ def test_full_card(jp, ms):
                    'requiredSkills': ['Kubernetes', 'Terraform', 'Docker', 'Python']}
 
 
-# Golden values were snapshotted against the owner's live config (skills.json,
-# skill_aliases.json, strategy.json, blocklist). A clone with no data root reads an
-# empty config and scores everything differently, so this fails for want of data.
-@pytest.mark.needs_userdata
 def test_segment_order_does_not_matter(jp, ms):
     matchable, stems = ms
     got = jp._parse_card(
@@ -94,10 +93,8 @@ def test_salary_k_form(jp, ms):
     assert got['salary'] == '120k - 140k'
 
 
-# Golden values were snapshotted against the owner's live config (skills.json,
-# skill_aliases.json, strategy.json, blocklist). A clone with no data root reads an
-# empty config and scores everything differently, so this fails for want of data.
-@pytest.mark.needs_userdata
+# Snapshotted against tests/fixtures/config_frozen/, not the owner's live config: the
+# card TEXTS come from real listings, but the skill set that segments them is frozen.
 def test_golden_cards(jp, ms):
     matchable, stems = ms
     for row in GOLDEN:

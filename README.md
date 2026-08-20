@@ -24,9 +24,9 @@ your API keys. It has a **Schedule** page for the automatic searches.
 
 | I want to...                       | Do this                                       |
 |------------------------------------|-----------------------------------------------|
-| Open the board                     | `Start Here.bat`                              |
-| Keep the board open after a reboot | `Install Watchdog.bat`                        |
-| Stop the automatic restart         | `Uninstall Watchdog.bat`                      |
+| Open the board                     | `Start Here.bat` / `Start Here.command`       |
+| Keep the board open after a reboot | `Install Watchdog.bat` / `.command`           |
+| Stop the automatic restart         | `Uninstall Watchdog.bat` / `.command`         |
 | Run one search by hand             | `tools\run_scrape_once.bat`                   |
 | Run the tests                      | `tools\run_tests.bat`                         |
 | Save your work to git              | `tools\Git Daily Commit.bat`                  |
@@ -36,9 +36,12 @@ your API keys. It has a **Schedule** page for the automatic searches.
 ## Where things live
 
 ```
-Start Here.bat            <- the launcher; start here
+Start Here.bat            <- the launcher; start here (Windows)
+Start Here.command        <- the same launcher for macOS and Linux
 Install Watchdog.bat      <- keeps the dashboard open across reboots
+Install Watchdog.command    (the .command files are the mac/linux twins)
 Uninstall Watchdog.bat
+Uninstall Watchdog.command
 
 src/                      <- all the code, in groups by function
   _paths.py                 the only path logic (read this file first)

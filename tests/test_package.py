@@ -136,6 +136,55 @@ def test_zip_carries_no_personal_data(built_zip):
     assert sorted(set(bad)) == [], 'personal data in the release zip: %s' % sorted(set(bad))[:5]
 
 
+def test_zip_carries_no_test_suite(built_zip):
+    """The download is for someone who double-clicks, not someone who clones.
+
+    tests/ IS exported to the TopRat git repo (test_release.py asserts that from
+    the other side) but stripped from the zip here: DEV_ONLY already removes
+    pytest from the bundled interpreter, so a suite in the download is ~2 MB the
+    user cannot run. Shipping tests with no runner is a puzzle, not a safety net.
+    """
+    path, _ = built_zip
+    rels = [n.split('/', 1)[1] for n in zipfile.ZipFile(path).namelist() if '/' in n]
+    assert not [r for r in rels if r.startswith('tests/')], \
+        'the download carries a test suite it cannot run'
+    assert 'pytest.ini' not in rels
+
+
+def test_strip_is_scoped_to_the_staged_copy(tmp_path):
+    """_strip_zip_only must only ever delete inside the stage it is handed.
+
+    It runs `rmtree` on paths named by a module constant. Pointed at the wrong
+    root — the project folder, say — that deletes the real test suite. This pins
+    that it takes the stage as an argument and touches nothing else, so the day
+    someone 'simplifies' it to use HERE, this fails.
+    """
+    stage = tmp_path / 'stage'
+    (stage / 'tests' / 'fixtures').mkdir(parents=True)
+    (stage / 'tests' / 'test_x.py').write_text('', encoding='utf-8')
+    (stage / 'pytest.ini').write_text('[pytest]\n', encoding='utf-8')
+    (stage / 'src').mkdir()
+    (stage / 'src' / 'app.py').write_text('', encoding='utf-8')
+    sibling = tmp_path / 'tests'          # must survive: outside the stage
+    sibling.mkdir()
+    (sibling / 'keepme.py').write_text('', encoding='utf-8')
+
+    gone = package._strip_zip_only(str(stage), quiet=True)
+
+    assert sorted(gone) == ['pytest.ini', 'tests/']
+    assert not (stage / 'tests').exists()
+    assert not (stage / 'pytest.ini').exists()
+    assert (stage / 'src' / 'app.py').exists(), 'the strip ate something it should not have'
+    assert (sibling / 'keepme.py').exists(), 'the strip escaped the staged copy'
+
+
+def test_strip_is_silent_when_there_is_nothing_to_strip(tmp_path):
+    """A second call, or a tree built without tests, must not raise."""
+    stage = tmp_path / 'stage'
+    stage.mkdir()
+    assert package._strip_zip_only(str(stage), quiet=True) == []
+
+
 def test_a_dirty_tree_produces_no_zip(tmp_path, monkeypatch):
     """The refusal must happen BEFORE anything is written.
 

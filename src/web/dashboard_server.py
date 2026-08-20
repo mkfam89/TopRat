@@ -30,7 +30,8 @@ try:
 except Exception:
     mau = None
 try:
-    import make_watchdog as mwd        # Task Scheduler watchdog: restarts the dashboard if it stops
+    import make_watchdog as mwd        # watchdog switch: restarts the dashboard if it stops
+                                      # (Task Scheduler on Windows, launchd on macOS)
 except Exception:
     mwd = None
 try:
@@ -267,24 +268,24 @@ SCHED_PILL_JS = """
     if(W){
       if(!W.supported){
         out.push({sev:'info', head:'This computer cannot restart the dashboard by itself',
-          body:'The watchdog needs the Windows Task Scheduler. Here, the tasks run only while '
-             + 'this dashboard is open.'});
+          body:'The watchdog needs a scheduler this computer does not have. Here, the tasks run '
+             + 'only while this dashboard is open.'});
       } else if(W.desired && !W.enabled){
         out.push({sev:'bad', head:'The watchdog did not turn on',
-          body:(W.error ? esc(W.error) + '. ' : '') + 'The switch shows on, but Windows has no task '
-             + 'for it. Nothing restarts the dashboard if it stops.',
+          body:(W.error ? esc(W.error) + '. ' : '') + 'The switch shows on, but this computer has '
+             + 'no scheduled job for it. Nothing restarts the dashboard if it stops.',
           acts:[{act:'wd-on', label:'Try again', primary:true},
                 {act:'wd-go', label:'Show me the setting'}]});
       } else if(!W.desired){
         out.push({sev:'warn', head:'The watchdog is off',
-          body:'The tasks run only while this dashboard window is open. If you turn it on, Windows '
-             + 'starts the dashboard again, minimized, each time it is closed.',
+          body:'The tasks run only while this dashboard window is open. If you turn it on, this '
+             + 'computer starts the dashboard again, minimized, each time it is closed.',
           acts:[{act:'wd-on', label:'Turn it on', primary:true},
                 {act:'wd-go', label:'Show me the setting'}]});
       } else if(W.pauseMin){
         out.push({sev:'info', head:'The watchdog is paused',
           body:'For the next ' + esc(String(W.pauseMin)) + ' minutes the dashboard stays closed if you '
-             + 'close it. After that, Windows starts it again.'});
+             + 'close it. After that, this computer starts it again.'});
       }
     }
     return out;
@@ -836,10 +837,52 @@ _PICKER_SRC = (
     "r = tk.Tk(); r.withdraw()\n"
     "try: r.attributes('-topmost', True)\n"      # otherwise it opens BEHIND the browser
     "except Exception: pass\n"
-    "p = filedialog.askdirectory(parent=r, title=sys.argv[1],\n"
-    "                            initialdir=(sys.argv[2] or None), mustexist=False)\n"
+    # parent= is deliberately DROPPED on macOS: Tk attaches the chooser to its parent as
+    # a document-modal SHEET, and our parent is withdrawn, so the sheet lands on an
+    # unmapped window - off the visible screen, with no title bar to drag it back by
+    # (reported on macOS 2026-08-18). Without a parent Tk shows a free-floating panel the
+    # window server places itself. Elsewhere parent= is what keeps it above the browser.
+    "kw = {} if sys.platform == 'darwin' else {'parent': r}\n"
+    "p = filedialog.askdirectory(title=sys.argv[1],\n"
+    "                            initialdir=(sys.argv[2] or None), mustexist=False, **kw)\n"
     "r.destroy()\n"
     "sys.stdout.write(p or '')\n")
+
+
+def _pick_folder_macos(title, init):
+    """macOS folder panel via osascript. (path, err), or None to fall through to tkinter.
+
+    Preferred over tkinter on macOS because this is the same Cocoa panel Finder opens:
+    the window server positions it, and `tell me to activate` raises osascript above the
+    browser without touching System Events (so no accessibility permission prompt).
+    Returns None - never an error - when osascript is unavailable or fails for a reason
+    other than the user cancelling, so the tkinter path still gets its turn.
+    """
+    def esc(v):
+        return v.replace('\\', '\\\\').replace('"', '\\"')
+    # Parenthesised: `default location` wants a file specifier, and the parens keep the
+    # POSIX file coercion from being parsed as part of the following clause.
+    loc = ('default location (POSIX file "%s")' % esc(init)) if init else ''
+    script = ('tell me to activate\n'
+              'set _f to choose folder with prompt "%s" %s\n'
+              'return POSIX path of _f\n'
+              % (esc(title or 'Choose a folder'), loc))
+    try:
+        r = subprocess.run(['osascript', '-e', script],
+                           capture_output=True, text=True, timeout=600)
+    except subprocess.TimeoutExpired:
+        return '', 'The folder window stayed open too long. Type the path instead.'
+    except Exception:
+        return None
+    if r.returncode != 0:
+        err = r.stderr or ''
+        # -128 is userCanceledErr. A cancel is a RESULT, not a failure: falling through
+        # would pop a second dialog at someone who just dismissed the first one.
+        if '-128' in err or 'canceled' in err.lower() or 'cancelled' in err.lower():
+            return '', ''
+        return None
+    out = (r.stdout or '').strip()
+    return (os.path.normpath(os.path.abspath(out)) if out else ''), ''
 
 
 def pick_folder(title='', initial=''):
@@ -848,6 +891,10 @@ def pick_folder(title='', initial=''):
     if init and not os.path.isdir(init):
         parent = os.path.dirname(init)
         init = parent if os.path.isdir(parent) else ''
+    if sys.platform == 'darwin':
+        got = _pick_folder_macos(title, init)
+        if got is not None:
+            return got
     try:
         r = subprocess.run([sys.executable or 'python', '-c', _PICKER_SRC,
                             title or 'Choose a folder', init],
@@ -961,13 +1008,16 @@ def reconcile_autostart():
     except Exception as e:
         AUTOSTART_ERR = str(e)
 
-# ---- watchdog (Task Scheduler restarts the dashboard, minimized, when it is not running) ----
-# The dashboard only owns the SWITCH. All the OS work lives in make_watchdog.py, and the check
-# itself in watchdog.py, so the feature keeps working with no dashboard and no Claude.
+# ---- watchdog (the OS restarts the dashboard, minimized, when it is not running) ----
+# The dashboard only owns the SWITCH. All the OS work lives in make_watchdog.py - which picks
+# Task Scheduler on Windows and launchd on macOS - and the check itself in watchdog.py, so the
+# feature keeps working with no dashboard and no Claude. Nothing here branches on the platform:
+# the state below carries 'supported' and 'mechanism', and the page reads those.
 def watchdog_state():
     if mwd is None:
         return {'desired': False, 'enabled': False, 'supported': False, 'everyMin': 5,
-                'pauseMin': 0, 'task': '', 'error': 'watchdog module unavailable'}
+                'pauseMin': 0, 'task': '', 'mechanism': '',
+                'error': 'watchdog module unavailable'}
     s = gui_settings()
     try:    every = int(s.get('watchdogEveryMin', 5) or 5)
     except (TypeError, ValueError): every = 5
@@ -975,12 +1025,13 @@ def watchdog_state():
     except (TypeError, ValueError): pause = 0
     return {'desired': bool(s.get('watchdog', False)), 'enabled': mwd.is_enabled(),
             'supported': mwd.supported(), 'everyMin': every, 'pauseMin': pause,
-            'task': mwd.TASK_NAME, 'error': WATCHDOG_ERR}
+            'task': mwd.TASK_NAME, 'mechanism': mwd.MECHANISM, 'error': WATCHDOG_ERR}
 
 # The watchdog moved into the nav chip's bubble (it is the setting that CAUSES the missed runs
 # the chip counts), so /api/sched-status now carries it — and that endpoint is polled once a
-# minute by every open tab. mwd.is_enabled() shells out to schtasks.exe, which is far too much
-# process-spawning for a fact that only changes when the user flips the switch. Cached briefly;
+# minute by every open tab. mwd.is_enabled() shells out to schtasks.exe (or launchctl on a
+# Mac), which is far too much process-spawning for a fact that only changes when the user flips
+# the switch. Cached briefly;
 # the toggle clears the cache, so the bubble never lags behind the switch it points at.
 _WD_CACHE = {'at': 0.0, 'val': None}
 _WD_TTL = 45.0
@@ -996,8 +1047,8 @@ def watchdog_cache_clear():
     _WD_CACHE['at'] = 0.0
 
 def reconcile_watchdog():
-    """Make the scheduled task match the wanted setting. It defaults to OFF: registering a
-    Windows task is not something to do to someone's machine unless they asked."""
+    """Make the scheduled job match the wanted setting. It defaults to OFF: registering a
+    task with someone's operating system is not something to do unless they asked."""
     global WATCHDOG_ERR
     if mwd is None or not mwd.supported():
         return

@@ -175,10 +175,11 @@
     </div>
     <!-- Replaces the old "start at login" switch. That one used a script in the Startup folder,
          so it fired at login and never again: close the dashboard, or let it crash, and nothing
-         ran until the next login. This uses the Windows Task Scheduler, which re-checks. -->
-    <p class="desc">The tasks below run only while this dashboard runs. If you turn this on, Windows
-      looks at the dashboard every few minutes. If the dashboard is closed, Windows starts it again
-      and puts the window in your taskbar, <b>minimized</b>. A sign-in therefore does not fill your
+         ran until the next login. This uses the operating system's own scheduler - Task
+         Scheduler on Windows, launchd on macOS - which re-checks. -->
+    <p class="desc">The tasks below run only while this dashboard runs. If you turn this on, your
+      computer looks at the dashboard every few minutes. If the dashboard is closed, your computer
+      starts it again and puts the window in the background, <b>minimized</b>. A sign-in therefore does not fill your
       screen with the dashboard. This setting covers a sign-in, an accidental close of the window,
       and a stop of the app. If you turn it off, the tasks run only while this window stays open.</p>
     <div class="controls">
@@ -515,7 +516,7 @@ document.getElementById('blCap').addEventListener('change', async function(){
   loadBacklog();
 });
 
-// ---- watchdog. A Windows scheduled task restarts the dashboard, minimized, when it stops. ----
+// ---- watchdog. A scheduled job in the OS restarts the dashboard, minimized, when it stops. ----
 // This replaced the old autostart switch (a .vbs in the Startup folder). /api/autostart still
 // exists for older installs, but the dashboard no longer offers it: two mechanisms starting the
 // same server would race for one port, so turning the watchdog on retires the .vbs.
@@ -542,8 +543,9 @@ function renderWatchdog(s){
   document.getElementById('wdBadge').innerHTML = badge;
   let msg = '';
   if(s.supported && on){
-    msg = 'Windows task "'+(s.task||'JobDashboardWatchdog')+'" checks every '+(s.everyMin||5)
-        + (s.everyMin===1?' minute':' minutes')+'. It runs while you are logged on.';
+    msg = 'The scheduled job "'+(s.task||'the watchdog')+'" checks every '+(s.everyMin||5)
+        + (s.everyMin===1?' minute':' minutes')+'. It runs while you are logged on.'
+        + (s.mechanism ? ' Your computer runs it with '+s.mechanism+'.' : '');
     if(s.pauseMin) msg += ' Paused for '+s.pauseMin+' more minutes. If you close the dashboard, it stays closed.';
   }
   document.getElementById('wdMsg').textContent = msg;
@@ -572,7 +574,7 @@ async function postWatchdog(payload, okMsg){
 document.getElementById('wdToggle').addEventListener('change', function(){
   const enable = this.checked;
   postWatchdog({enable, everyMin: parseInt(document.getElementById('wdEvery').value,10)||5},
-    enable ? 'The watchdog is on. Windows restarts the dashboard minimized if it stops.'
+    enable ? 'The watchdog is on. Your computer restarts the dashboard minimized if it stops.'
            : 'The watchdog is off. The tasks run only while this window is open.');
 });
 document.getElementById('wdEvery').addEventListener('change', function(){

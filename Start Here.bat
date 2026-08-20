@@ -37,14 +37,15 @@ REM Verify whatever we found actually runs (Store stub / broken install guard).
 "%PY%" -c "import sys; sys.exit(0 if sys.version_info >= (3,8) else 1)" >nul 2>&1
 if errorlevel 1 goto nopython
 
-REM ---- 2. offer the app window, once ----------------------------------------
+REM ---- 2. set up the app window, once ----------------------------------------
 REM Only relevant for someone running their OWN Python: the shipped bundle
 REM already has pywebview (see tools\Make Portable Python.bat), so this is
-REM skipped entirely there. We ASK rather than install silently - a first launch
-REM that quietly downloads is what antivirus and corporate proxies punish, and a
-REM silent failure leaves the user with no idea why there is no window. Asked at
-REM most once: the marker is written whatever the answer, so "no" stays no.
-call :offer_window
+REM skipped entirely there. We INSTALL it automatically and fall back to the
+REM browser when that does not work - app.py opens a browser tab whenever
+REM webview is missing and loses no feature, so the fallback costs nothing,
+REM while a question the user has no way to evaluate buys nothing. Attempted at
+REM most once: the marker is written whatever the outcome.
+call :setup_window
 
 REM ---- 3. start the dashboard and show it ------------------------------------
 REM app.py does the three steps this file used to do by hand (start if down, find
@@ -69,40 +70,36 @@ REM ---------------------------------------------------------------- helpers --
 where %1 >nul 2>&1 && set "PY=%1"
 exit /b 0
 
-:offer_window
+:setup_window
 REM Every path here exits 0. Nothing in this routine may stop the app starting.
 if exist "%~dp0python\python.exe" exit /b 0
 if exist "%~dp0config\app_window.answered" exit /b 0
 "%PY%" -c "import webview" >nul 2>&1 && exit /b 0
 echo(
-echo   One-time question: this app can open in its own window instead of a
-echo   browser tab. That needs a small extra download (about 5 MB, from the
-echo   Python package index). Everything works either way - the browser is
-echo   not a lesser version, it is just a tab.
+echo   One-time setup: fetching the app window package (about 5 MB, from the
+echo   Python package index) so the board can open in its own window. If it
+echo   does not work the board opens in your browser instead - same app, just
+echo   a tab. This can take a minute.
 echo(
-choice /c YN /m "   Set up the app window"
-REM Capture the answer IMMEDIATELY. Every command below - even a successful
-REM echo - resets errorlevel, so reading it later would read the wrong thing.
-set "ANS=%errorlevel%"
-REM Marker whatever the answer: a "no" that gets asked again every launch is
-REM worse than never having offered.
+REM Marker whatever the outcome: retrying a download that failed, on every
+REM launch, is worse than opening in the browser and saying so once.
 if not exist "%~dp0config" mkdir "%~dp0config" 2>nul
->"%~dp0config\app_window.answered" echo asked
-if "%ANS%"=="2" (
-  echo   Fine - opening in your browser. To change your mind later, delete
-  echo   config\app_window.answered and run this file again.
-  echo(
-  exit /b 0
-)
-echo(
-echo   Installing... (this happens only once)
-"%PY%" -m pip install --quiet --disable-pip-version-check pywebview
+>"%~dp0config\app_window.answered" echo attempted
+REM Plain install first; --user is the retry for a Python whose site-packages
+REM this user cannot write (Program Files, or a machine-wide install). pip
+REM output is discarded - a wall of red text about an OPTIONAL package reads as
+REM a broken app, which it is not.
+"%PY%" -m pip install --quiet --disable-pip-version-check pywebview >nul 2>&1
+REM Installed is not the same as importable, so test the thing we actually need.
+"%PY%" -c "import webview" >nul 2>&1
+if errorlevel 1 "%PY%" -m pip install --quiet --disable-pip-version-check --user pywebview >nul 2>&1
+"%PY%" -c "import webview" >nul 2>&1
 if errorlevel 1 (
-  echo(
-  echo   That did not work - no harm done, the app opens in your browser.
-  echo   Usually it means no internet connection right now.
+  echo   Could not install it - no harm done, the app opens in your browser.
+  echo   Usually it means no internet connection right now. To try again later,
+  echo   delete config\app_window.answered and run this file again.
 ) else (
-  "%PY%" -c "import webview" >nul 2>&1 && echo   Done - the app will open in its own window.
+  echo   Done - the app will open in its own window.
 )
 echo(
 exit /b 0

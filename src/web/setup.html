@@ -22,7 +22,10 @@
           padding:18px 20px; margin:0 0 16px; box-shadow:0 1px 2px rgba(16,24,40,.04); }
   .card h2 { font-size:12px; text-transform:uppercase; letter-spacing:.05em;
              color:var(--mut); margin:0 0 12px; font-weight:600; }
-  .card h2 .hint { color:var(--mut); font-weight:400; }
+  .card h2 .hint { color:var(--mut); font-weight:400; text-transform:none; letter-spacing:0; }
+  /* Step 2 has no single card title any more: role keywords, location and sources are each
+     their own heading, so an h2 after the first needs its own top margin. */
+  .card h2:not(:first-child) { margin-top:22px; }
   label { display:block; font-size:13px; color:var(--mut); margin:12px 0 4px; }
   input[type=text], input[type=number], input[type=email], input[type=password], textarea, select {
     width:100%; background:#fff; border:1px solid var(--field); color:var(--fg);
@@ -61,6 +64,21 @@
          border-radius:4px; padding:1px 5px; margin-left:2px; }
   .tog.locked .tag { background:#f3f4f6; color:var(--mut); border-color:var(--line); }
   .gatelink { color:var(--acc); font-weight:600; cursor:pointer; text-decoration:underline; }
+  /* An ⓘ next to a control. The long "what is this" text used to sit in the page flow as a
+     full-width paragraph, which read like an error the moment the page loaded and made the
+     row hard to scan. It lives in a click-to-open bubble now. */
+  .ctlrow { display:inline-flex; align-items:center; gap:6px; margin-right:16px; }
+  .ctlrow .tog { margin-right:0; }
+  .infowrap { position:relative; display:inline-block; line-height:0; }
+  .ibtn { width:16px; height:16px; border-radius:50%; border:1px solid var(--mut); background:none;
+          color:var(--mut); font:italic 700 10px/1 Georgia,serif; cursor:pointer; padding:0;
+          display:inline-flex; align-items:center; justify-content:center; }
+  .ibtn:hover, .ibtn[aria-expanded="true"] { border-color:var(--acc); color:var(--acc); }
+  .infowrap .bubble { left:-7px; }
+  @media (max-width:760px){
+    .infowrap .bubble { left:auto; right:-7px; }
+    .infowrap .bubble::before { left:auto; right:14px; }
+  }
   .geo { display:flex; gap:8px; align-items:center; }
   .geo input { flex:1; }
   button { font:inherit; cursor:pointer; border-radius:6px; border:1px solid var(--acc);
@@ -139,27 +157,6 @@
   .sec .body { padding:14px 16px 16px; border-top:1px solid var(--line); }
   .sec .body > *:first-child { margin-top:0; }
   .sec .body label:first-of-type { margin-top:0; }
-  /* ---- agent prompt cards (Settings -> Run it automatically) ----
-     One card per scheduled task. The prompt itself is NOT shown by default: it is 120 lines
-     of instructions the user is not meant to read or edit, and putting it on screen makes a
-     one-button job look like a config file. Copy is the action; "see the text" is a link. */
-  .agent { border:1px solid var(--line); border-radius:9px; padding:12px 13px; margin:0 0 10px;
-         background:#fcfdff; }
-  .agent .ah { display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; }
-  .agent .an { font-weight:600; font-size:13.5px; color:var(--ink); }
-  .agent .aw { font-size:11.5px; color:var(--mut); background:#f3f4f6; border-radius:999px;
-         padding:1px 8px; white-space:nowrap; }
-  .agent .ab { font-size:12.5px; color:var(--mut); margin:5px 0 9px; }
-  .agent .arow { display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
-  .agent .ok { font-size:12px; color:#065f46; font-weight:600; }
-  .agent details { margin-top:9px; }
-  .agent details summary { cursor:pointer; font-size:12px; color:var(--mut); }
-  .agent pre { max-height:230px; overflow:auto; background:#f8fafc; border:1px solid var(--line);
-         border-radius:7px; padding:9px 10px; font-size:11px; line-height:1.45; white-space:pre-wrap;
-         word-break:break-word; margin:8px 0 0; }
-  .steps3 { margin:0 0 14px; padding-left:20px; font-size:13px; color:var(--ink); }
-  .steps3 li { margin:0 0 5px; }
-  .steps3 .q { color:var(--mut); }
   .grouphead { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--mut);
          font-weight:600; margin:24px 0 4px; }
   .grouphead .n { text-transform:none; letter-spacing:0; font-weight:400; }
@@ -227,6 +224,17 @@
   .modal-foot button { background:none; border:none; color:var(--mut); font-size:13px;
                        text-decoration:underline; padding:4px; }
   .modal-foot button:hover { color:var(--acc); }
+  /* ---- "you have unsaved changes" dialog ----
+     One dialog, three answers, reused for every way OUT of an edit: another wizard step, a
+     collapsing add-on row, a link off this page. Save is the focused action because the user
+     got here by typing something they meant to keep, and Cancel is always the safe answer. */
+  .modal-box.ask { max-width:470px; }
+  .modal-box .dot { width:46px; height:46px; border-radius:50%; background:var(--warn-soft);
+        color:#b45309; display:flex; align-items:center; justify-content:center;
+        font-size:27px; font-weight:700; line-height:1; margin:0 0 14px; }
+  .modal-box.ask p code { font-size:12px; }
+  .askbtns { display:flex; gap:9px; flex-wrap:wrap; margin-top:18px; }
+  .askbtns button { flex:1 1 auto; min-width:118px; }
   .savedbar { display:none; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 16px;
               border:1px solid #a7f3d0; background:var(--ok-soft); color:#065f46;
               border-radius:10px; padding:12px 16px; font-size:14px; }
@@ -276,8 +284,8 @@
   <p class="sub">Four items are necessary: your <b>name</b>, <b>target roles</b>, <b>location</b>, and <b>skills</b>.
     Everything else is optional. You can change every value later.<br>
     <b>The app writes nothing until you press Save.</b> Each step has its own <b>✓ Save this step</b> button.
-    A step with unsaved changes shows a <b style="color:#b45309">•</b> on its tab. A save writes
-    <code>config/profile.json</code>. It then makes your search URLs, your skills list and your alerts again.</p>
+    Completing these steps is recommended: it builds a profile customized to you, and everything the
+    app finds, scores and tailors comes from that profile.</p>
 
   <div class="welcome" id="welcome_box">
     <b>👋 Welcome!</b> Your profile does not exist yet. It takes about 2 minutes to make. The profile
@@ -322,11 +330,13 @@
           <button class="ghost" type="button" id="browse_template_dir"
                   onclick="browseInto('template_dir','Choose the folder with your base resumes')">📂 Browse…</button>
         </div>
-        <div class="hint">Your base resumes stay here, with the STAR stories file if you have one.
-          This folder is the only content source for tailoring. The app invents nothing, and it
-          reads no file outside this folder. If you leave the box empty, the app uses the gray
-          folder and makes that folder for you. If your resumes are already in a folder with a
-          backup, such as Documents, Dropbox or OneDrive, click Browse and select it.</div>
+        <div class="hint">Put anything useful for tailoring in this folder:
+          <ul style="margin:5px 0 0;padding-left:18px;">
+            <li>your base resumes</li>
+            <li>supporting docs — STAR stories, project notes, performance reviews</li>
+          </ul>
+          Tailoring reads only this folder. Leave the box empty to use the folder shown in gray, or
+          Browse to pick your own (Documents, Dropbox, OneDrive).</div>
         <div class="callout warn" id="tpl_outside" style="display:none;margin-top:8px;">
           CAUTION: That folder is <b>outside the app folder</b>. There are two results. The daily
           Git checkpoint and <code>Backups\snapshots\</code> do not cover your base resumes. Also,
@@ -334,7 +344,7 @@
           continues. A sync folder that did not download yet is offline. A run can then tailor from
           the wrong base resume. This location is a valid choice, but the app backup does not cover it.
         </div>
-        <div class="hint">This change takes effect after you save this step and restart the dashboard.</div></div>
+        <div class="hint">Takes effect after you save this step and restart the dashboard.</div></div>
     </div>
     <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
       <button class="ghost" type="button" id="import_btn">📂 Load an existing profile.json…</button>
@@ -350,11 +360,10 @@
        filters — useful, but a wall of empty boxes on a first visit. They fold away. -->
   <div class="pane" data-step="1">
   <div class="card">
-    <h2>What you are looking for</h2>
-    <label>Target role keywords <span class="hint">(comma-separated · the app quotes multi-word terms)</span></label>
+    <h2>Job title keywords <span class="hint">(comma-separated · the app quotes multi-word terms)</span></h2>
     <textarea id="titles" placeholder="site reliability engineer, devops engineer"></textarea>
 
-    <label>Location <span class="hint">(where you are. The app measures the distance to each job from here)</span></label>
+    <h2>Location <span class="hint">(where you are — the app measures each job's distance from here)</span></h2>
     <div class="geo">
       <input id="loc_query" type="text" placeholder="Austin, TX">
       <!-- "Look up" alone reads like a search. It geocodes: city text → coordinates, which is
@@ -364,7 +373,7 @@
     </div>
     <div class="hint" id="loc_resolved"></div>
 
-    <label style="margin-top:16px;">Where to search</label>
+    <h2>Where to search</h2>
     <div>
       <label class="tog"><input type="checkbox" id="use_hiringcafe"> hiringcafe.com</label>
       <label class="tog"><input type="checkbox" id="use_linkedin"> LinkedIn</label>
@@ -373,14 +382,24 @@
            to LinkedIn Premium. Hence the CLAUDE tag and the lock. -->
       <!-- A disabled control that will not say WHY is the worst kind. The row carries its own
            bubble naming the piece that is actually missing — hover, click, or keyboard-focus. -->
-      <span class="gatewrap" id="topapp_wrap" tabindex="0"
-            onmouseenter="topappBubble(true)" onmouseleave="topappBubble(false)"
-            onfocus="topappBubble(true)" onblur="topappBubble(false)"
-            onclick="topappBubble('toggle')">
-        <label class="tog" id="tog_topapp"><input type="checkbox" id="linkedin_top_applicant"> LinkedIn Top-Applicant feed <span class="tag">Claude</span></label>
-        <span class="bubble" id="topapp_bubble" role="status"></span>
+      <span class="ctlrow">
+        <span class="gatewrap" id="topapp_wrap" tabindex="0"
+              onmouseenter="topappBubble(true)" onmouseleave="topappBubble(false)"
+              onfocus="topappBubble(true)" onblur="topappBubble(false)"
+              onclick="topappBubble('toggle')">
+          <label class="tog" id="tog_topapp"><input type="checkbox" id="linkedin_top_applicant"> LinkedIn Top-Applicant feed <span class="tag">Claude</span></label>
+          <span class="bubble" id="topapp_bubble" role="status"></span>
+        </span>
+        <span class="infowrap">
+          <button type="button" class="ibtn" aria-expanded="false"
+                  aria-label="What is the LinkedIn Top-Applicant feed?"
+                  onclick="topappInfo(event)">i</button>
+          <span class="bubble" id="topapp_info" role="status">
+            LinkedIn's list of jobs where you would rank as a top applicant. The Claude agent reads
+            it from your signed-in browser, so it needs an active <b>LinkedIn Premium</b> session.
+          </span>
+        </span>
       </span>
-      <div class="hint" id="topapp_note"></div>
     </div>
   </div>
 
@@ -425,9 +444,8 @@
   <!-- ================= Step 3: Your Skills ================= -->
   <div class="pane" data-step="2">
   <div class="card">
-    <h2>Your real skills <span class="hint" style="text-transform:none;letter-spacing:0">— never-invent list</span></h2>
+    <h2>Skills you can claim <span class="hint">(comma-separated)</span></h2>
     <div class="hint" style="margin-bottom:8px;">The app tailors resumes only from the skills in this list. It never invents a skill that is not here.</div>
-    <label>Skills you can claim <span class="hint">(comma-separated)</span></label>
     <textarea id="skills_have" style="min-height:110px" placeholder="Linux, Python, SQL, Grafana, ..."></textarea>
   </div>
   </div>
@@ -441,8 +459,7 @@
   <div class="pane" data-step="3">
 
   <p class="lead"><b>All of this is optional.</b> The pipeline searches, scores, tracks and writes
-    template resumes without them. Open a row to see what that row adds. You can complete the setup
-    and open no row.</p>
+    template resumes without them. Open a row to see what that row adds.</p>
 
   <!-- 1 · one checkbox, and it is the difference between the app working and not working.
        Sits above phone alerts because everything else on this page assumes the app is running:
@@ -451,13 +468,14 @@
   <details class="sec" id="sec_uptime">
     <summary>
       <span class="st">Keep it running</span>
-      <span class="sv">Windows starts the dashboard again if it stops, so the searches continue.</span>
+      <span class="sv">Your computer starts the dashboard again if it stops, so the searches continue.</span>
       <span class="pill">optional</span>
     </summary>
     <div class="body">
       <p class="why">The searches run inside this dashboard, so they happen only while it is open. If
-        you turn this setting on, Windows looks at the dashboard every few minutes. If the dashboard
-        is closed, Windows starts it again <b>minimized</b>, so it never covers your screen.</p>
+        you turn this setting on, your computer looks at the dashboard every few minutes. If the
+        dashboard is closed, your computer starts it again <b>minimized</b>, so it never covers your
+        screen. This works on Windows and on macOS.</p>
       <label class="tog"><input type="checkbox" id="uptime_watchdog"> Restart the dashboard by itself if it stops</label>
       <div class="row" style="margin-top:10px;">
         <div><label>Check every</label>
@@ -469,7 +487,7 @@
           </select></div>
       </div>
       <!-- Unlike every other field on this page, this one acts on the machine the moment it is
-           clicked (it registers a Windows scheduled task), so it must say so — otherwise the
+           clicked (it registers a scheduled job with the operating system), so it must say so — otherwise the
            user leaves without pressing Save and assumes nothing happened. -->
       <div class="hint" id="uptime_status">This setting applies immediately. You do not need to save it.</div>
     </div>
@@ -483,11 +501,10 @@
       <span class="pill">optional</span>
     </summary>
     <div class="body">
-      <p class="why">The hourly radar runs as a plain script. It sends one grouped alert for each batch
-        of new matches. It is free and it needs no account. You invent a secret <b>topic</b> name, and
-        your phone subscribes to that topic. If the topic box is empty, the app sends nothing.</p>
+      <p class="why">Free, no account. You invent a secret <b>topic</b> name and subscribe your phone
+        to it. Leave the box empty and nothing is sent.</p>
       <div class="helpbar">
-        <span class="txt">The guide makes a secure topic and shows you each step in the phone app.</span>
+        <span class="txt">The guide makes a topic for you and walks through the phone app.</span>
         <a class="howto" href="/help/ntfy" target="_blank">📱 How to configure ntfy →</a>
       </div>
       <label>ntfy topic <span class="hint">(a long random string. Keep it secret, like a password)</span></label>
@@ -498,7 +515,7 @@
         <button class="ghost" type="button" onclick="testNotify()">🔔 Send test alert</button>
         <span id="notify_status" class="hint"></span>
       </div>
-      <div class="hint">Press ✓ Save this step first. The test reads the saved topic, and not the box above.</div>
+      <div class="hint">Save this step first — the test uses the saved topic, not the box above.</div>
     </div>
   </details>
 
@@ -514,15 +531,11 @@
       <span class="pill">optional</span>
     </summary>
     <div class="body">
-      <p class="why">This feature runs <b>Claude Code</b> on this machine, on the Claude plan that you
-        already pay for. There is <b>no API key and no metered cost</b>. Without Claude Code, the queue
-        still runs and makes a template copy. That copy is not rewritten for the posting.</p>
-      <p class="why">After you install it, the <b>Tailor resume</b> button on the job board also shows a
-        <b>notes box</b>. You can type "lead with the on-call work" or "they want Terraform, not Azure",
-        and the tailoring pass reads your note. There is no switch. The box appears because the
-        software that reads it is present.</p>
+      <p class="why">Needs <b>Claude Code</b> installed on this machine. It runs on the Claude plan you
+        already pay for — no API key, no metered cost. Once it is installed, the <b>Tailor resume</b>
+        button also gains a notes box, so you can say things like "lead with the on-call work".</p>
       <div class="helpbar">
-        <span class="txt">Install Claude Code. Run <code>claude login</code>. Then sign in with your plan.</span>
+        <span class="txt">Install Claude Code, then run <code>claude login</code>.</span>
         <a class="howto" href="/help/claude-code" target="_blank">⚡ How to configure this →</a>
       </div>
       <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
@@ -535,18 +548,15 @@
            after the old job_tracker.html was replaced; the caps sat on the Schedule page,
            beside run times they have nothing to do with). -->
       <div class="subhead">When to use AI instead of a template</div>
-      <p class="why">If your skills already cover a posting, the run copies the matching template.
-        That copy is free and immediate, and it uses no tokens. AI tailoring is for the postings that
-        your skills <b>do not</b> cover. This setting is that limit.</p>
+      <p class="why">If your skills already cover a posting, the run just copies a template. AI
+        tailoring is for the postings they do not cover. This sets where that line falls.</p>
       <label>Use a template when the skill match is at least</label>
       <select id="cust_level" onchange="syncCustHint()"></select>
       <div class="hint" id="cust_hint"></div>
 
       <div class="subhead">How many AI resumes per scheduled run</div>
-      <p class="why">Each scheduled run sorts the jobs by <b>local jobs first, then best skill
-        match</b>. It then AI-tailors the top N jobs. <b>Only AI resumes count against the cap.</b> A
-        template copy is free and immediate, so the cap never applies to it. The cap also never
-        applies to a job that you queue with the <b>Tailor</b> button.</p>
+      <p class="why">Each run AI-tailors its top jobs, up to this many. Template copies and anything
+        you queue yourself with the <b>Tailor</b> button do not count.</p>
       <div class="row">
         <div><label>Daily run — AI-tailor up to</label><input id="prio_daily" type="number" min="0" value="20"></div>
         <div><label>Hourly run — AI-tailor up to</label><input id="prio_queue" type="number" min="0" value="10"></div>
@@ -558,33 +568,6 @@
     </div>
   </details>
 
-  <!-- Runs the whole thing hands-off. Sits directly after AI tailoring because it is the
-       thing that USES it: the prompts below are what actually calls the pipeline on a
-       schedule. Two tasks only — the evening and weekly variants are duplicates of these at
-       other hours, and a menu of four is a menu a new user closes. -->
-  <details class="sec" id="sec_agents">
-    <summary>
-      <span class="st">Run it automatically</span>
-      <span class="sv">Searches and tailors on a schedule, so your board is full when you open it.</span>
-      <span class="pill">optional</span>
-    </summary>
-    <div class="body">
-      <p class="why">Everything here also works by hand. Press <b>Search</b> and <b>Tailor</b>
-        yourself, and the result is the same. This feature only does it for you on a schedule. To
-        configure it, <b>paste a message into Claude</b>. There is no file to edit.</p>
-      <ol class="steps3">
-        <li>Press <b>Copy</b> on one of the cards below.</li>
-        <li>Open <b>Claude</b> and paste the message into a new chat.</li>
-        <li>Send the message. Claude makes the scheduled task and gives you the run time.
-          <span class="q">Do the same for the second card.</span></li>
-      </ol>
-      <div id="agent_cards"></div>
-      <p class="why" style="margin-bottom:0;">Your computer must be on, and Claude must run at the
-        scheduled time. If your computer is off, you lose nothing. The next run collects every
-        posting from the time in between.</p>
-    </div>
-  </details>
-
   <!-- 3 · free but a real signup, and only sharpens a number you already get -->
   <details class="sec" id="sec_adzuna">
     <summary>
@@ -593,10 +576,9 @@
       <span class="pill">optional</span>
     </summary>
     <div class="body">
-      <p class="why">Without these keys, the estimate comes from the posting text and a wide band
-        table. The app still shows an estimate, but the estimate is less exact.</p>
+      <p class="why">Without these keys you still get a salary estimate, just a wider one.</p>
       <div class="helpbar">
-        <span class="txt">The signup is free. The guide names the two values that you copy.</span>
+        <span class="txt">Free signup. The guide shows which two values to copy.</span>
         <a class="howto" href="/help/adzuna" target="_blank">🔑 How to get these keys →</a>
       </div>
       <div class="row">
@@ -707,7 +689,7 @@
   <div class="card">
     <h2>Review</h2>
     <div id="review_rows"></div>
-    <div class="hint" style="margin-top:10px;">A save writes <code>config/profile.json</code>. It then makes the LinkedIn and hiringcafe.com search URLs, the skills list and the alerts. The app applies each filter only to the boards that support that filter.</div>
+    <div class="hint" style="margin-top:10px;">Saving builds your customized profile — the searches the app runs, the skills it matches against and the alerts it sends all come from these answers. Some filters only apply to the job boards that support them.</div>
   </div>
   </div>
 </div>
@@ -736,6 +718,25 @@
       </a>
     </div>
     <div class="modal-foot"><button type="button" onclick="closeDone()">Stay here and continue to edit</button></div>
+  </div>
+</div>
+
+<!-- ============ Unsaved-changes dialog ============
+     This page writes NOTHING until a save, so every exit from an edit is a chance to lose it.
+     Before, the only signal was an amber dot on a tab, which is easy to stop seeing. Three
+     exits route through this dialog: switching wizard steps, collapsing an add-on row, and
+     following a link off Settings. Closing the tab cannot be styled by any page, so the
+     browser's own beforeunload prompt stays as the backstop for that one. -->
+<div class="modal" id="ask_modal">
+  <div class="modal-box ask" role="dialog" aria-modal="true" aria-labelledby="ask_title">
+    <div class="dot">&#9679;</div>
+    <h3 id="ask_title">Save your changes?</h3>
+    <p id="ask_sub"></p>
+    <div class="askbtns">
+      <button type="button" id="ask_save">Save changes</button>
+      <button class="ghost" type="button" id="ask_skip">Don't save</button>
+      <button class="plain" type="button" id="ask_cancel">Cancel</button>
+    </div>
   </div>
 </div>
 
@@ -860,6 +861,9 @@ function markDirty(el){
 }
 function clearDirty(step){
   if(step==null) DIRTY.clear(); else DIRTY.delete(step);
+  // A save (or a reload) makes the form match disk, so the per-section baselines that the
+  // collapse guard compares against have to move with it, or a saved row still reads dirty.
+  if(typeof resnapSecs === 'function') resnapSecs();
   paintDirty();
 }
 function paintDirty(){
@@ -882,8 +886,149 @@ document.addEventListener('change', e => {
   if(e.target.closest && e.target.closest('.pane') && !e.target.hasAttribute('data-selfsave')) markDirty(e.target); });
 // A bubble opened by click (touch, keyboard) has no mouseleave to close it.
 document.addEventListener('keydown', e => { if(e.key==='Escape') topappBubble(false); });
-// Closing the tab with edits still in the browser silently discards them. Warn instead.
-window.addEventListener('beforeunload', e => { if(DIRTY.size){ e.preventDefault(); e.returnValue=''; } });
+
+// ---------------- unsaved-changes dialog ----------------
+// Two settings on this page do NOT live in profile.json and carry their own Save button (the
+// Adzuna keys, the AI-tailoring caps). They are still unsaved work, so every guard below asks
+// about them too — otherwise leaving the add-ons step would look clean while two edited fields
+// sat in the browser only. The try/catch is for the moment before their loaders have answered.
+function selfSaveDirty(){
+  try { return adzunaDirty() || prioDirty(); } catch(e){ return false; }
+}
+function anyUnsaved(){ return DIRTY.size > 0 || selfSaveDirty(); }
+// Every pending write on the page, in one call, for the "Save and leave" answer.
+async function saveEverything(){
+  if(selfSaveDirty()){
+    if(adzunaDirty()) await saveAdzuna(true);
+    if(prioDirty())   await savePrio(true);
+  }
+  if(DIRTY.size) await save(null,{quiet:true});
+}
+
+// Resolves to 'save' | 'skip' | 'cancel'. The resolver is nulled as it fires, so a backdrop
+// click or an Escape arriving during the awaited save cannot answer the same question twice.
+let ASK_DONE = null;
+function askSave(opts){
+  if(ASK_DONE) return Promise.resolve('cancel');        // one dialog at a time
+  const m = document.getElementById('ask_modal');
+  document.getElementById('ask_title').textContent = opts.title;
+  document.getElementById('ask_sub').innerHTML     = opts.body;
+  document.getElementById('ask_save').textContent  = opts.saveLabel;
+  document.getElementById('ask_skip').textContent  = opts.skipLabel;
+  m.classList.add('show');
+  setTimeout(() => document.getElementById('ask_save').focus(), 0);
+  return new Promise(res => {
+    ASK_DONE = answer => { ASK_DONE = null; m.classList.remove('show'); res(answer); };
+  });
+}
+document.getElementById('ask_save').onclick   = () => { if(ASK_DONE) ASK_DONE('save'); };
+document.getElementById('ask_skip').onclick   = () => { if(ASK_DONE) ASK_DONE('skip'); };
+document.getElementById('ask_cancel').onclick = () => { if(ASK_DONE) ASK_DONE('cancel'); };
+document.getElementById('ask_modal').addEventListener('click', e => {
+  if(e.target.id==='ask_modal' && ASK_DONE) ASK_DONE('cancel'); });
+document.addEventListener('keydown', e => { if(e.key==='Escape' && ASK_DONE) ASK_DONE('cancel'); });
+
+// --- guard 1: moving between wizard steps ---
+// Nothing is destroyed by moving (the values stay in the form), so "Continue without saving"
+// keeps the edits AND the amber dot. The dialog is here because a step left unsaved is a step
+// whose values exist only in the browser, and the dot alone was too quiet to act on.
+async function guardStep(){
+  if(!(DIRTY.has(cur) || (cur===3 && selfSaveDirty()))) return true;
+  const a = await askSave({
+    title: 'Save \u201C'+STEPS[cur]+'\u201D first?',
+    body:  'This step has changes that are not written to <code>config/profile.json</code> yet. '+
+           'If you move on without saving, the values stay in the form and the step keeps its '+
+           '<b style="color:#b45309">&#9679;</b> mark until you save it.',
+    saveLabel: 'Save and continue', skipLabel: 'Continue without saving' });
+  if(a==='cancel') return false;
+  if(a==='save') await saveStep();
+  return true;
+}
+// show() stays the raw renderer (load() and the initial paint call it). Every USER-driven
+// move goes through navStep, which is the only thing that can be refused.
+async function navStep(i){
+  i = Math.max(0, Math.min(STEPS.length-1, i));
+  if(i===cur) return;
+  if(!(await guardStep())) return;
+  show(i);
+}
+
+// --- guard 2: collapsing an add-on section ---
+// Only the rows holding saveable state of their own are listed. The data-folder, Ban and
+// watchdog rows are excluded on purpose: each acts through its own button with a restart, a
+// list write or a scheduled task behind it, so there is never a pending edit to flush.
+// The snapshot is taken when a row OPENS, so "changed" means the user changed it in this
+// sitting — not "differs from a default whose loader has not answered yet".
+const SEC_SAVERS = { filters:   () => saveStep(),
+                     ntfy:      () => saveStep(),
+                     git:       () => saveStep(),
+                     claudecli: () => savePrio(true),
+                     adzuna:    () => saveAdzuna(true) };
+const SEC_SNAP = {};
+function secKey(d){ return (d.id||'').replace(/^sec_/,''); }
+function secSnap(d){
+  return [...d.querySelectorAll('input,select,textarea')]
+    .map(el => (el.type==='checkbox'||el.type==='radio') ? (el.checked?'1':'0') : el.value)
+    .join('\u0001');
+}
+// Re-baseline after anything that makes the form match disk again: the profile load, a save,
+// and the two probes that fill their own section asynchronously.
+function resnapSecs(){ try { Object.keys(SEC_SAVERS).forEach(k => {
+  const d = document.getElementById('sec_'+k); if(d) SEC_SNAP[k] = secSnap(d); }); } catch(e){} }
+document.querySelectorAll('.sec').forEach(d => {
+  d.addEventListener('toggle', () => { if(d.open) SEC_SNAP[secKey(d)] = secSnap(d); }); });
+// A <details> cannot veto its own toggle, so the guard sits on the summary click in the
+// CAPTURE phase, before the browser acts, and closes the row itself once the user answers.
+document.addEventListener('click', async e => {
+  const sum = e.target.closest && e.target.closest('.sec > summary');
+  if(!sum) return;
+  const d = sum.parentElement;
+  if(!d.open) return;                                            // opening a row risks nothing
+  const key = secKey(d);
+  if(!SEC_SAVERS[key]) return;
+  if(!(key in SEC_SNAP) || SEC_SNAP[key]===secSnap(d)) return;    // untouched
+  e.preventDefault(); e.stopPropagation();
+  const title = (sum.querySelector('.st')||{}).textContent || 'this section';
+  const a = await askSave({
+    title: 'Save this section?',
+    body:  'You changed <b>'+escH(title)+'</b> and have not saved it. Closing the row keeps what '+
+           'you typed on screen, but nothing reaches disk until you save.',
+    saveLabel: 'Save and close', skipLabel: 'Close without saving' });
+  if(a==='cancel') return;
+  if(a==='save') await SEC_SAVERS[key]();
+  SEC_SNAP[key] = secSnap(d);
+  d.open = false;
+}, true);
+
+// --- guard 3: leaving the Settings page ---
+// This is the exit that really does discard: the values live in the DOM and the DOM is about
+// to go. Links that open a new tab (every /help page) are left alone — they take nothing with
+// them. LEAVING suppresses the browser prompt on the navigation this dialog just authorised.
+let LEAVING = false;
+function leaveTo(url){ LEAVING = true; location.href = url; }
+async function guardLeave(){
+  if(!anyUnsaved()) return true;
+  const a = await askSave({
+    title: 'Save before you leave Settings?',
+    body:  'You have changes that are not saved. This page writes nothing until a save, so '+
+           'leaving now <b>discards</b> them.',
+    saveLabel: 'Save and leave', skipLabel: 'Leave without saving' });
+  if(a==='cancel') return false;
+  if(a==='save') await saveEverything();
+  return true;
+}
+document.addEventListener('click', async e => {
+  const a = e.target.closest && e.target.closest('a[href]');
+  if(!a || (a.target && a.target !== '_self')) return;
+  const href = a.getAttribute('href') || '';
+  if(!href || href[0]==='#' || href.toLowerCase().startsWith('javascript:')) return;
+  if(!anyUnsaved()) return;
+  e.preventDefault(); e.stopPropagation();
+  if(await guardLeave()) leaveTo(a.href);
+}, true);
+// Backstop for the one exit no page can style: closing the tab, Back, or a typed address.
+window.addEventListener('beforeunload', e => {
+  if(!LEAVING && anyUnsaved()){ e.preventDefault(); e.returnValue=''; } });
 
 // ---------------- add-on status pills + auto-expand ----------------
 // Every add-on section reports its own state through secPill(), from whatever probe already
@@ -894,9 +1039,6 @@ window.addEventListener('beforeunload', e => { if(DIRTY.size){ e.preventDefault(
 // the timeout backstop below.
 // 'uptime' leads: it is one checkbox, and nothing else on this page does anything if the app
 // is not running. Advanced sections never auto-open.
-// 'agents' is NOT in AUTO_KEYS: there is no probe that can tell whether the user set the
-// scheduled tasks up (they live in Claude's storage, not ours), so it can never report
-// "configured" and would win the auto-open race forever.
 const AUTO_KEYS = ['uptime','ntfy','claudecli','adzuna'];
 const SEC_STATE = {};
 let AUTO_DONE = false;
@@ -924,7 +1066,7 @@ function buildSteps(){
   const box=document.getElementById('steps'); box.innerHTML='';
   STEPS.forEach((name,i)=>{ const t=document.createElement('div');
     t.className='step-tab'; t.innerHTML='<span class="n">'+(i+1)+'</span>'+name;
-    t.onclick=()=>show(i); box.appendChild(t); });
+    t.onclick=()=>navStep(i); box.appendChild(t); });
 }
 function show(i){
   cur=Math.max(0,Math.min(STEPS.length-1,i));
@@ -941,7 +1083,7 @@ function show(i){
   if(cur===STEPS.length-1) renderReview();
   window.scrollTo({top:0});
 }
-function go(d){ show(cur+d); }
+function go(d){ navStep(cur+d); }
 // Moving between steps never loses anything — the values stay in the form — so this does
 // not nag. It only points out that the step just left still needs a save.
 function reloadDiscard(){
@@ -949,9 +1091,11 @@ function reloadDiscard(){
      DIRTY.size+' step'+(DIRTY.size===1?'':'s')+'.')) return;
   load();
 }
-function skipSetup(){
+// Skip is a button, not a link, so it needs the leave guard called by hand.
+async function skipSetup(){
+  if(!(await guardLeave())) return;
   try{ localStorage.setItem('setupSkippedAt', String(Date.now())); }catch(e){}
-  location.href='/';
+  leaveTo('/');
 }
 
 // ---------------- review summary ----------------
@@ -1212,6 +1356,7 @@ async function loadAdzuna(){
                   : (d.app_id ? 'The App ID is set. The key is absent.' : 'Not configured. The estimates use bands.');
     s.style.color = d.configured ? '#059669' : '#6b7280';
     secPill('adzuna', d.configured ? 'on' : 'not set', d.configured);
+    resnapSecs();          // the probe just filled this row; that is not a user edit
   }catch(e){ secPill('adzuna','unavailable',false); }
 }
 // quiet — flushed by Save this step, which prints the step summary afterwards.
@@ -1257,11 +1402,30 @@ function topappBubble(mode){
   if(claudeReady()){ b.classList.remove('show'); return; }   // nothing to explain once unlocked
   b.classList.toggle('show', mode==='toggle' ? !b.classList.contains('show') : !!mode);
 }
+// The ⓘ bubble: what the feed IS. Separate from topappBubble(), which explains why the row
+// is LOCKED. Click to open, click anywhere else or press Escape to close.
+function topappInfo(e){
+  e.stopPropagation();
+  const b=document.getElementById('topapp_info'); if(!b) return;
+  const show=!b.classList.contains('show');
+  b.classList.toggle('show',show);
+  e.currentTarget.setAttribute('aria-expanded', show?'true':'false');
+}
+function closeTopappInfo(){
+  const b=document.getElementById('topapp_info');
+  if(!b||!b.classList.contains('show')) return;
+  b.classList.remove('show');
+  const btn=document.querySelector('.infowrap .ibtn');
+  if(btn) btn.setAttribute('aria-expanded','false');
+}
+document.addEventListener('click', closeTopappInfo);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeTopappInfo(); });
+
 function applyTopApplicantGate(){
   const box=document.getElementById('linkedin_top_applicant');
-  const lab=document.getElementById('tog_topapp'), note=document.getElementById('topapp_note');
+  const lab=document.getElementById('tog_topapp');
   const bub=document.getElementById('topapp_bubble');
-  if(!box||!lab||!note) return;
+  if(!box||!lab) return;
   const ok=claudeReady();
   if(bub){ bub.innerHTML = ok ? '' : topappReason(); if(ok) bub.classList.remove('show'); }
   lab.classList.toggle('locked', !ok);
@@ -1269,72 +1433,13 @@ function applyTopApplicantGate(){
   // Unchecked while locked on purpose: collect() reads the live control, so a locked-but-
   // ticked box would keep emitting the URL into search_urls.json for a source that cannot run.
   if(!ok) box.checked = false;
-  // The hint describes the source and nothing else. Why the row is LOCKED belongs to the
-  // bubble, which only appears on hover/focus/click — printing the gate reason here too made
-  // it read as an error the moment the page loaded, with nothing touched.
-  note.innerHTML = 'The Claude agent reads this feed from your signed-in browser. It needs an '+
-    'active LinkedIn Premium session. LinkedIn gives no API for this feed, so the app cannot '+
-    'authenticate to it.';
+  // What the feed IS now lives in the ⓘ bubble beside the row (static markup). Why the row is
+  // LOCKED stays in topapp_bubble, shown on hover/focus/click only.
 }
-// --- scheduled-agent prompts (Settings -> Run it automatically) ---
-// One Copy button per task. The prompt text is fetched already personalized by
-// /api/agent-prompts — the page never builds it, so the browser and the scheduled task can
-// never disagree about which folder or which name to use.
-let AGENTS = [];
-function loadAgents(){
-  fetch('/api/agent-prompts').then(r=>r.json()).then(d=>{
-    AGENTS = (d && d.prompts) || [];
-    renderAgents();
-  }).catch(()=>{ AGENTS = []; renderAgents(); });
-}
-function renderAgents(){
-  const box = document.getElementById('agent_cards');
-  if(!box) return;
-  if(!AGENTS.length){
-    box.innerHTML = '<p class="why">The app cannot read the prompt files from '+
-      '<code>agent_prompts/</code>. Install the app again, or download it again, to restore them.</p>';
-    return;
-  }
-  box.innerHTML = AGENTS.map((a,i)=>{
-    // A missing file yields an empty prompt: disable that one card and say so, rather than
-    // handing the user a Copy button that silently copies nothing.
-    const dead = !a.prompt;
-    return '<div class="agent">'+
-      '<div class="ah"><span class="an">'+escH(a.title)+'</span>'+
-        '<span class="aw">'+escH(a.when)+'</span></div>'+
-      '<div class="ab">'+escH(a.blurb)+'</div>'+
-      '<div class="arow">'+
-        '<button type="button" onclick="copyAgent('+i+')"'+(dead?' disabled':'')+'>'+
-          (dead?'Unavailable':'Copy')+'</button>'+
-        '<span class="ok" id="agent_ok_'+i+'"></span>'+
-      '</div>'+
-      (dead?'':'<details><summary>See what this says</summary><pre>'+escH(a.prompt)+'</pre></details>')+
-    '</div>';
-  }).join('');
-}
-function copyAgent(i){
-  const a = AGENTS[i]; if(!a || !a.prompt) return;
-  const say = t => { const el=document.getElementById('agent_ok_'+i); if(el) el.textContent=t; };
-  const ask = 'Make this a scheduled task:\n\n' + a.prompt;
-  // clipboard.writeText needs a secure context; the board is served over plain http on
-  // localhost, which browsers DO treat as secure — but a user reaching it by LAN IP is not
-  // in one, hence the textarea fallback rather than a silent no-op.
-  const fallback = () => {
-    const ta=document.createElement('textarea'); ta.value=ask;
-    ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta);
-    ta.select();
-    let ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
-    document.body.removeChild(ta);
-    say(ok ? 'Copied ✓ now paste it into Claude' : 'The copy failed. Open "See what this says" and copy the text by hand.');
-  };
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(ask).then(()=>say('Copied ✓ now paste it into Claude'), fallback);
-  } else { fallback(); }
-}
-
 // Send the user to the add-ons step and open the one Claude row.
-function gotoClaudeSetup(){
-  show(3);
+async function gotoClaudeSetup(){
+  await navStep(3);
+  if(cur!==3) return;                     // the user cancelled out of the step they were on
   const t=document.getElementById('sec_claudecli');
   if(t){ t.open=true; setTimeout(()=>t.scrollIntoView({behavior:'smooth',block:'center'}),0); }
 }
@@ -1374,6 +1479,7 @@ async function loadPrio(){
     sel.value = String(PRIO_SAVED.c);
   }catch(e){ sel.value='1'; }
   syncCustHint();
+  resnapSecs();            // ditto: /api/settings filled the caps, the user did not
 }
 function prioDirty(){
   if(PRIO_SAVED.d===null) return false;
@@ -1404,10 +1510,11 @@ async function savePrio(quiet){
 // present, because this CLI is what reads the notes. The app authenticates through the
 // user's own `claude login`, so this card only reports what it found. The cheap load-time
 // call just locates the binary; "Check now" runs the real round trip, which can take many seconds.
-// ---------------- keep it running (Windows watchdog) ----------------
+// ---------------- keep it running (the OS watchdog) ----------------
 // Same /api/watchdog the Schedule page drives — this is only a second door onto the one switch,
 // so a first-run user meets it during setup instead of having to find /schedule. It acts at
-// once (it registers a scheduled task), so it is deliberately NOT part of the Save button and
+// once (it registers a scheduled job with the OS), so it is deliberately NOT part of the Save
+// button and
 // never marks the step dirty.
 async function loadUptime(){
   const t=document.getElementById('uptime_watchdog'); if(!t) return;
@@ -1428,7 +1535,7 @@ function renderUptime(s){
   if(s.everyMin) ev.value=String(s.everyMin);
   ev.disabled = !s.supported || !s.desired;
   if(!s.supported){
-    msg.textContent='This needs the Windows Task Scheduler, so it is not available on this computer. '
+    msg.textContent='This computer has no scheduler the app can use, so this is not available here. '
       + 'The searches will run only while the dashboard is open.';
     msg.style.color='#6b7280';
     // "not set" would read as a gap the user should close. It is not one; nothing can close it here.
@@ -1436,12 +1543,12 @@ function renderUptime(s){
     return noAutoOpen('uptime');
   }
   if(on){
-    msg.textContent='✓ On. Windows looks at the dashboard every '+(s.everyMin||5)+(s.everyMin===1?' minute':' minutes')
-      + '. If the dashboard is closed, Windows starts it again, minimized.'
+    msg.textContent='✓ On. Your computer looks at the dashboard every '+(s.everyMin||5)+(s.everyMin===1?' minute':' minutes')
+      + '. If the dashboard is closed, your computer starts it again, minimized.'
       + (s.pauseMin ? ' Paused for '+s.pauseMin+' more minutes.' : '');
     msg.style.color='#059669';
   } else if(s.desired && !s.enabled){
-    msg.textContent='✗ Windows did not accept the scheduled task'+(s.error?': '+s.error:'')
+    msg.textContent='✗ This computer did not accept the scheduled job'+(s.error?': '+s.error:'')
       + '. Nothing restarts the dashboard, so the searches run only while it is open.';
     msg.style.color='#b91c1c';
   } else {
@@ -1460,7 +1567,7 @@ async function saveUptime(){
       body:JSON.stringify({enable:t.checked, everyMin:parseInt(ev.value,10)||5})});
     const d=await r.json(); renderUptime(d.state);
     status(d.ok ? (t.checked ? 'The dashboard will now restart by itself.'
-                             : 'Windows will no longer restart the dashboard.')
+                             : 'Your computer will no longer restart the dashboard.')
                 : ('That did not work: '+(d.message||'unknown cause')), d.ok?'ok':'err');
   }catch(e){ t.disabled=false; status('That did not work: '+e.message,'err'); }
 }
@@ -1604,7 +1711,7 @@ if(WELCOME){ document.getElementById('welcome_box').classList.add('show');
 document.getElementById('uptime_watchdog').addEventListener('change', saveUptime);
 document.getElementById('uptime_every').addEventListener('change', saveUptime);
 
-buildChips(); buildSteps(); show(0); load(); loadBlocklist(); loadAdzuna(); loadClaudeCli(); loadPrio(); loadDataRoot(); loadUptime(); loadAgents();
+buildChips(); buildSteps(); show(0); load(); loadBlocklist(); loadAdzuna(); loadClaudeCli(); loadPrio(); loadDataRoot(); loadUptime();
 </script>
 </body>
 </html>

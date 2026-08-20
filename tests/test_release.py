@@ -367,6 +367,34 @@ def test_internal_docs_do_not_ship(built):
     assert not os.path.isdir(os.path.join(out, 'docs'))
 
 
+def test_the_sandbox_harness_does_not_ship(built):
+    """qa/ tests a BUILT release from outside; it is meaningless in a clone.
+
+    It imports nothing from src/, drives Windows Sandbox against
+    dist/TopRat-*.zip, and half of what it asserts is a property of the packaged
+    artifact rather than the code. The allowlist already excludes it by saying
+    nothing about it — this pins that, so adding 'qa' to INCLUDE_DIRS by reflex
+    (it looks like a test folder) fails here rather than in a release.
+    """
+    out, _, _ = built
+    assert 'qa' not in release.INCLUDE_DIRS
+    assert not os.path.isdir(os.path.join(out, 'qa'))
+
+
+def test_the_test_suite_does_ship_to_the_repo(built):
+    """The other half of the split, pinned from this side.
+
+    src/ops/package.py strips tests/ from the DOWNLOAD (no pytest ships, so the
+    suite would be unrunnable dead weight). The git export must keep it: the
+    exported .github/workflows/ci.yml runs `pytest`, and a handoff repo with no
+    tests is a worse handoff. Deleting one without thinking about the other
+    breaks a CI nobody watches — so each side asserts its own half.
+    """
+    out, _, _ = built
+    assert os.path.isdir(os.path.join(out, 'tests'))
+    assert os.path.isfile(os.path.join(out, 'pytest.ini'))
+
+
 def test_build_removes_stale_content_from_an_existing_export(tmp_path):
     """Dropping a name from the allowlist stops the copy. It does not remove what
     a previous release already put there — build() has to, or un-shipping is a

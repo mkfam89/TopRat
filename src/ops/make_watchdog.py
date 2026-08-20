@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""make_watchdog.py - enable/disable the Windows Task Scheduler watchdog for the dashboard.
+"""make_watchdog.py - enable/disable the "Keep it running" watchdog for the dashboard.
 
   python src/ops/make_watchdog.py install [--every 5]   # register the scheduled task
   python src/ops/make_watchdog.py uninstall             # remove it
@@ -24,6 +24,11 @@ NOT run while you are logged out, and it cannot wake a sleeping machine. Coverin
 a second, browserless task that runs the scrapers directly - a different feature.
 
 Creating a task for your own account in the root folder needs no administrator rights.
+
+macOS: this module is a FACADE. Everything below is the Windows implementation; on a Mac
+every public function forwards to watchdog_launchd.py, which does the same job with a
+launchd LaunchAgent. Callers - the dashboard's toggle, Install Watchdog.bat - see one
+module with one contract and never branch on the platform themselves.
 """
 import os, sys; sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import _paths  # noqa: F401  -- src/_paths.py: puts every src/ folder on sys.path; _paths.ROOT = project folder
@@ -44,9 +49,43 @@ LEGACY_TASK_NAMES = ['JobDashboardWatchdog']
 DEFAULT_EVERY_MIN = 5
 MIN_EVERY, MAX_EVERY = 1, 1440
 
+# ---- platform backend ------------------------------------------------------------------
+# Everything below this block is the Windows implementation. macOS has no Task Scheduler, so
+# supported() returned False there and the "Keep it running" switch had nothing to call -
+# the feature was dead on a Mac while the Setup page went on offering it. watchdog_launchd.py
+# provides the same five functions over launchd; this module picks a backend once and every
+# public function forwards to it, so no caller has to know which OS it is on.
+#
+# The import is guarded because a broken or missing backend must degrade to "not supported"
+# (an honest off switch) rather than take the whole dashboard down on import.
+_BACKEND = None
+if sys.platform == 'darwin':
+    try:
+        import watchdog_launchd as _BACKEND
+    except Exception:
+        _BACKEND = None
+
+if _BACKEND is not None:
+    # The dashboard shows this name to the user (watchdog_state()['task']), so it has to
+    # name the thing that actually exists on this machine.
+    TASK_NAME = _BACKEND.LABEL
+    LEGACY_TASK_NAMES = _BACKEND.LEGACY_LABELS
+
+# What to call the OS facility in a message, when a message has to name it at all.
+# Empty on a machine with neither, because the UI must not name a facility that is not
+# there - "this needs the Windows Task Scheduler" is a confusing thing to read on Linux.
+MECHANISM = ('launchd' if _BACKEND is not None else
+             'Windows Task Scheduler' if os.name == 'nt' else '')
+
 
 def supported():
-    """Task Scheduler is a Windows feature and schtasks.exe has to be on PATH."""
+    """True when this machine has a facility we can register the watchdog with.
+
+    Windows: Task Scheduler, with schtasks.exe on PATH. macOS: launchd, via the backend.
+    Anywhere else: False, and the dashboard says so instead of offering a dead switch.
+    """
+    if _BACKEND is not None:
+        return _BACKEND.supported()
     if os.name != 'nt':
         return False
     return bool(_schtasks_path())
@@ -81,6 +120,8 @@ def is_enabled():
     rename really does have a working watchdog, and reporting "off" would invite
     the user to switch it on, registering a second task alongside the first.
     """
+    if _BACKEND is not None:
+        return _BACKEND.is_enabled()
     if os.name != 'nt':
         return False
     for name in [TASK_NAME] + LEGACY_TASK_NAMES:
@@ -96,6 +137,8 @@ def remove_legacy_tasks():
     Safe to call when none exist: schtasks /delete on a missing task just returns
     non-zero, which is not an error worth surfacing here.
     """
+    if _BACKEND is not None:
+        return _BACKEND.remove_legacy_agents()
     removed = []
     if os.name != 'nt':
         return removed
@@ -204,6 +247,8 @@ def install(every_min=DEFAULT_EVERY_MIN, retire_vbs=True):
     task exists - it only duplicated the logon case - so it is removed by default. Two
     mechanisms starting the same server means two servers racing for one port.
     """
+    if _BACKEND is not None:
+        return _BACKEND.install(every_min, retire_vbs)
     if os.name != 'nt':
         return False, 'The watchdog needs the Windows Task Scheduler. This is not Windows.'
     if not supported():
@@ -255,6 +300,8 @@ def _retire_vbs():
 
 def uninstall():
     """Remove the task. Returns (ok, message). Missing task is treated as success."""
+    if _BACKEND is not None:
+        return _BACKEND.uninstall()
     if os.name != 'nt':
         return True, 'Nothing to remove (not Windows).'
     if not is_enabled():
@@ -275,6 +322,8 @@ def uninstall():
 
 def run_now():
     """Ask the Task Scheduler to run the task immediately. Returns (ok, message)."""
+    if _BACKEND is not None:
+        return _BACKEND.run_now()
     if not is_enabled():
         return False, 'The watchdog is not enabled.'
     rc, out = _run(['/run', '/tn', TASK_NAME])
@@ -297,8 +346,10 @@ if __name__ == '__main__':
     if cmd == 'status':
         print(TASK_NAME + ' is ' + ('REGISTERED' if is_enabled() else 'NOT registered')
               + (' (supported)' if supported() else ' (NOT supported on this OS)'))
-    elif cmd == 'xml':
-        print(task_xml(_every_from_argv(sys.argv)))
+    elif cmd in ('xml', 'plist'):
+        # One verb, whichever definition this machine actually uses.
+        print(_BACKEND.plist_xml(_every_from_argv(sys.argv)) if _BACKEND is not None
+              else task_xml(_every_from_argv(sys.argv)))
     elif cmd == 'run':
         print(run_now()[1])
     elif cmd == 'uninstall':

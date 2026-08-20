@@ -34,6 +34,25 @@ Without these files, the tests that read `.docx` cannot run. This is a decision,
 fault. The other option is a binary exception in the rule that keeps real resumes out of
 the repository.
 
+## python-docx is optional, so its tests SKIP rather than fail
+
+`python-docx` is in `requirements.txt` (optional features), not a hard dependency: the app
+degrades to "no tailored .docx" without it. `test_lint_resume.py` and `test_render_resume.py`
+therefore open with `pytest.importorskip('docx', ...)`, because `lint_resume.py` imports
+`docx` at module scope and would otherwise kill the whole run with a **collection error** on
+any interpreter that lacks it — including one where `pytest -m "not needs_userdata"` was
+supposed to give a green board, since a module that dies at import never reaches its marks.
+
+The bundled `python\python.exe` already has python-docx, and `tools\run_tests.bat` picks it
+first, so the normal way to get a full board is:
+
+```
+tools\run_tests.bat
+```
+
+Running the suite with some other interpreter (a system or Anaconda `python`) is fine — those
+two modules just skip until you `pip install python-docx` into it.
+
 ## Two kinds of "needs your data", and only one of them is a mark
 
 A fresh clone has no personal data. Two different things used to be missing, and the

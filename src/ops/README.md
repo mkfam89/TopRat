@@ -8,7 +8,8 @@ These scripts do the maintenance tasks. You run them rarely. Usually you run the
 | `setup.py` | The first-run wizard. It builds your profile and the configuration that comes from that profile. |
 | `watchdog.py` | Makes sure that the dashboard runs. If the dashboard is closed, the script starts it minimized. |
 | `stop_board.py` | Stops the dashboard **and** pauses the watchdog, so the dashboard stays closed. `tools\Stop Board.bat` calls it. `--list` shows the processes but stops nothing. |
-| `make_watchdog.py` | Adds or removes the Windows task that runs the watchdog. `Install Watchdog.bat` calls it. |
+| `make_watchdog.py` | Adds or removes the scheduled job that runs the watchdog. It is a facade: it uses the Windows Task Scheduler itself, and forwards to `watchdog_launchd.py` on a Mac. `Install Watchdog.bat` and `Install Watchdog.command` call it. |
+| `watchdog_launchd.py` | The macOS half of `make_watchdog.py`. It writes and loads a LaunchAgent (`com.toprat.watchdog`) in `~/Library/LaunchAgents`. Do not call it directly; call `make_watchdog.py`, which picks the right one. |
 | `make_autostart.py` | The old Startup-folder launcher. The watchdog replaces it. It stays here so that you can turn off an old installation. |
 | `git_daily.py` | Commits the code and the tracking data to a branch for that day. Then it pushes the branch. |
 | `backup.py` | Copies `src/`, the configuration and the tracker state to `Backups/snapshots/`. It keeps the newest 5 copies. |

@@ -10,8 +10,16 @@ import shutil
 
 import pytest
 
-import lint_resume as lr
-from conftest import FIXTURES
+# python-docx is an OPTIONAL dependency (requirements.txt): the app degrades to
+# "no tailored .docx" without it rather than crashing, so a missing python-docx must
+# skip this module, not redden the board with a collection error. Guard has to run
+# before `import lint_resume`, which imports docx at module scope.
+pytest.importorskip(
+    'docx', reason='python-docx not installed (pip install python-docx), '
+                   'or run the suite with the bundled interpreter: tools\\run_tests.bat')
+
+import lint_resume as lr  # noqa: E402
+from conftest import FIXTURES  # noqa: E402
 
 DOCX = os.path.join(FIXTURES, 'docx')
 

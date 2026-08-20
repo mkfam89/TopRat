@@ -71,49 +71,13 @@
 <div class="wrap">
   <a class="back" href="/setup">&larr; Back to Settings</a>
   <h1>Get job alerts on your phone with ntfy</h1>
-  <p class="sub">Optional and free. You do not need an account, an app store login, or an API key.
-  You pick a secret topic name. You subscribe your phone to that topic. This app then sends new job
-  matches to it.</p>
-
-  <div class="card">
-    <h2>What ntfy is</h2>
-    <p style="margin:0 0 10px"><b>ntfy</b> (say "notify") is a free, open-source service that sends
-    alerts to your devices. It does not use accounts or logins. It uses <b>topics</b> instead. A topic
-    is any text string that you choose. Each message that goes to <code>ntfy.sh/your-topic</code>
-    appears immediately on every device that subscribes to that topic.</p>
-    <p style="margin:0"><b>Why this app uses ntfy:</b> the hourly job radar runs as a plain script
-    (<code>notify.py</code>). It does not need Claude, and it does not need an open browser. The radar
-    finds new postings above your match threshold. It then sends them to you through ntfy. One HTTP POST
-    from the standard library does all the work. It costs
-    <span class="ok-badge">zero tokens and zero money</span>. It also works while the dashboard is closed.</p>
-  </div>
-
-  <div class="card">
-    <h2>What you receive</h2>
-    <p style="margin:0 0 8px">The radar sends one message for each run. It does not send one message
-    for each job:</p>
-    <pre>New job match (3)
-Senior SRE - Acme - Houston, TX - 88%
-Platform Engineer - Globex - Remote - 81%
-DevOps Engineer - Initech - Houston, TX - 74%</pre>
-    <p class="note" style="margin:10px 0 0">A tap on the message opens the dashboard. The app records
-    each job that it sent to you in <code>notified.json</code>. As a result, you never receive a second
-    message for the same posting. Each message holds a maximum of 25 jobs.</p>
-  </div>
-
-  <div class="callout warn">
-    <b>CAUTION: Pick a topic name that nobody can guess.</b> All topics are public. A person who knows
-    the exact name can read every message sent to it. Do not use <code>jobs</code> or your own name.
-    Use a long random string, for example <code>jobradar-7f3b91c4d2e8</code>. The secret name is the
-    only thing that keeps your alerts private.
-  </div>
+  <p class="sub">Optional and free. It sends new job matches to your phone, so you do not have to
+  check the dashboard. No account, no API key.</p>
 
   <div class="card">
     <h2>Setup steps</h2>
     <ol class="steps">
-      <li><b>Pick a secret topic name.</b><br>
-        Generate a name here. Then copy it. You paste the same string in two places: your phone,
-        and Settings.
+      <li><b>Make a topic name.</b> Copy the string below. You paste it in two places.
         <div class="gen">
           <input id="topic" type="text" readonly>
           <button type="button" onclick="gen()">↻ Generate another</button>
@@ -121,51 +85,32 @@ DevOps Engineer - Initech - Houston, TX - 74%</pre>
           <span class="note" id="copied"></span>
         </div>
       </li>
-      <li><b>Install the ntfy app on your phone.</b><br>
-        <a href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" rel="noopener">Android (Play Store)</a>
+      <li><b>Install the ntfy app.</b>
+        <a href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" rel="noopener">Android</a>
         &nbsp;·&nbsp;
-        <a href="https://apps.apple.com/us/app/ntfy/id1625396347" target="_blank" rel="noopener">iOS (App Store)</a>
-        &nbsp;·&nbsp; or keep <a href="https://ntfy.sh/app" target="_blank" rel="noopener">ntfy.sh/app</a>
-        open in a browser tab. <span class="note">The app has no sign-up screen. It opens to an empty
-        subscription list.</span></li>
-      <li><b>Subscribe to your topic.</b><br>
-        In the app, tap <b>+</b> (Subscribe to topic). Paste the topic string from step 1. Keep the
-        default server <code>ntfy.sh</code>. Then tap <b>Subscribe</b>.
-        <span class="note">Android and iOS both ask for permission to send notifications. You must
-        accept. On iOS, keep the app installed. iOS uses APNs, so the app does not need to stay
-        open.</span></li>
-      <li><b>Paste the topic into Settings.</b><br>
-        Open <a href="/setup"><b>Settings &rarr; step 4 (Integrations)</b></a>. Paste the same string
-        into <b>ntfy topic</b>. Select <b>Enable phone alerts</b>. Then click
-        <b>✓ Save &amp; generate</b>.
-        <span class="note">The app stores the topic in your data folder, in
-        <code>config/notify.json</code>. Git ignores this file, so your topic never goes into a
-        commit.</span></li>
-      <li><b>Send a test alert to yourself.</b><br>
-        In Settings, click <b>Send test alert</b> under the ntfy field. Your phone receives the alert
-        in one or two seconds. <span class="ok-badge">Nothing needs a restart.</span>
-        <span class="note">The command <code>python notify.py --test</code> does the same
-        thing.</span></li>
+        <a href="https://apps.apple.com/us/app/ntfy/id1625396347" target="_blank" rel="noopener">iOS</a>
+        &nbsp;·&nbsp; or open <a href="https://ntfy.sh/app" target="_blank" rel="noopener">ntfy.sh/app</a>
+        in a browser. There is no sign-up.</li>
+      <li><b>Subscribe to your topic.</b> Tap <b>+</b>, paste the topic, keep the server
+        <code>ntfy.sh</code>, tap <b>Subscribe</b>. Allow notifications when the phone asks.</li>
+      <li><b>Paste the topic into Settings.</b> Go to
+        <a href="/setup"><b>Settings &rarr; Phone alerts</b></a>. Paste the same string, tick
+        <b>Enable phone alerts</b>, click <b>✓ Save</b>.</li>
+      <li><b>Test it.</b> Click <b>Send test alert</b>. Your phone gets it in a second or two.
+        Nothing needs a restart.</li>
     </ol>
   </div>
 
   <div class="card">
-    <h2>Reference</h2>
-    <div class="kv"><b>Cost</b><span>Free. The public ntfy.sh server permits personal use. This app
-      sends a maximum of a few messages each day.</span></div>
-    <div class="kv"><b>What sends them</b><span>The hourly radar sends the alerts. The daily and weekly
-      runs also send them. All three are scripts. They need no Claude and no browser.</span></div>
-    <div class="kv"><b>Stop the alerts</b><span>Clear <b>Enable phone alerts</b> in Settings. As an
-      alternative, unsubscribe in the app. All other functions continue to work.</span></div>
-    <div class="kv"><b>Mute a staging copy</b><span>Set <code>"disable_notifications": true</code> in
-      <code>config/instance.json</code>. This stops the alerts from one installation. It does not
-      change your profile.</span></div>
-    <div class="kv"><b>Your own server</b><span>ntfy is open source. You can run it on your own server.
-      This app sends to <code>ntfy.sh</code>. To use a different server, edit
-      <code>notify.py</code>.</span></div>
-    <div class="kv"><b>No alert arrives</b><span>Make sure that the topic name matches exactly. The
-      name is case-sensitive. Make sure that the alerts are enabled and saved. Make sure that the phone
-      permits notifications.</span></div>
+    <h2>Good to know</h2>
+    <div class="kv"><b>What arrives</b><span>One message per run listing the new matches, not one per
+      job. You never get the same job twice.</span></div>
+    <div class="kv"><b>Cost</b><span>Free.</span></div>
+    <div class="kv"><b>Turn it off</b><span>Untick <b>Enable phone alerts</b> in Settings. Everything
+      else keeps working.</span></div>
+    <div class="kv"><b>No alert arrives</b><span>Check the topic matches exactly (it is
+      case-sensitive), that alerts are enabled and saved, and that your phone allows
+      notifications.</span></div>
   </div>
 
   <a class="cta" href="/setup">Open Settings &rarr;</a>

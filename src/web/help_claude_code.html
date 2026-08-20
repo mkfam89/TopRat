@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Top Rat — Configure unattended resume tailoring</title>
+<title>Top Rat — Set up AI resume tailoring</title>
 <link rel="stylesheet" href="/ui.css">
 <style>
   /* The colors come from the shared design system (ui.css). The names below are aliases,
@@ -55,77 +55,45 @@
 <body>
 <div class="wrap">
   <a class="back" href="/setup">← Back to Settings</a>
-  <h1>Configure unattended resume tailoring</h1>
-  <p class="sub">Optional. The hourly queue then rewrites a resume for each posting, on the Claude plan that you already pay for.</p>
-
-  <div class="callout">
-    <b>Flat rate. Nothing metered.</b> This app has no API key, and it never bills you for each
-    use. It calls <b>Claude Code</b> on your own machine, and that call uses the limits of your
-    Claude subscription. If you already pay for Pro, there is nothing more to buy.
-  </div>
-
-  <div class="card">
-    <h2>What it changes</h2>
-    <div class="kv"><b>Without Claude Code</b><span>A queued job gets a copy of your base resume from
-      <code>resume_template/</code>. The tailoring instructions you typed on the card sit unread
-      until you open Claude yourself.</span></div>
-    <div class="kv"><b>With Claude Code</b><span>The hourly queue processor rewrites the summary, the
-      bullet order, and the skills line for that posting, and it reads the instructions you typed.
-      The result still passes the same lint gate, so the app rejects a bad rewrite and does not deliver it.</span></div>
-    <div class="kv"><b>What it costs</b><span>Nothing more than your plan. It uses the same limits
-      as your interactive Claude sessions. For this reason, keep the daily and hourly auto-tailor
-      caps in Settings low.</span></div>
-  </div>
+  <h1>Set up AI resume tailoring</h1>
+  <p class="sub">Optional. It rewrites each resume for the posting automatically, using the Claude
+  plan you already pay for. No API key, no per-use billing. Without it, the queue just copies your
+  template.</p>
 
   <div class="card">
     <h2>Steps</h2>
     <ol class="steps">
       <li><b>Install Claude Code.</b> Follow
         <a href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">docs.claude.com/en/docs/claude-code</a>.
-        It is a command-line tool. You do not need to use it directly.</li>
-      <li><b>Log in with your plan.</b> Open a terminal and run <code>claude login</code>. Sign in
-        with the Claude account that holds your subscription. <b>Do not</b> paste a Console API
-        key during the login. That key is the pay-per-use path, and this app does not use it.</li>
-      <li><b>Make sure that it works.</b> Run <code>claude -p "say OK"</code>. A one-word reply
-        means that the login is correct.</li>
-      <li><b>Do the check in the app.</b> Return to <a href="/setup">Settings → Integrations</a> and
-        press <b>Check now</b> under <b>Unattended tailoring</b>. A green line means the queue can
-        tailor on its own from here.</li>
+        You never have to use it directly.</li>
+      <li><b>Log in.</b> In a terminal, run <code>claude login</code> and sign in with your
+        subscription account. Do <b>not</b> paste a Console API key — that is the pay-per-use path.</li>
+      <li><b>Test it.</b> Run <code>claude -p "say OK"</code>. A short reply means you are set.</li>
+      <li><b>Check it in the app.</b> Go to <a href="/setup">Settings → AI resume tailoring</a> and
+        press <b>Check now</b>. A green line means it is working.</li>
     </ol>
   </div>
 
   <div class="callout warn">
-    <b>CAUTION: Watch the ANTHROPIC_API_KEY environment variable.</b> If an API key is present,
-    Claude Code uses that key and not your subscription. Every run then moves to pay-per-use
-    billing. This app removes the variable before it calls Claude Code, so the tailoring here
-    always stays on your plan. But if you set the variable for a different tool, Claude bills your
-    own <code>claude</code> sessions in the terminal at API rates. To see the value, run
-    <code>echo %ANTHROPIC_API_KEY%</code> on Windows. To clear it, run
-    <code>setx ANTHROPIC_API_KEY ""</code>. Then open a new terminal.
+    <b>Clear ANTHROPIC_API_KEY if you have one.</b> When that variable is set, your own terminal
+    <code>claude</code> sessions bill at API rates instead of using your plan. Check it with
+    <code>echo %ANTHROPIC_API_KEY%</code>, clear it with <code>setx ANTHROPIC_API_KEY ""</code>,
+    then open a new terminal.
   </div>
 
   <div class="card">
     <h2>If the check fails</h2>
-    <div class="kv"><b>Not found</b><span>Claude Code is not installed, or not on your PATH. Install it,
-      or put the full path in <code>config/claude_cli.json</code> as <code>"binary"</code> (copy
-      <code>config/claude_cli.json.example</code>).</span></div>
-    <div class="kv"><b>Found, call failed</b><span>The login usually stopped. Run <code>claude login</code>.
-      The usage limit of your plan can also be spent. That limit resets by itself.</span></div>
-    <div class="kv"><b>Timed out</b><span>The default cap is 240 seconds. If your machine is slow to
-      start the CLI, increase <code>timeout</code> in <code>config/claude_cli.json</code>.</span></div>
-    <p class="note" style="margin-top:12px">You can run the same check from a terminal in the app
-      folder: <code>python llm_tailor.py --check</code></p>
-  </div>
-
-  <div class="card">
-    <h2>Nothing here is required</h2>
-    <p>Search, match scores, salary estimates, phone alerts, the tracker and resume generation all
-      run as plain scripts, with no Claude. If you turn this off, you lose the rewrite only, and
-      not the pipeline.</p>
+    <div class="kv"><b>Not found</b><span>Install Claude Code, or put its full path in
+      <code>config/claude_cli.json</code> under <code>"binary"</code>.</span></div>
+    <div class="kv"><b>Found, call failed</b><span>Run <code>claude login</code> again. Or your plan
+      limit is spent — it resets on its own.</span></div>
+    <div class="kv"><b>Timed out</b><span>Raise <code>timeout</code> in
+      <code>config/claude_cli.json</code> (default 240 seconds).</span></div>
   </div>
 
   <a class="cta" href="https://docs.claude.com/en/docs/claude-code" target="_blank" rel="noopener">Install Claude Code</a>
   <a class="cta alt" href="/setup">Back to Settings</a>
 </div>
+
 </body>
 </html>

@@ -1,0 +1,225 @@
+# Release — build the downloadable zips and attach them to a GitHub Release.
+#
+# What this is for
+# ----------------
+# `package.py` already produces an artifact the user does not have to build:
+# sanitized tree + a private `python/` with python-docx and pywebview already in
+# it. The catch is that the bundle must be built ON the target OS, because the
+# pip step selects native wheels (pywebview pulls in pyobjc on macOS). One
+# machine therefore cannot produce all three downloads INSTALL.md promises.
+# These runners can.
+#
+# What this does NOT do: touch the ship repo. `release.py --push` stays a command
+# you run by hand. This workflow only builds zips and publishes them as Release
+# assets on the repo it runs in.
+#
+# Cost — read before adding a trigger
+# -----------------------------------
+# Private-repo multipliers are Linux 1x, Windows 2x, macOS 10x, which is why
+# ci.yml keeps macOS off the push trigger entirely. This workflow runs on a TAG
+# only (plus a manual dry run), and every job carries `timeout-minutes` so a hung
+# download cannot bill six hours at 10x. Do not add `push: branches`.
+#
+# Dry run: Actions -> Release -> Run workflow. It builds all three zips and
+# uploads them as workflow artifacts, and the publish job is skipped because the
+# ref is not a tag. Nothing reaches a Release until you push one.
+#
+# Known flake: bundle_python.py resolves the interpreter from the GitHub API
+# unauthenticated. A rate-limited runner fails that step; re-running the job is
+# the fix, and it is rare enough not to be worth an auth path in that script.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Gate. Cheap (Linux, 1x) and it runs before a single macOS minute is spent.
+  # A zip is the one artifact you cannot un-publish, so the tree proves itself
+  # shippable first.
+  # ---------------------------------------------------------------------------
+  guard:
+    name: guard (linux)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest python-docx jsonschema
+
+      # Same deselection as ci.yml: no personal data root on a runner.
+      - name: Run tests
+        run: pytest -q -m "not needs_userdata"
+
+      # The export allowlist re-derives its verdict from files on disk.
+      - name: Verify the export is shippable
+        run: python src/ops/release.py --check
+
+      # The tag names the download; _version.py names the zip inside it. If they
+      # disagree, users get TopRat-1.1.0-*.zip hanging off a v1.2.0 Release and
+      # the About row contradicts the page they downloaded from.
+      - name: Tag must match src/_version.py
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          python - <<'PY'
+          import os, sys
+          sys.path.insert(0, 'src')
+          from _version import VERSION
+          tag = os.environ['GITHUB_REF_NAME']
+          if tag != 'v' + VERSION:
+              sys.exit('tag %s does not match src/_version.py (%s). '
+                       'Bump VERSION or retag.' % (tag, VERSION))
+          print('tag %s matches src/_version.py' % tag)
+          PY
+
+  # ---------------------------------------------------------------------------
+  # Build. One leg per download in INSTALL.md's table.
+  # ---------------------------------------------------------------------------
+  build:
+    name: build ${{ matrix.tag }}
+    needs: guard
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false          # a broken mac leg should not hide a good windows one
+      matrix:
+        include:
+          - os: windows-latest
+            tag: windows-x64
+          - os: macos-latest    # Apple silicon
+            tag: macos-arm64
+          # Intel. NOT `macos-13` — that image was retired 2025-12-04, and a job
+          # asking for it queues forever rather than failing, which blocks
+          # `publish` even with fail-fast off. `macos-15-intel` is the
+          # replacement label and the LAST x86_64 image Actions will offer:
+          # it goes away in August 2027, after which this leg has to be deleted
+          # and INSTALL.md's Intel row with it.
+          - os: macos-15-intel
+            tag: macos-x64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'   # runs the build scripts; the SHIPPED runtime
+                                   # is python-build-standalone, pinned by PY_SERIES
+
+      # package.py would download this itself if python/ were missing. Doing it
+      # as its own step keeps the two failure modes apart in the log — a bad
+      # asset download vs. a tree that failed its own verify — and puts the
+      # "pip install pywebview / python-docx" lines somewhere you can eyeball
+      # them, which is the whole reason the mac legs cannot be cross-built.
+      - name: Bundle the interpreter
+        shell: bash
+        run: python src/ops/bundle_python.py
+
+      - name: Build the zip
+        shell: bash
+        run: python src/ops/package.py --out dist
+
+      # package.py derives the platform tag from the runner it is standing on.
+      # We assert it landed on the one this leg is named for rather than passing
+      # --tag: forcing the label would mislabel the zip if a runner image ever
+      # changes arch under us (macos-latest did exactly that once), and a
+      # mislabeled download is worse than a failed build.
+      - name: Check the artifact
+        shell: bash
+        env:
+          EXPECT_TAG: ${{ matrix.tag }}
+        run: |
+          python - <<'PY'
+          import glob, os, stat, sys, zipfile
+
+          expect = os.environ['EXPECT_TAG']
+          zips = sorted(glob.glob('dist/*.zip'))
+          if len(zips) != 1:
+              sys.exit('expected exactly one zip in dist/, found: %s' % zips)
+          path = zips[0]
+          if not os.path.basename(path).endswith('-%s.zip' % expect):
+              sys.exit('built %s but this leg is %s — runner arch changed?'
+                       % (os.path.basename(path), expect))
+
+          with zipfile.ZipFile(path) as z:
+              names = z.namelist()
+              def has(frag):
+                  return any(frag in n for n in names)
+
+              # The interpreter, in the layout the launcher looks for.
+              interp = 'python/python.exe' if expect.startswith('windows') else 'python/bin/python3'
+              if not has(interp):
+                  sys.exit('no bundled interpreter at %s — the download would need Python installed' % interp)
+
+              # The two packages that make it a full-feature copy. python-docx is
+              # the one that matters most: without it there are no resumes at all.
+              for pkg in ('site-packages/docx/', 'site-packages/webview/'):
+                  if not has(pkg):
+                      sys.exit('%s missing from the bundle' % pkg)
+
+              # No test suite in the download (it ships no pytest to run one).
+              if has('/tests/') or has('pytest.ini'):
+                  sys.exit('the download carries a test suite it cannot run')
+
+              # Exec bits. These are decided by path in _zip_mode(), so they must
+              # be right even on the Windows leg.
+              for n in names:
+                  if n.endswith('.command') or '/python/bin/' in n:
+                      mode = (z.getinfo(n).external_attr >> 16) & 0o777
+                      if not mode & stat.S_IXUSR:
+                          sys.exit('%s extracts non-executable (mode %o)' % (n, mode))
+
+          print('OK  %s  (%.1f MB, %d files)'
+                % (os.path.basename(path), os.path.getsize(path) / 1e6, len(names)))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TopRat-${{ matrix.tag }}
+          path: dist/*.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  # ---------------------------------------------------------------------------
+  # Publish. Tag-only, so a manual dry run stops after `build` with three zips
+  # sitting in the run's artifacts for you to download and click.
+  # ---------------------------------------------------------------------------
+  publish:
+    name: publish release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write           # the only write this workflow needs
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true  # all three legs land flat in dist/
+
+      - name: List what will be published
+        run: ls -lh dist/
+
+      # A draft, not a live Release. The last check on an unpublishable artifact
+      # is a person downloading one and double-clicking it; publish from the
+      # Releases page once you have. --verify-tag refuses if the tag is absent.
+      - name: Create the draft Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.zip \
+            --draft \
+            --verify-tag \
+            --title "Top Rat $GITHUB_REF_NAME" \
+            --generate-notes

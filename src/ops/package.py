@@ -11,6 +11,11 @@ That is the wrong thing to hand a non-technical user for two reasons:
      A Release asset has a plain download URL.
   2. A clone has no interpreter, so the user is back to installing Python.
 
+The two artifacts therefore differ on purpose, and in one place: `ZIP_EXCLUDE`
+below drops `tests/` and `pytest.ini` from the download. The repo keeps them —
+its CI runs them — while the download, which ships no pytest, does not carry a
+suite nobody can run. See the comment on ZIP_EXCLUDE for the full reasoning.
+
 So a release zip = the sanitized tree + a private `python/` bundle. The bundle is
 built here and NEVER committed: it is ~40 MB of platform-specific binaries, it
 would sit in git history on every clone forever, and it differs per OS. Release
@@ -70,6 +75,43 @@ def platform_tag(system=None, machine=None):
 # Names are top-level import names / console scripts; dist-info and .pyc dirs are
 # matched by prefix so pytest-8.4.1.dist-info goes too.
 DEV_ONLY = ('pytest', '_pytest', 'pluggy', 'iniconfig', 'py.test')
+
+# The same reasoning, one level up: the TEST SUITE itself.
+#
+# release.py exports tests/ to the TopRat git repo on purpose — someone who
+# clones it to maintain the thing wants the safety net, and the exported
+# .github/workflows/ci.yml exists to run it. A zip is a different audience: it
+# goes to a person who double-clicks Start Here.bat, and for them the suite is
+# ~2 MB of files they cannot execute, because DEV_ONLY above has already stripped
+# the only thing that could run them. Shipping a test suite with no test runner is
+# not a safety net, it is a puzzle.
+#
+# So the split is by ARTIFACT, not by allowlist: repo gets tests, download does
+# not. qa/ is in neither — it is excluded from the export by release.py's
+# allowlist and therefore never reaches this function at all.
+ZIP_EXCLUDE = ('tests', 'pytest.ini')
+
+
+def _strip_zip_only(stage, quiet=False):
+    """Remove the repo-only paths from a staged tree on its way into a zip.
+
+    Runs on the STAGED copy, never on the source tree — the same staged copy
+    release.verify() is about to re-scan, so anything removed here is provably
+    absent from the artifact rather than merely un-listed.
+    """
+    gone = []
+    for name in ZIP_EXCLUDE:
+        target = os.path.join(stage, name)
+        if os.path.isdir(target):
+            shutil.rmtree(target, ignore_errors=True)
+            gone.append(name + '/')
+        elif os.path.isfile(target):
+            os.remove(target)
+            gone.append(name)
+    if gone and not quiet:
+        print('  %-14s %s (in the repo export, not in the download)'
+              % ('stripped', ', '.join(gone)))
+    return gone
 
 
 def _is_dev_only(name):
@@ -171,6 +213,10 @@ def build_zip(out_dir=DIST, with_python=True, python_from='', tag='', quiet=Fals
         _, problems = release.build(stage, quiet=quiet)
         if problems:
             return '', problems
+
+        # Straight after build(), before the interpreter goes in: the tree is
+        # still small and the removal is cheap to reason about here.
+        _strip_zip_only(stage, quiet=quiet)
 
         if with_python:
             src = python_from or os.path.join(HERE, 'python')

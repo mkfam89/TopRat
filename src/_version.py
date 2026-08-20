@@ -11,7 +11,7 @@ Bump `VERSION` when you publish a release. Nothing here imports anything, so it
 is safe for any module (or a packaging script) to read.
 """
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 
 # Human name of the app, used in window titles and the About row. Kept next to
 # the version so branding is not scattered across the UI files.
@@ -19,5 +19,5 @@ APP_NAME = "Top Rat"
 
 
 def version_string():
-    """'Top Rat 1.1.0' — what the About row and the desktop window title show."""
+    """'Top Rat 1.2.0' — what the About row and the desktop window title show."""
     return f"{APP_NAME} {VERSION}"

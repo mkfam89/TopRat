@@ -10,8 +10,17 @@ import re
 
 import pytest
 
-import pipelib
-import render_resume as rr
+# render_resume imports lint_resume, which imports docx at module scope. python-docx is
+# optional (requirements.txt), so guard the import: without this the module dies during
+# COLLECTION, before the needs_userdata mark below can apply, and `pytest -m
+# "not needs_userdata"` still shows a red board on a machine that simply lacks the
+# optional dep.
+pytest.importorskip(
+    'docx', reason='python-docx not installed (pip install python-docx), '
+                   'or run the suite with the bundled interpreter: tools\\run_tests.bat')
+
+import pipelib  # noqa: E402
+import render_resume as rr  # noqa: E402
 
 # Every test here renders from resume_template/bullets.json — the user's own
 # bullet bank, which a fresh clone does not have. Marked at module scope so CI

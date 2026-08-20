@@ -8,6 +8,34 @@ Skipped/
 *.docx
 *.doc
 
+# Build output. `*.zip` below already covers the artifact; this covers the folder
+# so an empty dist/ never shows up as untracked. Release zips belong on a GitHub
+# Release, never in git — see src/ops/package.py.
+dist/
+
+# QA harness scratch. qa/ itself IS committed (the harness is code); these are
+# per-run output: the verdict names a local machine, and the .wsb is generated with
+# absolute host paths that are wrong on any other computer. Also in qa/.gitignore,
+# kept here too so a `git add -A` from the root cannot pick them up.
+qa/results/
+qa/sandbox/*.wsb
+
+# The Claude Code binary staged for the assisted sandbox run by
+# "Stage Claude Bundle.bat". ~300 MB, a downloaded artifact rather than source,
+# and re-stageable in one double-click — the same reasoning as python/ below.
+# No credential is ever staged here: the sandbox reads the host's ~/.claude
+# through a read-only mount instead. See qa/sandbox/stage_claude.ps1.
+qa/sandbox/claude/
+
+# The persistent QA VM (qa/vm/). payload/ holds a multi-GB Windows evaluation ISO
+# plus the Claude Desktop MSIX — downloaded artifacts, re-stageable in one
+# double-click, same reasoning as qa/sandbox/claude/ above.
+# guest.cred.xml is the throwaway guest account's password as a DPAPI SecureString,
+# scoped to one Windows user on one machine. Useless if it leaks, and it still
+# never goes near tracked content. See qa/vm/README.md.
+qa/vm/payload/
+qa/vm/guest.cred.xml
+
 # Backups & archives
 Backups/
 *.zip

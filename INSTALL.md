@@ -50,10 +50,11 @@ later.
 A small black window opens and shows each step. After a few seconds, your board opens in
 its own window. You can then close the black window.
 
-If you use your own Python, the launcher asks you once about the app window. The app
-window is a small download. If you answer no, the board opens in your usual browser
-instead. It is the same app, in a tab. The launcher does not ask again. To change your
-answer, delete `config/app_window.answered` and start the app again.
+If you use your own Python, the launcher downloads the app window package for you the
+first time you start. This takes a minute. If the download does not work, the board
+opens in your usual browser instead. It is the same app, in a tab. The launcher tries
+only once. To make it try again, delete `config/app_window.answered` and start the app
+again.
 
 The installation is complete. Everything below is optional.
 
@@ -136,6 +137,22 @@ time.
 To start the app automatically, go to the **Setup** page. Then turn on **"Keep it
 running"**. After that, you do not need the Start Here file again.
 
+This works on Windows and on macOS. Top Rat asks your own computer to look at the dashboard
+every few minutes. If the dashboard is not running, your computer starts it again,
+minimized. Windows does this with a scheduled task. macOS does this with a LaunchAgent in
+your own `~/Library/LaunchAgents` folder. Neither one needs an administrator password, and
+neither one runs while you are signed out.
+
+You can also do it from a file instead of the Setup page:
+
+| Your computer | Turn it on | Turn it off |
+|---|---|---|
+| Windows | `Install Watchdog.bat` | `Uninstall Watchdog.bat` |
+| macOS and Linux | `Install Watchdog.command` | `Uninstall Watchdog.command` |
+
+If macOS does not let you double-click the `.command` file, use the same two commands that
+Step 2 gives for `Start Here.command`: `xattr -d com.apple.quarantine` and `chmod +x`.
+
 ---
 
 ## If something goes wrong
@@ -175,5 +192,10 @@ Delete the folder. That step removes all of it.
 
 Top Rat does not write to your registry. It does not install system-wide packages. It puts
 no files anywhere else. There is one exception. If you turned on "Keep it running", turn
-that setting off on the Setup page first. Windows users can also run
-`Uninstall Watchdog.bat`. Then nothing tries to start the app after you delete the folder.
+that setting off on the Setup page first. You can also run `Uninstall Watchdog.bat` on
+Windows, or `Uninstall Watchdog.command` on macOS. Then nothing tries to start the app after
+you delete the folder.
+
+That setting is the only thing Top Rat puts outside its folder: one scheduled task named
+`TopRatWatchdog` on Windows, or one file named `com.toprat.watchdog.plist` in your
+`~/Library/LaunchAgents` folder on macOS. Turning the setting off removes it.

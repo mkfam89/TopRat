@@ -83,6 +83,15 @@ INCLUDE_FILES = [
 # simply dead in a copy without it. The files are de-personalized and placeholder-driven
 # (see agent_prompts/README.md), so the PII gate covers them like any other shipped file.
 INCLUDE_DIRS = ['src', 'tests', 'tools', 'assets', '.github', 'agent_prompts']
+# 'qa' is NOT here, and must not be. qa/ drives a BUILT release from outside —
+# it boots Windows Sandbox, unzips dist/TopRat-*.zip on a clean machine and
+# checks what the packaged copy does. It imports nothing from src/, so it is
+# useless in a clone, and half of what it asserts is about the artifact rather
+# than the code. Being absent from this allowlist is what keeps it out: nothing
+# had to remember to exclude it. tests/ (the in-process unit suite) DOES ship
+# here — a maintainer who clones TopRat wants it and .github/workflows/ci.yml
+# runs it — but src/ops/package.py strips it from the user-facing zip, which
+# ships no pytest to run it with. Repo and download differ on purpose.
 
 # Names that must be REMOVED from an existing export folder if found. Two kinds:
 # things this allowlist used to ship and no longer does, and state files that can
@@ -104,6 +113,7 @@ PRUNE_RELPATHS = (
 
 _STALE_TOP_LEVEL = (
     'CLAUDE.md', 'docs',                       # un-shipped 2026-08-08
+    'qa', 'dist',                              # never shipped; harness + build output
     'scheduler_state.json', 'schedule_log.txt', 'job_tracker.json', 'job_tracker.html',
     'to_process.json', 'listings.json', 'details_manual.json',
     'geo_cache.json', 'salary_cache.json', 'notified.json',
@@ -518,6 +528,26 @@ def build(out_dir, source=HERE, quiet=False):
             shutil.rmtree(stale, ignore_errors=True)
         elif os.path.isfile(stale):
             os.remove(stale)
+
+    # A nested export folder and a stray release zip. Both are what an earlier run
+    # leaves behind when release.py (or the tar step) is invoked from INSIDE the
+    # export: `--out TopRat` with the cwd already TopRat builds TopRat/TopRat, and
+    # the zip command lands the archive next to it. Neither is tracked by git, so
+    # `git status` looks clean and nothing reaches GitHub - but verify() walks the
+    # DISK, so the nested tree's own python/ bundle, its .docx fixtures and its
+    # LICENSE copyright line are all scanned as export content and the gate fails
+    # on ~60 problems that are not real. Self-healing here beats a runbook warning
+    # nobody re-reads. (Found 2026-08-19, left by the 1.1.0 build.)
+    #
+    # Only the export ROOT is swept: a .zip deeper in the tree is someone's fixture,
+    # and the interpreter's own python/python312.zip must survive.
+    nested = os.path.join(out_dir, os.path.basename(os.path.abspath(out_dir)))
+    if os.path.isdir(nested):
+        shutil.rmtree(nested, ignore_errors=True)
+    for fn in os.listdir(out_dir):
+        full = os.path.join(out_dir, fn)
+        if fn.lower().endswith('.zip') and os.path.isfile(full):
+            os.remove(full)
 
     cfg_src = os.path.join(source, 'config')
     cfg_dst = os.path.join(out_dir, 'config')

@@ -51,6 +51,31 @@ def test_the_app_actually_ships(built):
         assert os.path.exists(os.path.join(out, must)), 'missing from export: ' + must
 
 
+def test_every_double_clickable_launcher_ships(built):
+    """No entry point may exist in the tree and be missing from the download.
+
+    INCLUDE_FILES is an allowlist, so a new top-level file ships only if someone remembers
+    to add it. In 1.2.0 nobody did: `Install Watchdog.command` and `Uninstall
+    Watchdog.command` were written, committed, and documented in INSTALL.md as the macOS
+    way to turn on "Keep it running" - and shipped in no zip at all. A Mac user following
+    the install document was sent to files their download did not contain.
+
+    Named by SUFFIX rather than by a second hand-maintained list, because a list you have
+    to remember to update is the thing that failed. Anything double-clickable that lands in
+    the project root has to be either shipped or deliberately pruned.
+    """
+    out, _, _ = built
+    root = release.HERE
+    launchers = sorted(f for f in os.listdir(root)
+                       if f.endswith(('.bat', '.command', '.vbs'))
+                       and os.path.isfile(os.path.join(root, f)))
+    assert launchers, 'no launchers found in the project root - is release.HERE right?'
+    missing = [f for f in launchers if not os.path.exists(os.path.join(out, f))]
+    assert not missing, (
+        'these launchers exist in the tree but not in the export; add them to '
+        'release.INCLUDE_FILES: ' + ', '.join(missing))
+
+
 # --------------------------------------------------------------------------
 # The things that must never be in there
 # --------------------------------------------------------------------------

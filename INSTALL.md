@@ -24,9 +24,23 @@ Go to the **Releases** page. Download the file for your computer:
 To identify your Mac, click the Apple menu. Then click **About This Mac**. If the Chip
 line shows "Apple M" and a number, take the arm64 file.
 
-**These downloads include their own copy of Python. You do not need to install anything
-else.** This copy is private. It stays inside the Top Rat folder, changes nothing else on
-your computer, and goes away with the folder.
+**These downloads include their own copy of Python and every package Top Rat needs. You do
+not need to install anything else, and the app never downloads anything the first time you
+open it.** This copy is private. It stays inside the Top Rat folder, changes nothing else
+on your computer, and goes away with the folder.
+
+There is **one** optional extra, on the same Releases page:
+
+| Add-on | What it gives you | Size |
+|---|---|---|
+| `TopRat-<version>-linkedin-<your platform>.zip` | LinkedIn as a job source | about 270 MB |
+
+It is separate because it is five times the size of the app, for one job source among
+several. Take it only if you want LinkedIn. To install it, unzip it **into your Top Rat
+folder** — the same folder that holds `Start Here` — and answer yes to merging the `python`
+folder. Nothing else changes. Without it the app says LinkedIn is off and every other job
+source works as normal. The add-on has to match your platform, the same way the main
+download does.
 
 Unzip the file into a permanent location, such as your Documents folder. Top Rat keeps all
 your data inside its own folder. Do not use the Downloads folder, because you can empty it
@@ -72,8 +86,14 @@ This warning is normal. After you permit the app one time, the warning stops.
 2. Click **Open**
 3. Click **Open** in the dialog
 
-Use the right-click. A normal double-click gives you no "Open anyway" button. If macOS
-still refuses, open Terminal in the project folder. Then run these two commands:
+Use the right-click. A normal double-click gives you no "Open anyway" button.
+
+Recent versions of macOS word this differently and put the button somewhere else. If the
+message says that macOS "could not verify" the file, or the dialog offers you only **Done**,
+then open **System Settings > Privacy & Security**, scroll to the Security section, and
+click **Open Anyway** next to the name of the file. macOS asks you once for each file.
+
+If macOS still refuses, open Terminal in the project folder. Then run these two commands:
 
 ```
 xattr -d com.apple.quarantine "Start Here.command"
@@ -102,8 +122,9 @@ The sections that you skip stay off.
 
 ## Optional extras
 
-**If you downloaded a Release zip, skip this section.** That zip includes the app window
-and the resume writer. This section is for source copies.
+**If you downloaded a Release zip, skip this section.** That zip already includes the app
+window, the resume writer and the config checker; LinkedIn is the separate add-on described
+in Step 1. This section is for source copies.
 
 Top Rat runs without each one of these packages. Each package adds one more feature. If a
 package is absent, the app tells you and continues.
@@ -138,10 +159,12 @@ To start the app automatically, go to the **Setup** page. Then turn on **"Keep i
 running"**. After that, you do not need the Start Here file again.
 
 This works on Windows and on macOS. Top Rat asks your own computer to look at the dashboard
-every few minutes. If the dashboard is not running, your computer starts it again,
-minimized. Windows does this with a scheduled task. macOS does this with a LaunchAgent in
-your own `~/Library/LaunchAgents` folder. Neither one needs an administrator password, and
-neither one runs while you are signed out.
+every few minutes. If the dashboard is not running, your computer starts it again. Windows
+does this with a scheduled task, and it puts the window in the background, minimized. macOS
+does this with a LaunchAgent in your own `~/Library/LaunchAgents` folder, and it opens the
+board in your browser in front of what you are doing, because macOS gives no way to open a
+web page minimized. On a Mac, turn this off or use Pause while you need the screen.
+Neither one needs an administrator password, and neither one runs while you are signed out.
 
 You can also do it from a file instead of the Setup page:
 

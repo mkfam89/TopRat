@@ -77,6 +77,14 @@ if _BACKEND is not None:
 MECHANISM = ('launchd' if _BACKEND is not None else
              'Windows Task Scheduler' if os.name == 'nt' else '')
 
+# Whether the restart lands MINIMIZED, re-exported from the module that implements it so the
+# UI has one place to ask. Imported rather than re-derived: two copies of `os.name == 'nt'`
+# is exactly how the page came to promise something the code could not do.
+try:
+    from watchdog import MINIMIZES
+except Exception:
+    MINIMIZES = (os.name == 'nt')
+
 
 def supported():
     """True when this machine has a facility we can register the watchdog with.

@@ -71,6 +71,11 @@ INCLUDE_FILES = [
     'Start Here.command',
     'Install Watchdog.bat',
     'Uninstall Watchdog.bat',
+    # The mac/linux twins. They existed in the tree from 1.2.0 and were NOT in this
+    # list, so every zip shipped without them while INSTALL.md told Mac users to run
+    # them - a doc pointing at files the download does not contain (QA 1.2.0, F-2).
+    'Install Watchdog.command',
+    'Uninstall Watchdog.command',
     'start_dashboard_hidden.vbs',
 ]
 # 'docs' is NOT here on purpose. docs/ is the internal working record — refactor

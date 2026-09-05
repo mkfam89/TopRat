@@ -14,6 +14,7 @@ Dev:  http://127.0.0.1:8765/dev — hidden page: restart this process after a .p
 import os, sys; sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import _paths  # noqa: F401  -- src/_paths.py: puts every src/ folder on sys.path; _paths.ROOT = project folder
 import os, sys, json, csv, subprocess, webbrowser, threading, time, io, zipfile
+import unicodedata                          # _pathkey(): macOS hands back NFD filenames
 import http.client                       # port_is_ours(): ask a busy port whether it is us
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs, unquote
@@ -676,8 +677,8 @@ def port_is_ours(port, timeout=1.0):
     except Exception:
         return None
     cd = body.get('codeDir')
-    return None if not cd else (os.path.normcase(os.path.abspath(cd)) ==
-                                os.path.normcase(os.path.abspath(HERE)))
+    return None if not cd else (_pathkey(os.path.abspath(cd)) ==
+                                _pathkey(os.path.abspath(HERE)))
 
 class AlreadyRunning(Exception):
     def __init__(self, port):
@@ -766,9 +767,9 @@ def data_root_info():
     nested_user = _pl.nested_user_data()
     if env:                  src, label = 'env', 'the TOP_RAT_DATA environment variable (it overrides this setting)'
     elif override:           src, label = 'instance', 'the folder you chose here (config/instance.json)'
-    elif nested_user and os.path.normcase(_pl.DATA) == os.path.normcase(os.path.abspath(nested_user)):
+    elif nested_user and _pathkey(_pl.DATA) == _pathkey(os.path.abspath(nested_user)):
         src, label = 'nested', 'the data folder inside the app folder (%s)' % os.path.basename(nested_user)
-    elif os.path.isdir(_pl.DEFAULT_DATA) and os.path.normcase(_pl.DATA) == os.path.normcase(_pl.DEFAULT_DATA):
+    elif os.path.isdir(_pl.DEFAULT_DATA) and _pathkey(_pl.DATA) == _pathkey(_pl.DEFAULT_DATA):
         src, label = 'default', 'the legacy default location (~/Documents/my_job_agent)'
     elif _pl.SPLIT:          src, label = 'sibling', 'a data folder found next to the app folder, or inside it'
     else:                    src, label = 'code', 'the app folder itself (there is no separate data folder yet)'
@@ -777,7 +778,7 @@ def data_root_info():
     if override:
         pend = os.path.expanduser(override)
         pend = os.path.abspath(pend if os.path.isabs(pend) else os.path.join(HERE, pend))
-        if os.path.normcase(pend) != os.path.normcase(os.path.abspath(_pl.DATA)):
+        if _pathkey(pend) != _pathkey(os.path.abspath(_pl.DATA)):
             pending = pend
     return {'path': os.path.abspath(_pl.DATA), 'source': src, 'sourceLabel': label,
             'writable': os.access(_pl.DATA, os.W_OK), 'split': bool(_pl.SPLIT),
@@ -789,6 +790,16 @@ def data_root_info():
             'userDataPrefix': _pl.USER_DATA_PREFIX,
             'suggestion': suggested_data_root(),
             'instanceFile': INSTANCE_JSON}
+
+# macOS stores filenames DECOMPOSED (NFD): a folder the user typed or stored as "Tëst" comes
+# back from the OS folder panel as "Te\u0308st". The two strings name the same folder and
+# normcase leaves both alone, so a plain == says "different folder" and the app decides it is
+# looking at somewhere it is not. Every path equality test below goes through this instead
+# (QA 1.2.0, section E, check 19). Normalisation is for COMPARING only - the path handed to
+# the filesystem stays exactly as the OS gave it.
+def _pathkey(p):
+    return unicodedata.normalize('NFC', os.path.normcase(p or ''))
+
 
 def check_data_root(raw):
     """Validate a candidate data folder WITHOUT moving anything.
@@ -819,7 +830,7 @@ def check_data_root(raw):
     if not os.path.exists(os.path.join(path, 'job_tracker.json')):
         warn = ('This folder has no job_tracker.json yet. It starts as an empty tracker. '
                 'To keep your history, copy your existing data files here first.')
-    if os.path.normcase(path) == os.path.normcase(os.path.abspath(HERE)):
+    if _pathkey(path) == _pathkey(os.path.abspath(HERE)):
         warn = 'That is the app folder itself. The settings and the data then stay with the code.'
     return path, '', warn
 
@@ -860,28 +871,60 @@ def _pick_folder_macos(title, init):
     """
     def esc(v):
         return v.replace('\\', '\\\\').replace('"', '\\"')
-    # Parenthesised: `default location` wants a file specifier, and the parens keep the
-    # POSIX file coercion from being parsed as part of the following clause.
-    loc = ('default location (POSIX file "%s")' % esc(init)) if init else ''
-    script = ('tell me to activate\n'
-              'set _f to choose folder with prompt "%s" %s\n'
-              'return POSIX path of _f\n'
-              % (esc(title or 'Choose a folder'), loc))
-    try:
-        r = subprocess.run(['osascript', '-e', script],
-                           capture_output=True, text=True, timeout=600)
-    except subprocess.TimeoutExpired:
-        return '', 'The folder window stayed open too long. Type the path instead.'
-    except Exception:
-        return None
-    if r.returncode != 0:
-        err = r.stderr or ''
+    def build(loc):
+        # Parenthesised: `default location` wants a file specifier, and the parens keep the
+        # POSIX file coercion from being parsed as part of the following clause.
+        return ('tell me to activate\n'
+                'set _f to choose folder with prompt "%s" %s\n'
+                'return POSIX path of _f\n'
+                % (esc(title or 'Choose a folder'), loc))
+
+    def run(script):
+        """(returncode, stdout, stderr), or None if osascript could not be run at all.
+
+        text=True is deliberately NOT used. It decodes with the LOCALE encoding, and this
+        server can be started by launchd, where LANG is frequently unset and the locale
+        resolves to ASCII - so a folder with any non-ASCII character in its name came back
+        mangled or raised. osascript always emits UTF-8; decode it as UTF-8 and say so.
+        """
+        try:
+            r = subprocess.run(['osascript', '-e', script], capture_output=True, timeout=600)
+        except subprocess.TimeoutExpired:
+            raise
+        except Exception:
+            return None
+        dec = lambda b: (b or b'').decode('utf-8', 'replace')
+        return r.returncode, dec(r.stdout), dec(r.stderr)
+
+    def cancelled(err):
         # -128 is userCanceledErr. A cancel is a RESULT, not a failure: falling through
         # would pop a second dialog at someone who just dismissed the first one.
-        if '-128' in err or 'canceled' in err.lower() or 'cancelled' in err.lower():
+        return '-128' in err or 'canceled' in err.lower() or 'cancelled' in err.lower()
+
+    loc = ('default location (POSIX file "%s")' % esc(init)) if init else ''
+    try:
+        got = run(build(loc))
+        # A bad `default location` is the likeliest non-cancel failure here, and it used to
+        # be silent: osascript exits non-zero with something that is not -128, this returns
+        # None, and control falls through to THE TKINTER PICKER THIS FUNCTION EXISTS TO
+        # AVOID - the one that opened off-screen on a Mac. The init path is a hint, never a
+        # requirement, so drop it and ask again before giving up (QA 1.2.0, check 22).
+        if got is not None and got[0] != 0 and loc and not cancelled(got[2]):
+            retry = run(build(''))
+            if retry is not None:
+                got = retry
+    except subprocess.TimeoutExpired:
+        return '', 'The folder window stayed open too long. Type the path instead.'
+    if got is None:
+        return None
+    rc, out, err = got
+    if rc != 0:
+        if cancelled(err):
             return '', ''
         return None
-    out = (r.stdout or '').strip()
+    out = out.strip()
+    # No unicodedata.normalize() here on purpose: this string came from the OS and names a
+    # folder that exists. Comparisons go through _pathkey(); the value itself stays as given.
     return (os.path.normpath(os.path.abspath(out)) if out else ''), ''
 
 
@@ -1016,7 +1059,7 @@ def reconcile_autostart():
 def watchdog_state():
     if mwd is None:
         return {'desired': False, 'enabled': False, 'supported': False, 'everyMin': 5,
-                'pauseMin': 0, 'task': '', 'mechanism': '',
+                'pauseMin': 0, 'task': '', 'mechanism': '', 'minimizes': False,
                 'error': 'watchdog module unavailable'}
     s = gui_settings()
     try:    every = int(s.get('watchdogEveryMin', 5) or 5)
@@ -1025,7 +1068,9 @@ def watchdog_state():
     except (TypeError, ValueError): pause = 0
     return {'desired': bool(s.get('watchdog', False)), 'enabled': mwd.is_enabled(),
             'supported': mwd.supported(), 'everyMin': every, 'pauseMin': pause,
-            'task': mwd.TASK_NAME, 'mechanism': mwd.MECHANISM, 'error': WATCHDOG_ERR}
+            'task': mwd.TASK_NAME, 'mechanism': mwd.MECHANISM,
+            'minimizes': bool(getattr(mwd, 'MINIMIZES', os.name == 'nt')),
+            'error': WATCHDOG_ERR}
 
 # The watchdog moved into the nav chip's bubble (it is the setting that CAUSES the missed runs
 # the chip counts), so /api/sched-status now carries it — and that endpoint is polled once a

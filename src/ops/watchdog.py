@@ -173,6 +173,15 @@ def wait_for_port(port, seconds=STARTUP_WAIT):
     return None
 
 
+# Can the restart actually be minimized? `start /min` is Windows-only, and the function
+# below says so in its own return string everywhere else. The Setup and Schedule pages read
+# this (via make_watchdog.MECHANISM's neighbour in watchdog_state()) and only promise
+# "minimized" where it is True. It lives HERE, next to the code that decides it, so the copy
+# cannot drift from the behaviour again (QA 1.2.0, F-4: macOS was promised a window that
+# never covers the screen and got webbrowser.open() raising one to the front every 300 s).
+MINIMIZES = (os.name == 'nt')
+
+
 def open_minimized(url):
     """Open the board in a MINIMIZED browser window, so logging in does not put the
     dashboard in your face. Returns (ok, message).

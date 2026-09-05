@@ -302,11 +302,18 @@ if __name__ == '__main__':
     if cmd == 'status':
         print(LABEL + ' is ' + ('LOADED' if is_enabled() else 'NOT loaded')
               + (' (supported)' if supported() else ' (NOT supported on this OS)'))
-    elif cmd == 'plist':
+    elif cmd in ('plist', 'xml'):
+        # 'xml' is an alias because make_watchdog.py accepts BOTH verbs for its dry run.
+        # Before this, 'xml' missed every branch and fell into the else, so the verb that
+        # PRINTS on one module INSTALLED AND LOADED the LaunchAgent on the other
+        # (QA 1.2.0). An unknown verb must never be a write.
         print(plist_xml(_every_from_argv(sys.argv)))
     elif cmd == 'run':
         print(run_now()[1])
     elif cmd == 'uninstall':
         print(uninstall()[1])
-    else:
+    elif cmd == 'install':
         print(install(_every_from_argv(sys.argv))[1])
+    else:
+        sys.exit('unknown command %r. Use: install | uninstall | status | plist | run'
+                 % cmd)

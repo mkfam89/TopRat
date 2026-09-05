@@ -177,10 +177,12 @@
          so it fired at login and never again: close the dashboard, or let it crash, and nothing
          ran until the next login. This uses the operating system's own scheduler - Task
          Scheduler on Windows, launchd on macOS - which re-checks. -->
+    <!-- "minimized" is filled in by renderWatchdog(), not written here: only Windows can do it.
+         See the note in setup.html and QA 1.2.0 F-4. -->
     <p class="desc">The tasks below run only while this dashboard runs. If you turn this on, your
-      computer looks at the dashboard every few minutes. If the dashboard is closed, your computer
-      starts it again and puts the window in the background, <b>minimized</b>. A sign-in therefore does not fill your
-      screen with the dashboard. This setting covers a sign-in, an accidental close of the window,
+      computer looks at the dashboard every few minutes.
+      <span id="wdRestartHow">If the dashboard is closed, your computer starts it again.</span>
+      This setting covers a sign-in, an accidental close of the window,
       and a stop of the app. If you turn it off, the tasks run only while this window stays open.</p>
     <div class="controls">
       <div class="fld">
@@ -523,8 +525,20 @@ document.getElementById('blCap').addEventListener('change', async function(){
 async function loadWatchdog(){
   try{ const r = await fetch('/api/watchdog'); renderWatchdog(await r.json()); }catch(e){}
 }
+// Mirrors setup.html's restartHow(): the promise follows watchdog.MINIMIZES, which is what
+// open_minimized() itself branches on. WD_MINIMIZES remembers it for the toast handlers
+// further down, which fire from a click and have no `s` in scope.
+let WD_MINIMIZES = false;
+function restartHow(s){
+  return s.minimizes
+    ? 'If the dashboard is closed, your computer starts it again and puts the window in the background, <b>minimized</b>, so a sign-in does not fill your screen.'
+    : 'If the dashboard is closed, your computer opens it again in your browser, in front of what you are doing. Pause the check while you need the screen.';
+}
 function renderWatchdog(s){
   s = s || {};
+  WD_MINIMIZES = !!s.minimizes;
+  const how = document.getElementById('wdRestartHow');
+  if(how) how.innerHTML = restartHow(s);
   const t = document.getElementById('wdToggle');
   const on = !!s.desired && !!s.enabled;
   t.checked = !!s.desired; t.disabled = !s.supported;
@@ -574,7 +588,8 @@ async function postWatchdog(payload, okMsg){
 document.getElementById('wdToggle').addEventListener('change', function(){
   const enable = this.checked;
   postWatchdog({enable, everyMin: parseInt(document.getElementById('wdEvery').value,10)||5},
-    enable ? 'The watchdog is on. Your computer restarts the dashboard minimized if it stops.'
+    enable ? ('The watchdog is on. Your computer restarts the dashboard if it stops'
+              + (WD_MINIMIZES ? ', minimized.' : '.'))
            : 'The watchdog is off. The tasks run only while this window is open.');
 });
 document.getElementById('wdEvery').addEventListener('change', function(){

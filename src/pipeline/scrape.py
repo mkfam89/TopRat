@@ -151,21 +151,45 @@ def map_item(item, extract):
             'applicants': appl if isinstance(appl, (int, float)) else '',
             'expired': bool(pick(item, 'is_expired'))}
 
+def _is_packaged():
+    """True when this is a DOWNLOAD (a bundled python/ beside the app), not a clone.
+
+    The rule this enforces is "a shipped copy never installs anything by itself",
+    and `sys.frozen` was the wrong way to ask: it is set by PyInstaller, which this
+    project does not use. Every release zip carries a real interpreter in python/
+    and is therefore NOT frozen, so the guard below never fired where it mattered
+    most - the first LinkedIn scrape on a fresh install kicked off a silent 600 s
+    pip download of a ~270 MB tree (pandas, numpy, tls_client) using the bundled
+    pip. Found in review after the 1.2.0 macOS QA pass.
+
+    Detected the same way both launchers detect it, by the interpreter's own path:
+    an interpreter living inside the app folder is a bundle.
+    """
+    try:
+        exe = os.path.realpath(sys.executable or '')
+        bundle = os.path.realpath(os.path.join(HERE, 'python'))
+        return bool(exe) and (exe == bundle or exe.startswith(bundle + os.sep))
+    except Exception:
+        return False
+
+
 def _ensure_jobspy():
-    """Import jobspy; if missing, self-heal by pip-installing it ONCE, then retry.
-    Runs on the user's machine so LinkedIn scraping doesn't silently stay disabled
-    when the package isn't present. Fail-soft: returns (scrape_jobs, note)."""
+    """Import jobspy. Returns (scrape_jobs, note); never raises, never installs
+    behind a shipped copy's back."""
     try:
         from jobspy import scrape_jobs
         return scrape_jobs, ''
     except Exception:
         pass
-    # Do NOT reach for the network+pip in a packaged install: inside a frozen bundle
-    # there is no pip, and on a shipped copy a surprise 600s install is worse than a
-    # clear "LinkedIn is off" message. Set TOP_RAT_NO_AUTOINSTALL=1 to opt out too.
-    if getattr(sys, 'frozen', False) or _env('NO_AUTOINSTALL'):
-        return None, ('LinkedIn search is unavailable: the optional python-jobspy package '
-                      'is not installed. Install it with: pip install python-jobspy')
+    # Do NOT reach for the network+pip in a packaged install: a surprise 600 s
+    # install is worse than a clear "LinkedIn is off" message, and the download
+    # has a supported way to add it. Set TOP_RAT_NO_AUTOINSTALL=1 to opt out on a
+    # source copy too.
+    if _is_packaged() or getattr(sys, 'frozen', False) or _env('NO_AUTOINSTALL'):
+        return None, ('LinkedIn search is off: the optional python-jobspy package is not '
+                      'installed. Add it with the LinkedIn add-on zip for your platform '
+                      '(TopRat-<version>-linkedin-<platform>.zip, unpack it into this '
+                      'folder), or install it yourself with: pip install python-jobspy')
     try:
         import subprocess
         subprocess.run([sys.executable, '-m', 'pip', 'install', '--quiet', 'python-jobspy'],

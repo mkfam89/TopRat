@@ -24,9 +24,14 @@
 # uploads them as workflow artifacts, and the publish job is skipped because the
 # ref is not a tag. Nothing reaches a Release until you push one.
 #
-# Known flake: bundle_python.py resolves the interpreter from the GitHub API
-# unauthenticated. A rate-limited runner fails that step; re-running the job is
-# the fix, and it is rare enough not to be worth an auth path in that script.
+# bundle_python.py resolves the interpreter from the GitHub API, and that call is
+# authenticated with the run's own GITHUB_TOKEN (see the `env:` on the bundle step).
+# It used to go out unauthenticated, which is 60 requests an hour PER IP on
+# addresses every GitHub-hosted runner shares - written off here as a rare flake
+# until it killed the macos-arm64 leg of a release on 2026-09-05 with `403: rate
+# limit exceeded`. Authenticated the same call gets 1000/hour. The asset DOWNLOAD
+# stays unauthenticated on purpose: it redirects to object storage, which rejects
+# an Authorization header it did not issue.
 name: Release
 
 on:
@@ -122,6 +127,8 @@ jobs:
       # them, which is the whole reason the mac legs cannot be cross-built.
       - name: Bundle the interpreter
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}   # API rate limit: 60/hr per shared runner IP without it
         run: python src/ops/bundle_python.py
 
       - name: Build the zip
@@ -160,15 +167,40 @@ jobs:
               if not has(interp):
                   sys.exit('no bundled interpreter at %s — the download would need Python installed' % interp)
 
-              # The two packages that make it a full-feature copy. python-docx is
-              # the one that matters most: without it there are no resumes at all.
-              for pkg in ('site-packages/docx/', 'site-packages/webview/'):
+              # Everything the app needs must already be in here: a download must
+              # never pip-install anything the first time a user opens it.
+              # python-docx matters most (without it there are no resumes at all).
+              for pkg in ('site-packages/docx/', 'site-packages/webview/',
+                          'site-packages/jsonschema/'):
                   if not has(pkg):
                       sys.exit('%s missing from the bundle' % pkg)
 
+              # And the other half of that rule: python-jobspy is deliberately NOT
+              # here. It is ~270 MB (pandas, numpy, tls_client) for one job source,
+              # so it ships as its own add-on zip. If it ever lands in the main
+              # download, the download quadrupled and nobody meant it to.
+              if has('site-packages/jobspy/'):
+                  sys.exit('python-jobspy is in the main zip — it belongs in the '
+                           'linkedin add-on (see bundle_python.ADDON_PACKAGES)')
+
               # No test suite in the download (it ships no pytest to run one).
-              if has('/tests/') or has('pytest.ini'):
-                  sys.exit('the download carries a test suite it cannot run')
+              #
+              # Scoped to OUR tree and matched exactly. The old check was
+              # `has('/tests/') or has('pytest.ini')`, a substring search over every
+              # entry including the bundled interpreter — and pip and setuptools ship
+              # `setuptools/tests/` and `pkg_resources/tests/`, so it fired on every
+              # correctly-built zip. That is why the v1.2.0 release produced no
+              # artifact at all: the guard failed the build, and the macOS QA pass was
+              # handed a hand-made zip instead. The bundle is exempt BY PATH here for
+              # the same reason release.py's verify() exempts it: it is third-party,
+              # we did not put those files there, and scanning it is guaranteed noise.
+              stem = os.path.basename(path)[:-4]
+              def rel(n):
+                  return n[len(stem) + 1:] if n.startswith(stem + '/') else n
+              ours = [r for r in map(rel, names) if not r.startswith('python/')]
+              carried = [r for r in ours if r == 'pytest.ini' or r.startswith('tests/')]
+              if carried:
+                  sys.exit('the download carries a test suite it cannot run: %s' % carried[:5])
 
               # Exec bits. These are decided by path in _zip_mode(), so they must
               # be right even on the Windows leg.
@@ -177,6 +209,48 @@ jobs:
                       mode = (z.getinfo(n).external_attr >> 16) & 0o777
                       if not mode & stat.S_IXUSR:
                           sys.exit('%s extracts non-executable (mode %o)' % (n, mode))
+
+          print('OK  %s  (%.1f MB, %d files)'
+                % (os.path.basename(path), os.path.getsize(path) / 1e6, len(names)))
+          PY
+
+      # AFTER the main zip, never before: this installs python-jobspy INTO the
+      # bundle and zips the difference, so the bundle it leaves behind is no longer
+      # the one that was packaged. Non-fatal on purpose — the LinkedIn add-on is
+      # optional, and a PyPI hiccup on one leg must not cost the release its three
+      # main downloads.
+      - name: Build the LinkedIn add-on
+        id: addon
+        continue-on-error: true
+        shell: bash
+        run: python src/ops/bundle_python.py --addon linkedin --out dist
+
+      - name: Check the add-on
+        if: steps.addon.outcome == 'success'
+        shell: bash
+        env:
+          EXPECT_TAG: ${{ matrix.tag }}
+        run: |
+          python - <<'PY'
+          import glob, os, sys, zipfile
+
+          expect = os.environ['EXPECT_TAG']
+          hits = glob.glob('dist/*-linkedin-*.zip')
+          if len(hits) != 1:
+              sys.exit('expected exactly one add-on zip, found: %s' % hits)
+          path = hits[0]
+          if not os.path.basename(path).endswith('-linkedin-%s.zip' % expect):
+              sys.exit('%s is not labelled for this leg (%s)' % (os.path.basename(path), expect))
+
+          with zipfile.ZipFile(path) as z:
+              names = z.namelist()
+              if not any('/jobspy/' in n for n in names):
+                  sys.exit('the add-on does not contain jobspy')
+              # It unpacks over an install, so every path must land inside python/.
+              # One stray top-level entry here overwrites a user's app file.
+              stray = [n for n in names if not n.startswith('python/')]
+              if stray:
+                  sys.exit('add-on writes outside python/: %s' % stray[:5])
 
           print('OK  %s  (%.1f MB, %d files)'
                 % (os.path.basename(path), os.path.getsize(path) / 1e6, len(names)))

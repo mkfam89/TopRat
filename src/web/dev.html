@@ -191,7 +191,8 @@ function waitForNew(oldBoot, oldPid, t0) {
     if (Date.now() - t0 > LIMIT) {
       stat.className = 'stat bad';
       stat.innerHTML = 'The server did not come back within ' + Math.round(LIMIT / 1000) +
-        's. Double-click <b>Start Here.bat</b>, then check <code>logs/execution.log</code>.';
+        's. Double-click <b>Start Here</b> (.bat on Windows, .command on macOS), then check ' +
+        '<code>logs/execution.log</code>.';
       $('btnRestart').disabled = false;
       return;
     }

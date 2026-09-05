@@ -472,10 +472,16 @@
       <span class="pill">optional</span>
     </summary>
     <div class="body">
+      <!-- The second sentence is filled in by renderUptime() from the watchdog state, because
+           only Windows can bring the dashboard back MINIMIZED. Saying "minimized, so it never
+           covers your screen" on a Mac was a promise the code could not keep: open_minimized()
+           falls back to webbrowser.open(), which raises a window to the FRONT every five
+           minutes (QA 1.2.0, F-4). The fallback text below is the honest, platform-neutral
+           version, so a page whose script has not run yet still says nothing false. -->
       <p class="why">The searches run inside this dashboard, so they happen only while it is open. If
-        you turn this setting on, your computer looks at the dashboard every few minutes. If the
-        dashboard is closed, your computer starts it again <b>minimized</b>, so it never covers your
-        screen. This works on Windows and on macOS.</p>
+        you turn this setting on, your computer looks at the dashboard every few minutes.
+        <span id="uptime_restart_how">If the dashboard is closed, your computer starts it again.</span>
+        This works on Windows and on macOS.</p>
       <label class="tog"><input type="checkbox" id="uptime_watchdog"> Restart the dashboard by itself if it stops</label>
       <div class="row" style="margin-top:10px;">
         <div><label>Check every</label>
@@ -1526,10 +1532,21 @@ async function loadUptime(){
 // an unfinished gap. secPill's "on" flag drives both the green pill and the auto-open choice,
 // so the two are separated here: pill stays neutral, auto-open passes over it.
 function noAutoOpen(key){ SEC_STATE[key] = true; maybeAutoExpand(); }
+// How the restart actually behaves on THIS machine. `minimizes` comes from
+// watchdog.MINIMIZES, the same constant open_minimized() branches on, so the sentence and the
+// behaviour cannot disagree. Off Windows the window comes to the front, and the copy says so
+// rather than promising the opposite.
+function restartHow(s){
+  return s.minimizes
+    ? 'If the dashboard is closed, your computer starts it again <b>minimized</b>, so it never covers your screen.'
+    : 'If the dashboard is closed, your computer opens it again in your browser. It comes to the front, so pause the check or turn this off while you need the screen.';
+}
 function renderUptime(s){
   s = s || {};
   const t=document.getElementById('uptime_watchdog'), ev=document.getElementById('uptime_every'),
         msg=document.getElementById('uptime_status');
+  const how=document.getElementById('uptime_restart_how');
+  if(how) how.innerHTML = restartHow(s);
   const on = !!s.desired && !!s.enabled;
   t.checked = !!s.desired; t.disabled = !s.supported;
   if(s.everyMin) ev.value=String(s.everyMin);
@@ -1544,7 +1561,8 @@ function renderUptime(s){
   }
   if(on){
     msg.textContent='✓ On. Your computer looks at the dashboard every '+(s.everyMin||5)+(s.everyMin===1?' minute':' minutes')
-      + '. If the dashboard is closed, your computer starts it again, minimized.'
+      + '. If the dashboard is closed, your computer starts it again'
+      + (s.minimizes ? ', minimized.' : ' and brings it to the front.')
       + (s.pauseMin ? ' Paused for '+s.pauseMin+' more minutes.' : '');
     msg.style.color='#059669';
   } else if(s.desired && !s.enabled){

@@ -181,7 +181,8 @@ Step 2 gives for `Start Here.command`: `xattr -d com.apple.quarantine` and `chmo
 ## If something goes wrong
 
 **Nothing happens when I double-click.**
-If you downloaded a Release zip, look for a `python` folder beside `Start Here.bat`. If
+If you downloaded a Release zip, look for a `python` folder beside the launcher
+(`Start Here.bat` on Windows, `Start Here.command` on macOS). If
 that folder is absent, the unzip did not finish. Unzip the file again. If you run a source
 copy, Python is absent or not on your PATH. On Windows, run the Python installer again and
 select "Add python.exe to PATH".

@@ -24,6 +24,8 @@ every time you close it, and you can never actually quit the app.
 import os, sys; sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import _paths  # noqa: F401  -- src/_paths.py: puts every src/ folder on sys.path; _paths.ROOT = project folder
 import os, sys, json, socket, subprocess, time
+import http.client
+import unicodedata
 
 HERE = _paths.ROOT
 SERVER = _paths.script('dashboard_server.py')
@@ -108,6 +110,80 @@ def resolve_port():
     if isinstance(rt, int) and rt != want and is_up(rt):
         return rt
     return want
+
+
+# How many ports past the wanted one the SERVER will try when something foreign holds it.
+# Mirrors dashboard_server.PORT_SCAN: this is the range our own copy can end up on, so it is
+# the range our_port() has to look in when config/runtime.json was never written (the config
+# dir can be read-only, and runtime_write() swallows that on purpose).
+PORT_SCAN = 10
+
+
+def _same_dir(a, b):
+    """Do two paths name the same folder? Filesystem answer first, text answer second."""
+    try:
+        if os.path.samefile(a, b):
+            return True
+    except OSError:
+        pass
+    key = lambda p: unicodedata.normalize(
+        'NFC', os.path.normcase(os.path.abspath(p))).rstrip('/\\')
+    return key(a) == key(b)
+
+
+def port_holder(port, timeout=1.0):
+    """Which code directory is serving on `port`? '' when nothing identifiable answers.
+
+    /api/dev/ping is the identity route: it reports codeDir precisely so a starting copy can
+    tell "I am already running here" from "someone else is sitting on my port".
+    """
+    try:
+        conn = http.client.HTTPConnection('127.0.0.1', port, timeout=timeout)
+        conn.request('GET', '/api/dev/ping')
+        body = json.loads(conn.getresponse().read().decode('utf-8', 'replace'))
+        conn.close()
+    except Exception:
+        return ''
+    return (body.get('codeDir') or '') if isinstance(body, dict) else ''
+
+
+def port_is_ours(port, timeout=1.0):
+    """Is the server on `port` THIS copy of the code? None = nothing identifiable answered.
+
+    The mirror of dashboard_server.port_is_ours(), asked from the launcher's side.
+    """
+    cd = port_holder(port, timeout=timeout)
+    return _same_dir(cd, HERE) if cd else None
+
+
+def _candidate_ports():
+    """Every port THIS copy could be answering on, best guess first."""
+    want = wanted_port()
+    ports = [want]
+    rt = _read_json(os.path.join(HERE, 'config', 'runtime.json')).get('port')
+    if isinstance(rt, int) and rt not in ports:
+        ports.append(rt)                       # where the server says it actually went
+    ports += [p for p in range(want + 1, want + 1 + PORT_SCAN) if p not in ports]
+    return ports
+
+
+def our_port(seconds=0.0):
+    """The port where THIS copy of the board is answering, or None. Polls for `seconds`.
+
+    Deliberately NOT resolve_port(): "the port answers" and "MY board answers" are different
+    questions, and a launcher that confuses them opens a window onto whatever happens to be
+    listening. That is not hypothetical — a user who unzips an upgrade beside the old copy
+    leaves the old server running on 8765, and every later launch silently shows the OLD
+    build (QA 1.2.1, gate 3). Only a codeDir match counts as ours.
+    """
+    t0 = time.time()
+    while True:
+        for p in _candidate_ports():
+            if is_up(p, timeout=0.6) and port_is_ours(p) is True:
+                return p
+        if time.time() - t0 >= seconds:
+            return None
+        time.sleep(0.5)
 
 
 def is_up(port, timeout=1.5):

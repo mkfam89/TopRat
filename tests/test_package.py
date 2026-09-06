@@ -112,7 +112,52 @@ def test_zip_keeps_the_executable_bit(built_zip):
 def test_zip_contains_what_a_user_needs(built_zip):
     path, _ = built_zip
     names = zipfile.ZipFile(path).namelist()
-    for want in ('app.py', 'INSTALL.md', 'LICENSE', 'Start Here.bat', 'Start Here.command'):
+    # A macOS build drops the Windows launchers on purpose (see _strip_foreign_launchers),
+    # so the required set follows the tag the zip was actually built for.
+    need = ['app.py', 'INSTALL.md', 'LICENSE', 'Start Here.command']
+    if not package.platform_tag().startswith('macos'):
+        need.append('Start Here.bat')
+    for want in need:
+        assert any(n.endswith('/' + want) for n in names), 'missing from the zip: ' + want
+
+
+# --------------------------------------------------------------------------
+# Launchers the target OS cannot run (QA 1.2.1, flagged)
+# --------------------------------------------------------------------------
+
+@pytest.fixture(scope='module')
+def mac_zip(tmp_path_factory):
+    """A macOS zip, built anywhere. The tag drives the trim, not platform.system()."""
+    out = tmp_path_factory.mktemp('macdist')
+    path, problems = package.build_zip(out_dir=str(out), with_python=False,
+                                       tag='macos-arm64', quiet=True)
+    assert problems == [], problems
+    return path
+
+
+def test_macos_zip_ships_no_windows_launchers(mac_zip):
+    """1.2.1 shipped 14 of them beside the .command file INSTALL.md tells Macs to open."""
+    names = zipfile.ZipFile(mac_zip).namelist()
+    stowaways = [n for n in names if n.lower().endswith(('.bat', '.vbs'))]
+    assert stowaways == [], 'Windows-only files in a macOS zip: %s' % stowaways
+
+
+def test_macos_zip_keeps_its_own_launchers_executable(mac_zip):
+    z = zipfile.ZipFile(mac_zip)
+    for want in ('Start Here.command', 'Install Watchdog.command', 'Uninstall Watchdog.command'):
+        hits = [n for n in z.namelist() if n.endswith('/' + want)]
+        assert hits, 'missing from the macOS zip: ' + want
+        mode = (z.getinfo(hits[0]).external_attr >> 16) & 0o777
+        assert mode & 0o100, '%s is not executable in the zip (mode %o)' % (want, mode)
+
+
+def test_windows_zip_keeps_its_launchers(tmp_path):
+    """The trim is one-directional. A Windows user has nothing to be confused by."""
+    path, problems = package.build_zip(out_dir=str(tmp_path), with_python=False,
+                                       tag='windows-x64', quiet=True)
+    assert problems == []
+    names = zipfile.ZipFile(path).namelist()
+    for want in ('Start Here.bat', 'start_dashboard_hidden.vbs'):
         assert any(n.endswith('/' + want) for n in names), 'missing from the zip: ' + want
 
 

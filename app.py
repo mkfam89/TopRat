@@ -85,21 +85,40 @@ def icon_path():
 
 
 def ensure_server():
-    """Start the dashboard if it is not already up. Returns (port, error_message).
+    """Start the dashboard if THIS copy is not already up. Returns (port, error_message).
 
     Reuses watchdog.py wholesale rather than re-implementing process launching:
     it already handles the hidden/detached launch and the "did the port answer?"
     poll, and it is the same path the .bat launcher and the autostart entry use.
+
+    "Is the port answering?" is NOT the same question as "is MY board answering?",
+    and this function used to ask the first one. Someone who upgrades the normal
+    way — download the new zip, unpack it beside the old folder — leaves the old
+    server running on 8765, so every launch of the new copy found the port busy,
+    adopted it, and showed the OLD build in the window, silently and forever. When
+    the old folder is then deleted, that server keeps answering 200 to everything
+    with an empty body and the board degrades to unstyled HTML with nothing in the
+    console to explain it (QA 1.2.1, gate 3 + F-1). So the port is adopted only
+    when /api/dev/ping says the code behind it is this tree; otherwise we start our
+    own server, which moves itself to the next free port and records where it went.
     """
-    port = watchdog.resolve_port()
-    if watchdog.is_up(port):
+    port = watchdog.our_port()
+    if port:
         return port, ''
+    # Nothing of OURS is up. Note who has the wanted port BEFORE launching, so the
+    # message can name the other copy instead of blaming the user's machine.
+    want = watchdog.wanted_port()
+    holder = watchdog.port_holder(want) if watchdog.is_up(want) else ''
     ok, msg = watchdog.start_server()
     if not ok:
-        return port, msg
-    if watchdog.wait_for_port(port) is None:
-        return port, ('the dashboard did not answer on port %d in time. '
-                      'Check logs/execution.log for the reason.' % port)
+        return 0, msg
+    port = watchdog.our_port(watchdog.STARTUP_WAIT)
+    if port is None:
+        return 0, ('the dashboard did not answer in time. '
+                   'Check logs/execution.log for the reason.')
+    if port != want:
+        print('Port %d is taken%s, so this copy is on port %d.'
+              % (want, (' by ' + holder) if holder else '', port))
     return port, ''
 
 
@@ -256,10 +275,24 @@ def main():
     argv = sys.argv[1:]
 
     if '--stop-info' in argv:
+        # One platform's instructions, not both. Printing the Windows line to a Mac user is
+        # the same class of mistake as the UI saying "Windows refused" on macOS (QA 1.2.1,
+        # F-4). The lsof line is here because "find the python process" is not enough
+        # guidance once more than one copy has existed on the machine - it names the exact
+        # pid holding the board's port, which is the one that has to go.
+        port = watchdog.wanted_port()
         print('The dashboard runs in the background, so closing the window leaves it up.')
         print('To stop it: end the "python" process running dashboard_server.py')
-        print('  Windows   Task Manager -> Details -> python.exe / pythonw.exe')
-        print('  macOS     Activity Monitor -> search "dashboard_server"')
+        if sys.platform == 'darwin':
+            print('  Activity Monitor -> search "dashboard_server"')
+            print('  To name the exact process holding the board\'s port:')
+            print('      lsof -nP -iTCP:%d -sTCP:LISTEN' % port)
+        elif os.name == 'nt':
+            print('  Task Manager -> Details -> python.exe / pythonw.exe')
+        else:
+            print('  ps -ef | grep dashboard_server')
+            print('  To name the exact process holding the board\'s port:')
+            print('      lsof -nP -iTCP:%d -sTCP:LISTEN' % port)
         print('If you turned on "Keep it running", switch that off on the Setup page first,')
         print('or it will simply start again.')
         return 0

@@ -449,7 +449,11 @@ SCHED_PILL_JS = """
           var wr = await fetch('/api/watchdog', {method:'POST', headers:{'Content-Type':'application/json'},
                      body: JSON.stringify({enable:true, everyMin: wv.everyMin || 5})});
           var wd = await wr.json();
-          if(!wd || !wd.ok){ a.textContent = 'Windows refused'; a.title = (wd && wd.message) || ''; return; }
+          // NOT 'Windows refused': launchd is the mechanism on macOS, and this line fires
+          // exactly when the user is already puzzled about why the switch did not stick.
+          // Blaming an OS they are not running turns that into a support ticket (QA 1.2.1,
+          // F-3). Same wording as the catch below, deliberately.
+          if(!wd || !wd.ok){ a.textContent = 'did not turn on'; a.title = (wd && wd.message) || ''; return; }
           poll();
         }catch(err){ a.textContent = 'did not turn on'; }
         return;
@@ -916,12 +920,19 @@ def _pick_folder_macos(title, init):
     except subprocess.TimeoutExpired:
         return '', 'The folder window stayed open too long. Type the path instead.'
     if got is None:
+        # osascript is not on this machine at all. That is the ONE case where the tkinter
+        # picker is still better than nothing, so it is the only case that returns None.
         return None
     rc, out, err = got
     if rc != 0:
         if cancelled(err):
             return '', ''
-        return None
+        # The panel itself failed, and the no-default-location retry above has already had
+        # its turn. Falling through here would open THE TKINTER PICKER THIS FUNCTION EXISTS
+        # TO AVOID - off-screen, behind the browser, a second dialog thrown at someone who
+        # just watched the first one fail (QA 1.2.1, F-2). Say so instead, and give them the
+        # way forward the text box already supports.
+        return '', 'The folder window did not open. Type the path instead.'
     out = out.strip()
     # No unicodedata.normalize() here on purpose: this string came from the OS and names a
     # folder that exists. Comparisons go through _pathkey(); the value itself stays as given.
@@ -1400,7 +1411,17 @@ class Handler(BaseHTTPRequestHandler):
         p = parsed.path
         if p == '/ui.css':
             # Shared design system for every page (see ui.css). Served from the CODE dir.
-            return self._send(200, read_bytes(W('ui.css')), 'text/css; charset=utf-8')
+            # read_bytes() answers b'' for a file it could not read, and a 200 with an empty
+            # body is the worst possible answer here: the board renders as unstyled default
+            # HTML with nothing in the console and nothing in the network panel to explain
+            # it, so every automated check passes and only a human looking at the screen can
+            # tell something broke. 404 puts the failure where people look for it (QA 1.2.1,
+            # F-1 — reported as "the app opens with no styling"). The icon route below has
+            # always done this; this one is catching up.
+            css = read_bytes(W('ui.css'))
+            if not css:
+                return self._send(404, '{"error":"ui.css is missing from this copy"}')
+            return self._send(200, css, 'text/css; charset=utf-8')
         if p == '/favicon.ico' or p.startswith('/assets/icon/'):
             # The Top Rat mark, served from the CODE dir (assets/icon/) so the browser tab,
             # the nav brand and the desktop window (app.py ICON) all show the same drawing.

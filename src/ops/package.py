@@ -114,6 +114,44 @@ def _strip_zip_only(stage, quiet=False):
     return gone
 
 
+# Launchers only ONE operating system can run. The macOS 1.2.1 archive carried 14 Windows
+# files - Start Here.bat, start_dashboard_hidden.vbs, tools/Repair Windows Tasks.bat,
+# tools/Make Portable Python.bat and nine more - because ZIP_EXCLUDE is a flat list that
+# knows nothing about the target. None of them can hurt a Mac, but they sit in the same
+# folder INSTALL.md is walking a non-technical user through, next to the .command file they
+# are being told to double-click, and one of them reads like the fix for a problem they are
+# currently having (QA 1.2.1, flagged). The repo export keeps everything: it is the source,
+# and it is cross-platform by definition. Only the DOWNLOAD is trimmed.
+#
+# Keyed off the TARGET tag, never platform.system(): the tag is what the artifact is named
+# for, so `--tag macos-arm64` builds a macOS zip wherever it is run, and the test suite can
+# assert this without a Mac.
+WINDOWS_ONLY_SUFFIXES = ('.bat', '.vbs')
+
+
+def _strip_foreign_launchers(stage, tag, quiet=False):
+    """Remove launchers the target OS cannot run from a staged tree. Returns what went.
+
+    Only macOS builds strip anything today. A Windows zip keeps the .command files on
+    purpose: they are three small text files, and the Windows launchers are what that user
+    double-clicks, so there is nothing to be confused BY. The asymmetry is the point - this
+    trims noise around the one file a Mac user is told to open, it is not a symmetry rule.
+    """
+    if not tag.startswith('macos'):
+        return []
+    gone = []
+    for dirpath, dirnames, filenames in os.walk(stage):
+        dirnames[:] = [d for d in dirnames if d != 'python']    # never the interpreter
+        for fn in filenames:
+            if fn.lower().endswith(WINDOWS_ONLY_SUFFIXES):
+                full = os.path.join(dirpath, fn)
+                os.remove(full)
+                gone.append(os.path.relpath(full, stage).replace(os.sep, '/'))
+    if gone and not quiet:
+        print('  %-14s %d Windows launchers (%s build)' % ('stripped', len(gone), tag))
+    return sorted(gone)
+
+
 def _is_dev_only(name):
     """True for a site-packages entry that belongs to the dev-only install."""
     stem = name.lower()
@@ -217,6 +255,7 @@ def build_zip(out_dir=DIST, with_python=True, python_from='', tag='', quiet=Fals
         # Straight after build(), before the interpreter goes in: the tree is
         # still small and the removal is cheap to reason about here.
         _strip_zip_only(stage, quiet=quiet)
+        _strip_foreign_launchers(stage, tag, quiet=quiet)
 
         if with_python:
             src = python_from or os.path.join(HERE, 'python')

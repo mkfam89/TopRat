@@ -609,8 +609,39 @@ git_daily.py ─→ git remote        archive.py ─→ archived.csv / archive_i
     the recorded port **if that port is listening**, else wanted. Configured-first keeps an
     explicit `$TOP_RAT_PORT` authoritative; the liveness check keeps a stale record (crash) from
     hiding a genuinely stopped board — which without this file was the real hazard: the watchdog
-    probing an empty 8765 and launching a *second* server every tick. `app.py` inherits it via
-    `watchdog.resolve_port()`. Covered by `tests/test_port_fallback.py`.
+    probing an empty 8765 and launching a *second* server every tick. `app.py` no longer
+    inherits it via `watchdog.resolve_port()`; see the next bullet. Covered by
+    `tests/test_port_fallback.py`.
+  - **Who owns the port? (2026-09-06, QA 1.2.1 gate 3): `watchdog.our_port()`.**
+    `resolve_port()` answers "which port should I probe", which is NOT the question a
+    launcher needs. `app.py` asked the old one, found 8765 answering, and opened the window
+    onto whatever was there. In the macOS pass that was an 18-day-old server from a
+    `TopRat-main` folder the user had since DELETED, still answering 200 with an empty body
+    to every request. That is the normal upgrade path (unzip the new version beside the old
+    one), and it is silent, because no version is shown anywhere the user would look.
+    So `watchdog.py` gained, mirroring `dashboard_server.port_is_ours()` from the other
+    side: `port_holder(port)` (GET `/api/dev/ping`, returns `codeDir`, or `''` when nothing
+    identifiable answers), `port_is_ours(port)` (`_same_dir()` against `HERE`; `None` means
+    not us / no answer), `_candidate_ports()` (wanted, then `config/runtime.json`, then
+    `wanted+1 ... +PORT_SCAN`, the range the server itself falls forward into when
+    `runtime_write()` could not write) and `our_port(seconds=0)`, which polls those and
+    accepts a **codeDir match only**. `app.ensure_server()` is now `our_port()`, else
+    `start_server()`, then `our_port(STARTUP_WAIT)`, and it prints which port it landed on
+    when a stranger held the wanted one. `watchdog.py`'s own tick still uses
+    `resolve_port()`: restarting the board because a FOREIGN program holds the port is a
+    different decision, deliberately left alone. Pinned by `tests/test_first_run_macos.py`.
+  - **Two macOS-only fixes in `dashboard_server.py` (2026-09-06, QA 1.2.1):**
+    (a) the `/ui.css` route 404s when `read_bytes()` comes back empty. It used to send 200
+    with a 0-byte body, so a missing stylesheet rendered as unstyled default HTML with
+    nothing in the console and nothing in the network panel: every scripted check passed
+    and only a human could see it. The `/assets/icon/` route below it always did this.
+    (b) `_pick_folder_macos()` returns `('', 'The folder window did not open. Type the path
+    instead.')` once the no-default-location retry is spent; `None` (fall through to the
+    tkinter picker) is now reserved for "osascript is not on this machine at all".
+    Also: the Setup page's watchdog quick-action says `did not turn on`, never `Windows
+    refused`, since launchd is the mechanism on macOS; and `app.py --stop-info` branches on
+    `sys.platform` / `os.name` and adds the `lsof -nP -iTCP:<port> -sTCP:LISTEN` line that
+    names the exact pid.
   - **Launchers are port-agnostic:** `Start Here.bat` / `Install Watchdog.bat` resolve the
     port via `python dashboard_server.py --print-port` (now prints `live_port() or resolve_port()`
     — a RUNNING instance wins, so the launcher opens the window that exists rather than the port
@@ -643,7 +674,7 @@ git_daily.py ─→ git remote        archive.py ─→ archived.csv / archive_i
     resolution, calling the same `make_watchdog.py`), `start_dashboard_hidden.vbs`.
   - **Desktop shell (2026-08-06) — `app.py` at the root, plus `Start Here.command`.**
     `app.py` is a THIN shell and holds no application logic: it imports `watchdog.py` and
-    calls `resolve_port()` / `is_up()` / `start_server()` / `wait_for_port()` rather than
+    calls `our_port()` / `port_holder()` / `wanted_port()` / `start_server()` rather than
     repeating process launching, then shows the board in a native window via the optional
     **`pywebview`** package. **pywebview missing, or no usable web view → it opens the normal
     browser instead**, which is byte-for-byte the old behaviour; the window is an enhancement,
@@ -957,6 +988,20 @@ git_daily.py ─→ git remote        archive.py ─→ archived.csv / archive_i
     asserts its own half so deleting one does not silently break the other:
     `test_package.py::test_zip_carries_no_test_suite` (absent from the zip) and
     `test_release.py::test_the_test_suite_does_ship_to_the_repo` (present in the export).
+  - **Launchers the target OS cannot run (2026-09-06, QA 1.2.1): `package._strip_foreign_launchers()`.**
+    `ZIP_EXCLUDE` is a flat list that knows nothing about the target, so the macOS 1.2.1
+    archive carried 14 Windows files (`Start Here.bat`, `start_dashboard_hidden.vbs`,
+    `tools/Repair Windows Tasks.bat`, `tools/Make Portable Python.bat` and nine more) into
+    the same folder `INSTALL.md` walks a non-technical Mac user through. The new step runs
+    right after `_strip_zip_only()` and drops `*.bat` / `*.vbs` **when the TAG starts with
+    `macos`**, keyed off the artifact's tag and never `platform.system()`, so
+    `--tag macos-arm64` builds a macOS zip anywhere and the suite can assert it without a
+    Mac. One-directional on purpose: a Windows zip keeps the three `.command` files, since
+    that user is double-clicking the `.bat` and has nothing to be confused by. The repo
+    export keeps everything, being the cross-platform source. Pinned by
+    `test_package.py::test_macos_zip_ships_no_windows_launchers` and
+    `test_windows_zip_keeps_its_launchers`; `test_zip_contains_what_a_user_needs` now
+    varies its required set by tag.
     `test_strip_is_scoped_to_the_staged_copy` pins that the rmtree cannot escape the stage —
     the same function pointed at `HERE` would delete the real `tests/`.
   - **Who RUNS `package.py` (2026-08-16): `.github/workflows/release.yml`.** The bundle must be
